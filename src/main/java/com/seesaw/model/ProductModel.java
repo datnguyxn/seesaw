@@ -13,9 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
+@Table(name = "products")
 @Data
-public class UserModel {
+public class ProductModel {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -23,26 +23,31 @@ public class UserModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "id_user",
+            name = "id_product",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-    private String firstname;
-    private String lastname;
-    private String gender;
-    private String contact;
-    private String email;
-    private String password;
-    private String avatar;
+
+    @Column(name = "name_product")
+    private String name;
+    private String description;
+    private Float price;
+    private Integer quantity;
+    private String image_path;
     private Date date_created;
+    private Date date_updated;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "id_collection")
+    private CollectionModel id_collection;
 
-    @OneToMany(mappedBy = "id_user",cascade = CascadeType.ALL)
-    private Collection<OrderModel> orders;
+    @ManyToOne
+    @JoinColumn(name = "id_category")
+    private CategoryModel id_category;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "products")
     private Collection<FeedbackModel> feedbacks;
 
+    @OneToMany(mappedBy = "products")
+    private Collection<InvoiceModel> invoices;
 }
