@@ -23,7 +23,7 @@ public class CategoryModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "id_category",
+            name = "category_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
@@ -33,6 +33,6 @@ public class CategoryModel {
 
     private String description;
 
-    @OneToMany(mappedBy = "id_category",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category_id",cascade = CascadeType.ALL)
     private Collection<ProductModel> products;
 }

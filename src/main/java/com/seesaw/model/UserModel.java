@@ -23,7 +23,7 @@ public class UserModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "id_user",
+            name = "user_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
@@ -39,10 +39,13 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "id_user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+    private Collection<TokenModel> tokens;
+
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
     private Collection<OrderModel> orders;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
     private Collection<FeedbackModel> feedbacks;
 
 }

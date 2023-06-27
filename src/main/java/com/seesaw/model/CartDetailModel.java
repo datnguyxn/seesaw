@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Embeddable
-class FeedbackKey implements Serializable{
-    @Column(name = "user_id")
-    String userId;
+class CartDetailKey implements Serializable{
+    @Column(name = "cart_id")
+    String cartId;
     @Column(name = "product_id")
     String productId;
 }
@@ -20,21 +20,22 @@ class FeedbackKey implements Serializable{
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "feedbacks")
+@Table(name = "cart_detail")
 @Data
-public class FeedbackModel {
+public class CartDetailModel {
     @EmbeddedId
-    private FeedbackKey id;
+    private CartDetailKey id;
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    private UserModel users;
+    @MapsId("cartId")
+    @JoinColumn(name = "cart_id")
+    private CartModel carts;
 
     @ManyToOne
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private ProductModel products;
 
-    private String note;
+    private Float price;
+    private Integer quantity;
 }

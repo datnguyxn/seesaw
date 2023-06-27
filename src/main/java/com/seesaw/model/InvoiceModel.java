@@ -10,9 +10,9 @@ import java.io.Serializable;
 
 @Embeddable
 class InvoiceKey implements Serializable {
-    @Column(name = "id_order")
+    @Column(name = "order_id")
     String orderId;
-    @Column(name = "id_product")
+    @Column(name = "product_id")
     String productId;
 }
 @Entity
@@ -25,14 +25,14 @@ public class InvoiceModel {
     @EmbeddedId
     private InvoiceKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
-    @JoinColumn(name = "id_order")
+    @JoinColumn(name = "order_id")
     private OrderModel orders;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
-    @JoinColumn(name = "id_product")
+    @JoinColumn(name = "product_id")
     private ProductModel products;
 
     private Integer quantity;

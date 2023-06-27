@@ -6,16 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
-import java.util.Collection;
-
+import java.util.Date;
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "collections")
+@Table(name = "token")
 @Data
-public class CollectionModel {
+public class TokenModel {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -23,16 +21,15 @@ public class CollectionModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "collection_id",
+            name = "token_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
+    private String token;
+    private Date expired;
+    private Date revoke;
 
-    @Column(name = "name_collection")
-    private String name;
-
-    private String description;
-
-    @OneToMany(mappedBy = "collection_id",cascade = CascadeType.ALL)
-    private Collection<ProductModel> products;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserModel users;
 }

@@ -13,9 +13,9 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "collections")
+@Table(name = "carts")
 @Data
-public class CollectionModel {
+public class CartModel {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -23,16 +23,16 @@ public class CollectionModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "collection_id",
+            name = "cart_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
+    private Float total_amount;
 
-    @Column(name = "name_collection")
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 
-    private String description;
-
-    @OneToMany(mappedBy = "collection_id",cascade = CascadeType.ALL)
-    private Collection<ProductModel> products;
+    @OneToMany(mappedBy = "carts",cascade = CascadeType.ALL)
+    private Collection<CartDetailModel> cart_detail;
 }

@@ -23,7 +23,7 @@ public class ProductModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "id_product",
+            name = "product_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
@@ -38,16 +38,19 @@ public class ProductModel {
     private Date date_updated;
 
     @ManyToOne
-    @JoinColumn(name = "id_collection")
-    private CollectionModel id_collection;
+    @JoinColumn(name = "collection_id")
+    private CollectionModel collection;
 
     @ManyToOne
-    @JoinColumn(name = "id_category")
-    private CategoryModel id_category;
+    @JoinColumn(name = "category_id")
+    private CategoryModel category;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
     private Collection<FeedbackModel> feedbacks;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
     private Collection<InvoiceModel> invoices;
+
+    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    private Collection<CartDetailModel> cart_detail;
 }
