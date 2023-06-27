@@ -33,6 +33,6 @@ public class CategoryModel {
 
     private String description;
 
-    @OneToMany(mappedBy = "category_id",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private Collection<ProductModel> products;
 }

@@ -33,6 +33,6 @@ public class CollectionModel {
 
     private String description;
 
-    @OneToMany(mappedBy = "collection_id",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL)
     private Collection<ProductModel> products;
 }
