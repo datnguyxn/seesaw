@@ -1,5 +1,6 @@
 package com.seesaw.model;
 
+import com.seesaw.configuration.TokenType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,13 +22,19 @@ public class TokenModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "token_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
+
+    @Column(unique = true)
     private String token;
-    private Date expired;
-    private Date revoke;
+
+    @Enumerated(EnumType.STRING)
+    public TokenType tokenType = TokenType.BEARER;
+
+    private boolean expired;
+
+    private boolean revoked;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
