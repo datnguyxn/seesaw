@@ -1,5 +1,7 @@
 package com.seesaw.model;
 
+import java.util.Collection;
+import java.util.Date;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +10,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@Data
 public class UserModel {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -21,24 +23,29 @@ public class UserModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "id",
+            name = "user_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column()
-    private String username;
-
-    @Column()
-    private String password;
-
-    @Column()
-    private String email;
-
-    @Column()
+    private String firstname;
+    private String lastname;
+    private String gender;
     private String contact;
+    private String email;
+    private String password;
+    private String avatar;
+    private Date date_created;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+    private Collection<TokenModel> tokens;
+
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+    private Collection<OrderModel> orders;
+
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL)
+    private Collection<FeedbackModel> feedbacks;
 
 }
