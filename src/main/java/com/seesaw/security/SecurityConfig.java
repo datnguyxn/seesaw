@@ -28,6 +28,7 @@ public class SecurityConfig {
             "/login",
             "/register",
             "/product",
+            "/cart/**",
             "/admin",
             "/forgot-password",
             "/webjars/**",

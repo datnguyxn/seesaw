@@ -8,14 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Embeddable
-class CartDetailKey implements Serializable{
-    @Column(name = "cart_id")
-    String cartId;
-    @Column(name = "product_id")
-    String productId;
-}
-
 @Entity
 @Builder
 @AllArgsConstructor
