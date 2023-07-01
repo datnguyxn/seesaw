@@ -1,5 +1,6 @@
 package com.seesaw.model;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -95,4 +96,5 @@ public class UserModel implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

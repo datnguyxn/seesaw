@@ -1,4 +1,4 @@
-package com.seesaw.configuration;
+package com.seesaw.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

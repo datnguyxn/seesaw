@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sending Email</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- use the font -->
+    <style>
+        @media screen and (max-width: 768px) {
+            table {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p th:text="'Hi ' + ${name}"></p>
+        <p>We received a request for a one-time code to use for your Seesaw account</p>
+        <p>This is code to reset your password, You mustn't send it to other people</p>
+        <p>Code is: <span th:text="${token}"></span>.</p>
+        <p>If this code is not requested, you can safely ignore this email. Maybe someone else entered your email address by mistake.</p>
+        <p>Thanks you,</p>
+        <p>Seesaw</p>
+    </div>
+</body>
+</html>

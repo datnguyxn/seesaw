@@ -30,6 +30,7 @@ public class SecurityConfig {
             "/product",
             "/cart/**",
             "/admin",
+            "/payment/**",
             "/forgot-password",
             "/webjars/**",
             "/css/**",

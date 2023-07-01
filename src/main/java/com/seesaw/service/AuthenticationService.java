@@ -1,47 +1,62 @@
 package com.seesaw.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seesaw.auth.AuthenticationRequest;
-import com.seesaw.auth.AuthenticationResponse;
-import com.seesaw.auth.RegisterRequest;
-import com.seesaw.configuration.JwtService;
+import com.seesaw.auth.*;
 import com.seesaw.configuration.TokenType;
-import com.seesaw.model.Role;
-import com.seesaw.model.TokenModel;
-import com.seesaw.model.UserModel;
+import com.seesaw.exception.UserNotFoundException;
+import com.seesaw.model.*;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
+import com.seesaw.service.impl.MailServiceImpl;
+import com.seesaw.utils.GenerateToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.seesaw.model.Mail;
+import com.seesaw.model.UserModel;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final MailServiceImpl mailServiceImpl;
+    private String tokenToVerify;
+    private String email;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user.getRole().equals(Role.ADMIN)) {
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            revokeAllUserTokens(user);
+            saveUserToken(user, jwtToken);
+            return AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } else {
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            revokeAllUserTokens(user);
+            saveUserToken(user, jwtToken);
+            return AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        }
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -56,7 +71,7 @@ public class AuthenticationService {
                 .date_created(Date.from(java.time.Instant.now()))
                 .role(Role.USER)
                 .build();
-        var savedUser = repository.save(user);
+        var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -77,11 +92,12 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public void refreshToken( HttpServletRequest request,
-                              HttpServletResponse response) throws IOException {
+    public void refreshToken(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException {
         final String authHeader = request.getHeader("Authorization");
         final String refreshToken;
         final String email;
+
 
         if (authHeader == null || !authHeader.startsWith(TokenType.BEARER.getTokenType())) {
             return;
@@ -89,7 +105,7 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         email = jwtService.extractEmail(refreshToken);
         if (email != null) {
-            var user = this.repository.findByEmail(email)
+            var user = this.userRepository.findByEmail(email)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
@@ -115,5 +131,56 @@ public class AuthenticationService {
             token.setRevoked(true);
         });
         tokenRepository.saveAll(validToken);
+    }
+
+    public MailResponse sendMail(ForgotPassword request, HttpSession session) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user == null) {
+            return null;
+        } else {
+            tokenToVerify = GenerateToken.randomDigits(6);
+            System.out.println(tokenToVerify);
+            var mail = Mail.builder()
+                    .to(user.getEmail())
+                    .subject("Code to Reset Your Password")
+                    .content(tokenToVerify)
+                    .build();
+            mailServiceImpl.sendEmail(mail);
+        }
+        return MailResponse.builder()
+                .message("Email sent successfully")
+                .status(true)
+                .build();
+    }
+
+    public MessageResponse verifyToken(CheckToken request, HttpSession session) {
+        if (request.getToken().equals(tokenToVerify)) {
+            return MessageResponse.builder()
+                    .message("Token verified successfully")
+                    .build();
+        }
+        return MessageResponse.builder()
+                .message("Token not verified")
+                .build();
+    }
+
+    public MessageResponse changePassword(ConfirmPassword request, HttpSession session) {
+        var user = userRepository.findByEmail((String) session.getAttribute("email")).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user.getPassword().equals(request.getPassword())) {
+            return MessageResponse.builder()
+                    .message("Password cannot be the same as the old password")
+                    .build();
+        }
+        if (request.getPassword().equals(request.getConfirmPassword())) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+            return MessageResponse.builder()
+                    .message("Password changed successfully")
+                    .build();
+        } else {
+            return MessageResponse.builder()
+                    .message("Password does not match")
+                    .build();
+        }
     }
 }

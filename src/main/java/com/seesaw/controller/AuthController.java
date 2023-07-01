@@ -1,15 +1,13 @@
 package com.seesaw.controller;
 
-import com.seesaw.auth.AuthenticationRequest;
-import com.seesaw.auth.AuthenticationResponse;
-import com.seesaw.auth.RegisterRequest;
-import com.seesaw.repository.UserRepository;
+import com.seesaw.auth.*;
+import com.seesaw.exception.ApiRequestException;
 import com.seesaw.service.AuthenticationService;
+import com.seesaw.service.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +19,8 @@ import java.io.IOException;
 public class AuthController {
 
     private final AuthenticationService authenticationService;
+
+    private final LogoutService logoutService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -34,6 +34,7 @@ public class AuthController {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
+
     @PostMapping("/refresh-token")
     public void refreshToken(
             HttpServletRequest request,
@@ -42,4 +43,21 @@ public class AuthController {
         authenticationService.refreshToken(request, response);
     }
 
+    @PostMapping("/send-mail")
+    public ResponseEntity<MailResponse> sendMail(
+            @RequestBody ForgotPassword request, HttpSession session) {
+        return ResponseEntity.ok(authenticationService.sendMail(request, session));
+    }
+
+    @PostMapping("/verify-token")
+    public ResponseEntity<MessageResponse> verifyToken(
+            @RequestBody CheckToken request, HttpSession session) {
+        return ResponseEntity.ok(authenticationService.verifyToken(request, session));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<MessageResponse> resetPassword(
+            @RequestBody ConfirmPassword request, HttpSession session) {
+        return ResponseEntity.ok(authenticationService.changePassword(request, session));
+    }
 }

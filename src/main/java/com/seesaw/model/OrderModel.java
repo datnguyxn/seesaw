@@ -1,6 +1,7 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,11 +29,13 @@ public class OrderModel {
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-    private String name;
-    private String delivery_address;
-    private String total_amount;
-    private String note;
-    private Integer status;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String address;
+    private String zipCode;
+    private String optional;
     private Date date_created;
     private Date date_updated;
 
