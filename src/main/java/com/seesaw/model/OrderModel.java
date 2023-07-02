@@ -25,7 +25,6 @@ public class OrderModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "order_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
@@ -39,10 +38,10 @@ public class OrderModel {
     private Date date_created;
     private Date date_updated;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = UserModel.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserModel users;
 
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders",targetEntity = InvoiceModel.class,cascade = CascadeType.ALL)
     private Collection<InvoiceModel> invoices;
 }

@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-
 @Entity
 @Builder
 @AllArgsConstructor
@@ -18,12 +15,12 @@ public class CartDetailModel {
     @EmbeddedId
     private CartDetailKey id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("cartId")
     @JoinColumn(name = "cart_id")
     private CartModel carts;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private ProductModel products;

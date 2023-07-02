@@ -23,16 +23,12 @@ public class CategoryModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "category_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column(name = "name_brand")
     private String name;
-
     private String description;
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, targetEntity = ProductModel.class)
     private Collection<ProductModel> products;
 }

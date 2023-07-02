@@ -8,13 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Embeddable
-class InvoiceKey implements Serializable {
-    @Column(name = "order_id")
-    String orderId;
-    @Column(name = "product_id")
-    String productId;
-}
 @Entity
 @Builder
 @AllArgsConstructor

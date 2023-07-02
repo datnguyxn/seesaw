@@ -1,6 +1,7 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,16 +24,12 @@ public class CollectionModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "collection_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column(name = "name_collection")
     private String name;
-
     private String description;
 
-    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL,targetEntity = ProductModel.class)
     private Collection<ProductModel> products;
 }

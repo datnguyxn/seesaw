@@ -23,12 +23,9 @@ public class ProductModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "product_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column(name = "name_product")
     private String name;
     private String description;
     private Float price;
@@ -37,15 +34,15 @@ public class ProductModel {
     private Date date_created;
     private Date date_updated;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = CollectionModel.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id")
     private CollectionModel collection;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = CategoryModel.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
-    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "products",targetEntity = FeedbackModel.class,cascade = CascadeType.ALL)
     private Collection<FeedbackModel> feedbacks;
 
     @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)

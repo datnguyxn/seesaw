@@ -23,16 +23,15 @@ public class CartModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "cart_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
     private Float total_amount;
 
-    @OneToOne
+    @OneToOne(targetEntity = UserModel.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserModel user;
 
-    @OneToMany(mappedBy = "carts",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "carts",cascade = CascadeType.ALL, targetEntity = CartDetailModel.class)
     private Collection<CartDetailModel> cart_detail;
 }
