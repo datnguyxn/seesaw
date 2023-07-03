@@ -1,10 +1,7 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Collection;
@@ -14,7 +11,9 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
-@Data
+@Setter
+@Getter
+@ToString
 public class CategoryModel {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -29,6 +28,6 @@ public class CategoryModel {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, targetEntity = ProductModel.class)
+    @OneToMany(mappedBy = "category", targetEntity = ProductModel.class)
     private Collection<ProductModel> products;
 }
