@@ -13,9 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
-@Setter
-@Getter
-@ToString
+@Data
 public class ProductModel {
     @Id
     @GeneratedValue(generator = "UUID")

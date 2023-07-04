@@ -18,6 +18,8 @@ import java.util.List;
 public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
+    @Autowired
+    private ProductService productService;
 //    Create
     public CollectionModel addCollection(AddCollectionRequest request){
         CollectionModel collect = CollectionModel.builder()
@@ -72,6 +74,7 @@ public class CollectionService {
     public void deleteOneCollectionById(String id){
         CollectionModel collection = getCollectionById(id);
         if(collection != null){
+            productService.deleteProductOfCollection(collection);
             collectionRepository.delete(collection);
         }
     }

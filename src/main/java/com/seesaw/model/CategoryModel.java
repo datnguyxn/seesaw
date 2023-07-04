@@ -11,9 +11,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "categories")
-@Setter
-@Getter
-@ToString
+@Data
 public class CategoryModel {
     @Id
     @GeneratedValue(generator = "UUID")

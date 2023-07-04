@@ -12,9 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "collections")
-@Setter
-@Getter
-@ToString
+@Data
 public class CollectionModel {
     @Id
     @GeneratedValue(generator = "UUID")

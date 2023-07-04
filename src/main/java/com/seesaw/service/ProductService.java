@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -80,7 +81,7 @@ public class ProductService {
     public void updateProduct(ProductRequest request, ProductModel product){
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
-        product.setQuantity(request.getQuantity());
+        product.setQuantity(request.getQuantity() + product.getQuantity());
         product.setImage_path(request.getImage_path());
         product.setDate_updated(Date.from(java.time.Instant.now()));
         productRepository.save(product);
@@ -90,6 +91,12 @@ public class ProductService {
         ProductModel product = getProductById(id);
         if(product != null){
             productRepository.delete(product);
+        }
+    }
+    public void deleteProductOfCollection(CollectionModel collect){
+        List<ProductModel> product = productRepository.findByCollection(collect);
+        for(ProductModel p: product){
+            productRepository.delete(p);
         }
     }
 }
