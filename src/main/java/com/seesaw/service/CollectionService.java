@@ -7,8 +7,6 @@ import com.seesaw.model.CollectionModel;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,27 +19,19 @@ public class CollectionService {
     @Autowired
     private ProductService productService;
 //    Create
-    public CollectionModel addCollection(AddCollectionRequest request){
+    public CollectionResponse addCollection(AddCollectionRequest request){
         CollectionModel collect = CollectionModel.builder()
                 .name(request.getName())
                 .description(request.getDescription())
                 .build();
         collectionRepository.save(collect);
-        return collect;
-    }
-//    Update
-    public void updateCollection(AddCollectionRequest request, String id){
-        CollectionModel collect = getCollectionById(id);
-        collect.setName(request.getName());
-        collect.setDescription(request.getDescription());
-        collectionRepository.save(collect);
+        return CollectionResponse.builder()
+                .name(collect.getName())
+                .description(collect.getDescription())
+                .products(new ArrayList<ProductResponse>())
+                .build();
     }
 //    Read
-//    public List<CollectionModel> getAllCollections(){
-//        List<CollectionModel> collections = new ArrayList<CollectionModel>();
-//        collectionRepository.findAll().forEach(collect -> collections.add(collect));
-//        return collections;
-//    }
     public List<CollectionResponse> getAllCollections() {
         List<CollectionResponse> collections = collectionRepository.findAll().stream().map(collection->{
             List<ProductResponse> productResponses = new ArrayList<ProductResponse>();
@@ -65,17 +55,26 @@ public class CollectionService {
         return collections;
     }
     public CollectionModel getCollectionById(String id){
-        return collectionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid collection id: "+id));
+        return collectionRepository.findById(id).orElse(null);
     }
     public CollectionModel getCollectionByName(String name){
-        return collectionRepository.findByName(name).orElseThrow(() -> new IllegalArgumentException("Invalid collection name: "+name));
+        return collectionRepository.findByName(name).orElse(null);
+    }
+//    Update
+    public CollectionModel updateCollection(AddCollectionRequest request, String id){
+        CollectionModel collect = getCollectionById(id);
+        collect.setName(request.getName());
+        collect.setDescription(request.getDescription());
+        collectionRepository.save(collect);
+        return collect;
     }
 //    Delete
-    public void deleteOneCollectionById(String id){
+    public List<CollectionResponse> deleteOneCollectionById(String id){
         CollectionModel collection = getCollectionById(id);
         if(collection != null){
             productService.deleteProductOfCollection(collection);
             collectionRepository.delete(collection);
         }
+        return getAllCollections();
     }
 }

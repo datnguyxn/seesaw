@@ -7,7 +7,6 @@ import com.seesaw.service.CollectionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,37 +16,28 @@ import java.util.List;
 public class CollectionController {
     @Autowired
     private CollectionService collectionService;
-    @GetMapping("/showForm")
-    public String showCollectionForm(CollectionModel collection, Model model) {
-        model.addAttribute("collection", new CollectionModel());
-        return "pages/collections/add-collection";
-    }
-
     @PostMapping("/add")
-    public CollectionModel addCollection(@RequestBody @Valid AddCollectionRequest collection){
-        return collectionService.addCollection(collection);
+    public ResponseEntity<CollectionResponse> addCollection(@RequestBody @Valid AddCollectionRequest collection){
+        return ResponseEntity.ok().body(collectionService.addCollection(collection));
     }
     @GetMapping("/list")
     public ResponseEntity<List<CollectionResponse>> getAllCollections(){
         return ResponseEntity.ok().body(collectionService.getAllCollections());
     }
     @PostMapping("/search-collection/{name}")
-    public String getCollectionByName( @Valid String name){
-        collectionService.getCollectionByName(name);
-        return "pages/collections/collection";
+    public ResponseEntity<CollectionModel> getCollectionByName(@RequestBody @Valid String name){
+        return ResponseEntity.ok().body(collectionService.getCollectionByName(name));
     }
     @GetMapping("/get-collection/{id}")
-    public CollectionModel getCollectionById(@PathVariable ("id") String id){
-        return collectionService.getCollectionById(id);
+    public ResponseEntity<CollectionModel> getCollectionById(@PathVariable ("id") String id){
+        return ResponseEntity.ok().body(collectionService.getCollectionById(id));
     }
     @PutMapping("/update/{id}")
-    public String updateCollection(@PathVariable ("id") String id, @Valid AddCollectionRequest request){
-        collectionService.updateCollection(request,id);
-        return "pages/collections/update-collection";
+    public ResponseEntity<CollectionModel> updateCollection(@PathVariable ("id") String id, @Valid AddCollectionRequest request){
+        return ResponseEntity.ok().body(collectionService.updateCollection(request,id));
     }
     @GetMapping("/delete/{id}")
-    public String deleteOneCollectionById(@PathVariable ("id") String id){
-        collectionService.deleteOneCollectionById(id);
-        return "pages/collections/collection";
+    public ResponseEntity<List<CollectionResponse>> deleteOneCollectionById(@PathVariable ("id") String id){
+        return ResponseEntity.ok().body(collectionService.deleteOneCollectionById(id));
     }
 }
