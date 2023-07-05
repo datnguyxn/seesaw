@@ -2,11 +2,10 @@ package com.seesaw.model;
 
 import java.util.Collection;
 import java.util.Date;
+
+import com.seesaw.dto.response.CollectionResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -23,13 +22,11 @@ public class ProductModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "product_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column(name = "name_product")
     private String name;
+    private String brand;
     private String description;
     private Float price;
     private Integer quantity;
@@ -37,20 +34,20 @@ public class ProductModel {
     private Date date_created;
     private Date date_updated;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = CollectionModel.class)
     @JoinColumn(name = "collection_id")
     private CollectionModel collection;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = CategoryModel.class)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
-    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "products",targetEntity = FeedbackModel.class)
     private Collection<FeedbackModel> feedbacks;
 
-    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "products")
     private Collection<InvoiceModel> invoices;
 
-    @OneToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "products")
     private Collection<CartDetailModel> cart_detail;
 }

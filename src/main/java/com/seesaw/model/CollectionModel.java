@@ -1,10 +1,8 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Collection;
@@ -23,16 +21,12 @@ public class CollectionModel {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "collection_id",
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-
-    @Column(name = "name_collection")
     private String name;
-
     private String description;
 
-    @OneToMany(mappedBy = "collection",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "collection",targetEntity = ProductModel.class)
     private Collection<ProductModel> products;
 }

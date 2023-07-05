@@ -36,7 +36,7 @@ public class TokenModel {
 
     private boolean revoked;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
     private UserModel users;
 }

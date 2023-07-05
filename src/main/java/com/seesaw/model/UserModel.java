@@ -52,13 +52,13 @@ public class UserModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users",targetEntity = TokenModel.class)
     private Collection<TokenModel> tokens;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users",targetEntity = OrderModel.class)
     private Collection<OrderModel> orders;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users",targetEntity = FeedbackModel.class)
     private Collection<FeedbackModel> feedbacks;
 
     @Override
