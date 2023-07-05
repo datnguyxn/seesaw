@@ -1,0 +1,13 @@
+.footer__content .footer__content__infomation .footer__links{
+    font-size: 1rem;
+    color: rgba(var(--black), 1);
+}
+
+.footer__content .footer__content__infomation .footer__links h6 {
+    font-size: 1rem;
+}
+
+.footer__copyright {
+    background-color: rgba(var(--black),1);
+    color: rgba(var(--white), 1);
+}

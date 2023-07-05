@@ -1,29 +1,41 @@
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid m-0 p-0">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-
-                </li>
-
-            </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light justify-content-between px-5">
+    <div class="header__logo">
+        <img th:src="@{/images/logo.png}" alt="" />
+    </div>
+    <div class="header__menu">
+        <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Shop</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
+    <div class="header__icons">
+        <ul class="navbar-nav d-flex flex-row">
+            <!-- Icons -->
+            <li class="nav-item me-3 me-lg-0">
+                <a class="nav-link" href="#">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li>
+            <li class="nav-item me-3 me-lg-0">
+                <a class="nav-link" href="#">
+                    <i class="bi bi-cart2"></i>
+                </a>
+            </li>
+            <li class="nav-item me-3 me-lg-0">
+                <a class="nav-link" href="#">
+                    <i class="bi bi-person"></i>
+                </a>
+            </li>
+        </ul>
     </div>
 </nav>

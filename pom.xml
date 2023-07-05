@@ -31,12 +31,17 @@
             <artifactId>jquery</artifactId>
             <version>3.6.4</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>5.2.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/bootstrap-icons -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-icons</artifactId>
+            <version>1.10.5</version>
         </dependency>
 
         <dependency>
