@@ -37,10 +37,10 @@ public class OrderModel {
     private Date date_created;
     private String status;
 
-    @ManyToOne(targetEntity = UserModel.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
     private UserModel users;
 
-    @OneToMany(mappedBy = "orders",targetEntity = InvoiceModel.class,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders",targetEntity = InvoiceModel.class)
     private Collection<InvoiceModel> invoices;
 }

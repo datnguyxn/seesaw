@@ -28,10 +28,10 @@ public class CartModel {
     private String id;
     private Float total_amount;
 
-    @OneToOne(targetEntity = UserModel.class,cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
     private UserModel user;
 
-    @OneToMany(mappedBy = "carts",cascade = CascadeType.ALL, targetEntity = CartDetailModel.class)
+    @OneToMany(mappedBy = "carts", targetEntity = CartDetailModel.class)
     private Collection<CartDetailModel> cart_detail;
 }
