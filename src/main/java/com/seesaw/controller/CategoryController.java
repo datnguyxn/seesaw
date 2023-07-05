@@ -2,20 +2,17 @@ package com.seesaw.controller;
 
 import com.seesaw.dto.request.AddCategoryRequest;
 import com.seesaw.dto.response.CategoryResponse;
-import com.seesaw.dto.response.CollectionResponse;
 import com.seesaw.model.CategoryModel;
-import com.seesaw.model.CollectionModel;
 import com.seesaw.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/categories")
 public class CategoryController {
     @Autowired

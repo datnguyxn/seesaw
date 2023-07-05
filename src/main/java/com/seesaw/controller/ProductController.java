@@ -18,8 +18,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @PostMapping("/add")
-    public ProductResponse addProduct(@RequestBody @Valid ProductRequest request){
-        return productService.addProduct(request);
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductRequest request){
+        return ResponseEntity.ok().body(productService.addProduct(request));
     }
     @GetMapping("/list")
     public ResponseEntity<List<ProductResponse>> getAllProduct(){

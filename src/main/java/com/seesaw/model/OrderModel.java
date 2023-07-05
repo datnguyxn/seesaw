@@ -33,10 +33,9 @@ public class OrderModel {
     private String email;
     private String phone;
     private String address;
-    private String zipCode;
-    private String optional;
+    private Float total_amount;
     private Date date_created;
-    private Date date_updated;
+    private String status;
 
     @ManyToOne(targetEntity = UserModel.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

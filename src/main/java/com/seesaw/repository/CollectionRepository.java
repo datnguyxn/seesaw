@@ -2,7 +2,6 @@ package com.seesaw.repository;
 
 import com.seesaw.model.CollectionModel;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
