@@ -1,3 +1,9 @@
+.line {
+    height: 1px;
+    margin: 1em 5em;
+    background-image: linear-gradient(to right, #434343 0%, black 100%);
+}
+
 .footer__content .footer__content__infomation .footer__links{
     font-size: 1rem;
     color: rgba(var(--black), 1);
