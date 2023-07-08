@@ -1,5 +1,4 @@
 package com.seesaw.service;
-
 import com.seesaw.dto.request.ProductRequest;
 import com.seesaw.dto.response.ProductResponse;
 import com.seesaw.model.CategoryModel;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class ProductService {
@@ -135,5 +135,13 @@ public class ProductService {
         for(ProductModel p: product){
             productRepository.delete(p);
         }
+    }
+
+    public void save(List<ProductModel> products) {
+        productRepository.saveAll(products);
+    }
+
+    public ProductModel findByCollectionId(String id) {
+        return productRepository.findById(id).orElse(null);
     }
 }

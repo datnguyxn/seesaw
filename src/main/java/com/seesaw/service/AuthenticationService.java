@@ -3,16 +3,21 @@ package com.seesaw.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seesaw.auth.*;
 import com.seesaw.configuration.TokenType;
+import com.seesaw.dto.response.MailResponse;
+import com.seesaw.dto.response.MessageResponse;
+import com.seesaw.exception.UserExistException;
 import com.seesaw.exception.UserNotFoundException;
 import com.seesaw.model.*;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
 import com.seesaw.service.impl.MailServiceImpl;
 import com.seesaw.utils.GenerateToken;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,16 +31,26 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-    private final MailServiceImpl mailServiceImpl;
-    private String tokenToVerify;
-    private String email;
+    @Autowired
+    private UserRepository userRepository;
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    @Autowired
+    private TokenRepository tokenRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private MailServiceImpl mailServiceImpl;
+    private String tokenToVerify;
+
+    public AuthenticationResponse authenticate(AuthenticationRequest request, HttpServletResponse httpServletResponse) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
         if (user.getRole().equals(Role.ADMIN)) {
@@ -43,6 +58,7 @@ public class AuthenticationService {
             var refreshToken = jwtService.generateRefreshToken(user);
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
+            createCookie(refreshToken, httpServletResponse);
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
@@ -52,6 +68,7 @@ public class AuthenticationService {
             var refreshToken = jwtService.generateRefreshToken(user);
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
+            createCookie(refreshToken, httpServletResponse);
             return AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
@@ -59,7 +76,10 @@ public class AuthenticationService {
         }
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) throws UserExistException {
+        if (userRepository.existsUserModelByEmail(request.getEmail())) {
+            throw new UserExistException("User already exist");
+        }
         var user = UserModel.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
@@ -67,7 +87,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .gender(request.getGender())
                 .contact(request.getContact())
-                .avatar(request.getAvatar())
+                .avatar("ahdgas")
                 .date_created(Date.from(java.time.Instant.now()))
                 .role(Role.USER)
                 .build();
@@ -133,7 +153,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validToken);
     }
 
-    public MailResponse sendMail(ForgotPassword request, HttpSession session) {
+    public MailResponse sendMail(EmailRequest request) {
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
         if (user == null) {
             return null;
@@ -145,7 +165,7 @@ public class AuthenticationService {
                     .subject("Code to Reset Your Password")
                     .content(tokenToVerify)
                     .build();
-            mailServiceImpl.sendEmail(mail);
+            mailServiceImpl.sendEmail(mail, "mail-sender.html");
         }
         return MailResponse.builder()
                 .message("Email sent successfully")
@@ -153,7 +173,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public MessageResponse verifyToken(CheckToken request, HttpSession session) {
+    public MessageResponse verifyToken(TokenRequest request, HttpSession session) {
         if (request.getToken().equals(tokenToVerify)) {
             return MessageResponse.builder()
                     .message("Token verified successfully")
@@ -164,7 +184,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public MessageResponse changePassword(ConfirmPassword request, HttpSession session) {
+    public MessageResponse changePassword(PasswordRequest request, HttpSession session) {
         var user = userRepository.findByEmail((String) session.getAttribute("email")).orElseThrow(() -> new UserNotFoundException("User not found"));
         if (user.getPassword().equals(request.getPassword())) {
             return MessageResponse.builder()
@@ -182,5 +202,13 @@ public class AuthenticationService {
                     .message("Password does not match")
                     .build();
         }
+    }
+
+    private void createCookie(String token, HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+        response.addCookie(cookie);
     }
 }

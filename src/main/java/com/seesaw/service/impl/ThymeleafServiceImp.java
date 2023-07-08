@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class ThymeleafServiceImp implements ThymeleafService {
 
-    private static final String MAIL_TEMPLATE_BASE_NAME = "mail/mail-sender";
+    private static final String MAIL_TEMPLATE_BASE_NAME = "mail/";
 
     private static final String MAIL_TEMPLATE_PREFIX = "/templates/";
 
@@ -60,6 +60,19 @@ public class ThymeleafServiceImp implements ThymeleafService {
         context.setVariables(Map.of("name", variables.getTo()));
         context.setVariables(Map.of("token", variables.getContent()));
 
-        return templateEngine.process(MAIL_TEMPLATE_BASE_NAME, context);
+        return templateEngine.process(MAIL_TEMPLATE_BASE_NAME + template, context);
+    }
+
+    @Override
+    public String createContentSuccessMail(String template, Mail variables) {
+        final Context context = new Context();
+        context.setVariables(Map.of("name", variables.getTo()));
+        context.setVariables(Map.of("number", variables.getContent()));
+        context.setVariables(Map.of("date", variables.getDate()));
+        context.setVariables(Map.of("price", variables.getPrice()));
+        context.setVariables(Map.of("address", variables.getAddress()));
+        context.setVariables(Map.of("products", variables.getProduct()));
+
+        return templateEngine.process(MAIL_TEMPLATE_BASE_NAME + template, context);
     }
 }

@@ -5,6 +5,6 @@ import com.seesaw.model.Mail;
 
 public interface MailService {
 
-    void sendEmail(Mail mail);
+    void sendEmail(Mail mail, String path);
 
 }

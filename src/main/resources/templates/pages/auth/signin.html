@@ -2,9 +2,44 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:insert="~{fragments/heading/heading :: heading(title = 'Sign In')}"/>
 <body>
-    <div class="container-fluid">
-        <th:block th:replace="~{fragments/util/header :: header}"/>
-<!--        <th:block th:replace="~{fragments/auth/signin :: signin}"/>-->
+<div class="container-fluid">
+    <th:block th:replace="~{fragments/util/header :: header}"/>
+    <!--        <th:block th:replace="~{fragments/auth/signin :: signin}"/>-->
+</div>
+<form action="/" method="post" id="formSignIn">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
     </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div>
+        <span class="error mb-3" style="width: 100px; height: 100px"></span>
+        <div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary" id="signInButton">Submit</button>
+</form>
+</div>
+
+<form action="/" method="post" id="formLogOut">
+    <!--            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
+    <!--            <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>-->
+    <input type="submit" value="Log Out" id="logout"/>
+</form>
+</div>
+
+<!--    <script src="https://kit.fontawesome.com/39faf08d8f.js" crossorigin="anonymous"></script>-->
+<script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/font-awesome/6.4.0/js/fontawesome.min.js}"></script>
+<script th:src="@{/js/auth/signIn.js}"></script>
 </body>
+
+
 </html>

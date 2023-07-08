@@ -8,7 +8,6 @@ import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import java.util.List;
 public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
+
     @Autowired
     private ProductService productService;
 //    Create
@@ -76,5 +76,13 @@ public class CollectionService {
             collectionRepository.delete(collection);
         }
         return getAllCollections();
+    }
+
+    public void save(List<CollectionModel> collectionModel) {
+        collectionRepository.saveAll(collectionModel);
+    }
+
+    public CollectionModel findById(String id) {
+        return collectionRepository.findById(id).orElse(null);
     }
 }

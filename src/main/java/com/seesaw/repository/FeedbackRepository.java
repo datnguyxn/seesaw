@@ -5,5 +5,4 @@ import com.seesaw.model.FeedbackModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FeedbackRepository extends JpaRepository<FeedbackModel, FeedbackKey> {
-
 }

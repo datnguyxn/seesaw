@@ -1,5 +1,6 @@
 package com.seesaw.service;
 
+
 import com.seesaw.dto.request.AddFeedbackRequest;
 import com.seesaw.model.FeedbackKey;
 import com.seesaw.model.FeedbackModel;
@@ -11,6 +12,9 @@ import com.seesaw.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
 public class FeedbackService {
     @Autowired
@@ -19,7 +23,7 @@ public class FeedbackService {
     private ProductRepository productRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
-    public void addFeedback(AddFeedbackRequest request){
+    public void addFeedback(AddFeedbackRequest request) {
         UserModel user = userRepository.findById(request.getUserId()).orElseThrow();
         ProductModel product = productRepository.findById(request.getProductId()).orElseThrow();
         FeedbackKey key = FeedbackKey.builder()
@@ -32,5 +36,8 @@ public class FeedbackService {
                 .build();
         feedbackRepository.save(feedback);
 
+    }
+    public void save(List<FeedbackModel> feedbackModels) {
+        feedbackRepository.saveAll(feedbackModels);
     }
 }

@@ -1,6 +1,7 @@
 package com.seesaw.repository;
 
 import com.seesaw.model.TokenModel;
+import com.seesaw.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,4 +13,7 @@ public interface TokenRepository extends JpaRepository<TokenModel, String> {
     List<TokenModel> findAllValidTokenByUser(String id);
 
     Optional<TokenModel> findByToken(String token);
+
+
+
 }

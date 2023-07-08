@@ -4,12 +4,16 @@ import com.seesaw.dto.request.OrderRequest;
 import com.seesaw.dto.response.OrderResponse;
 import com.seesaw.model.OrderModel;
 import com.seesaw.model.UserModel;
+import com.seesaw.dto.request.AddInfoRequest;
+import com.seesaw.dto.response.MessageResponse;
+import com.seesaw.exception.UserNotFoundException;
 import com.seesaw.repository.OrderRepository;
 import com.seesaw.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -50,4 +54,13 @@ public class OrderService {
         }
         return null;
     }
+
+    public int count() {
+        return (int) orderRepository.count();
+    }
+
+    public void save(List<OrderModel> orderModels) {
+        orderRepository.saveAll(orderModels);
+    }
+
 }

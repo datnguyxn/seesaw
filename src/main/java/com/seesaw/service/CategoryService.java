@@ -77,4 +77,21 @@ public class CategoryService {
         }
         return getAllCategories();
     }
+
+    public void add(AddCategoryRequest request) {
+        CategoryModel categoryModel = CategoryModel.builder()
+                .id(request.getCategoryId())
+                .name(request.getCategoryName())
+                .description(request.getCategoryDescription())
+                .build();
+        categoryRepository.save(categoryModel);
+    }
+
+    public void save(List<CategoryModel> categoryModel) {
+        categoryRepository.saveAll(categoryModel);
+    }
+
+    public CategoryModel findById(String id) {
+        return categoryRepository.findById(id).orElse(null);
+    }
 }

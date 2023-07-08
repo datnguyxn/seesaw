@@ -2,6 +2,7 @@ package com.seesaw.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ForgotPassword {
+public class EmailRequest {
 
-    @NotEmpty(message = "{EMAIL_REQUIRED}")
-    @Email(message = "{NOT_VALID_EMAIL}")
+    @Email(message = "Email is not valid")
+    @NotEmpty(message = "Email cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email is not valid")
     private String email;
 
 }

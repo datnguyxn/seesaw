@@ -24,7 +24,7 @@ public class MailServiceImpl implements MailService {
     private final MailDetail mailDetail;
 
     @Override
-    public void sendEmail(Mail mail) {
+    public void sendEmail(Mail mail, String path) {
 
         Properties props = new Properties();
 //        props.put("mail.transport.protocol", mailDetail.getProtocol());
@@ -48,12 +48,17 @@ public class MailServiceImpl implements MailService {
                 Transport transport = session.getTransport();
                 InternetAddress addressFrom = new InternetAddress(mailDetail.getUsername());
                 MimeMessage message = new MimeMessage(session);
-                message.setFrom('"' + "Seesaw" + '"' + "<" + mailDetail.getUsername() + ">");
-//                message.setSender(addressFrom);
+                message.setFrom('"' + "Seesaw" + '"' + "<" + addressFrom + ">");
                 message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(mail.getTo()));
-                String html = thymeleafServiceImpl.createContent("mail-sender.html", mail);
+                String html;
+                if (path.equals("mail-sender.html")) {
+                    html = thymeleafServiceImpl.createContent(path, mail);
+                } else {
+                    html = thymeleafServiceImpl.createContentSuccessMail(path, mail);
+                }
                 message.setSubject(mail.getSubject());
                 message.setContent(html, "text/html; charset=utf-8");
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(mail.getTo()));
                 Transport.send(message);
         } catch (Exception e) {
             e.printStackTrace();

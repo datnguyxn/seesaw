@@ -1,23 +1,24 @@
 package com.seesaw.auth;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
-    @NotNull(message = "Email is required")
-    @NotEmpty(message = "Email is required")
+
+    @Email(message = "Email is not valid")
+    @NotEmpty(message = "Email cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email is not valid")
     private String email;
 
-    @NotNull(message = "Password is required")
-    @Min(value = 8, message = "Password must be at least 8 characters")
+
+    @NotEmpty(message = "Password is required")
     private String password;
 }

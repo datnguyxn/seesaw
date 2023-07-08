@@ -1,6 +1,6 @@
 package com.seesaw.auth;
 
-import com.seesaw.model.Role;
+import com.seesaw.validator.PasswordConfirmation;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,23 +12,32 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@PasswordConfirmation(
+        password = "password",
+        confirmPassword = "confirmPassword",
+        message = "Password and confirm password must match"
+)
 public class RegisterRequest {
 
-   private String firstname;
-   private String lastname;
+    @NotEmpty(message = "First Name cannot be empty")
+    private String firstname;
 
-    @Email(message = "Email is invalid")
-    @NotEmpty(message = "Email is required")
+    @NotEmpty(message = "Last Name cannot be empty")
+    private String lastname;
+
+    @Email(message = "Email is not valid")
+    @NotEmpty(message = "Email cannot be empty")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email is not valid")
     private String email;
-//
+
     @NotEmpty(message = "Password is required")
-    @Min(value = 8, message = "Password must be at least 8 characters")
+    @Length(min = 8, max = 50, message = "Password must be at least 8 characters and at most 50 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one number")
     private String password;
+
+    private String confirmPassword;
 
     private String gender;
 
     private String contact;
-
-    private String avatar;
-
 }
