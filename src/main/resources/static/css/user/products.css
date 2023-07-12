@@ -1,0 +1,103 @@
+* {
+    list-style-type: none;
+}
+
+body {
+    background-color: rgba(239, 242, 246, 1);
+}
+
+/* search bar */
+.search-bar input {
+    width: 280px;
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: none;
+}
+
+.search-bar input:focus-visible {
+    outline: none;
+}
+
+.search-bar button {
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    background: none;
+    line-height: 36px;
+}
+
+.search-bar button i {
+    font-size: 24px;
+    line-height: 36px;
+}
+
+/* filters */
+.filters > ul {
+    display: inline-block;
+}
+
+.filters button.choice {
+    border: none;
+    font-size: 16px;
+    padding: 3px 16px;
+    margin-right: 4px;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.filters button.choice:active {
+    cursor: default;
+}
+
+.filters button.choice.active {
+    background: #e3c5b8;
+}
+
+/* product list */
+.product-list .card {
+    margin-bottom: 20px;
+}
+
+.product-list .card:hover {
+    cursor: pointer;
+}
+
+.product-list .card:active {
+    cursor: default;
+}
+
+.product-list .card img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+.product-list .card h3,
+.product-list .card p {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.product-list .card h3 {
+    margin-top: 12px;
+}
+
+.product-list .card p {
+    margin-bottom: 12px;
+}
+
+button.load-more {
+    border: 1px solid #000;
+    border-radius: 0;
+    padding: 8px 24px;
+    font-weight: 600;
+}
+
+button.load-more:hover {
+    background-color: rgba(227, 197, 184, 1);
+}

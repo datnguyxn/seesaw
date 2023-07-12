@@ -1,0 +1,121 @@
+<main th:fragment="products" class="products">
+    <div class="intro container-md container-fluid my-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Products</h1>
+                <p>
+                    All SEESAW glasses come with high index aspheric lenses that have dust-repellent coating and
+                    offer UV protection. Find your perfect pair of eyewear in SEESAW.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-md container-fluid search-bar my-5">
+        <div class="row">
+            <div class="col-12">
+                <form
+                        class="d-flex flex-row align-items-center justify-content-center"
+                        action=""
+                        method="get"
+                >
+                    <input type="text" name="search" placeholder="Enter product name"/>
+                    <button class="" type="submit"><i class="bx bx-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-md container-fluid filters">
+        <div class="row m-1 d-flex flex-row justify-content-start m-2">
+            <h1 class="" style="width: fit-content">Filters</h1>
+            <div class="col filter-list d-flex flex-md-row m-0 p-0" style="flex-direction: column">
+                <div class="d-flex flex-row align-items-center justify-content-between m-0 p-0 gap-3">
+                    <button class="choice all active">All</button>
+                    <button class="choice frames">Frames</button>
+                    <button class="choice sunglasses">Sunglasses</button>
+                    <button class="choice accessories">Accessories</button>
+                </div>
+                <div class="filter-sort dropdown d-inline ms-auto m-1 my-md-1 my-2">
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="1" selected>Popular</option>
+                        <option value="2">Lasted</option>
+                        <option value="3">Price: Low to high</option>
+                        <option value="4">Price: High to low</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-list row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 p-0">
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img
+                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                    />
+                    <h3 class="name">Natural honey Bottle</h3>
+                    <p class="price">$59</p>
+                </div>
+            </div>
+        </div>
+        <div class="row m-5">
+            <div class="col text-center">
+                <button class="btn load-more">Load more</button>
+            </div>
+        </div>
+    </div>
+</main>
