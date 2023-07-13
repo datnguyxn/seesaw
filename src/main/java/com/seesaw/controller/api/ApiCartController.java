@@ -1,19 +1,18 @@
-package com.seesaw.controller;
+package com.seesaw.controller.api;
 
-import com.seesaw.dto.request.AddProductRequest;
+import com.seesaw.model.CartModel;
 import com.seesaw.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
-public class CartController {
+public class ApiCartController {
     @Autowired
     private CartService cartService;
 
     @PostMapping("/add")
-    public void add(@RequestBody AddProductRequest request) {
-        cartService.add(request);
-
+    public void add(@RequestBody CartModel request) {
+        cartService.addCart(request);
     }
 }

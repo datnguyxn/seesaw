@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductRequest {
+    private String id;
     @NotEmpty(message = "Name is required")
     private String name;
     private String brand;

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCollectionRequest {
+    private String id;
     @NotEmpty(message = "Collection is required")
     private String name;
     private String description;

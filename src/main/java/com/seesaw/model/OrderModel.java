@@ -1,5 +1,6 @@
 package com.seesaw.model;
 
+import com.fasterxml.classmate.AnnotationOverrides;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,5 @@ public class OrderModel {
 
     @OneToMany(mappedBy = "orders",targetEntity = InvoiceModel.class)
     private Collection<InvoiceModel> invoices;
+
 }

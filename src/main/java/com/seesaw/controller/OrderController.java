@@ -15,12 +15,16 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
-    @PostMapping("/add")
-    public ResponseEntity<OrderResponse> addOrder(@RequestBody @Valid OrderRequest request){
-        return ResponseEntity.ok().body(orderService.addOrder(request));
+    @GetMapping("/get-order")
+    public ResponseEntity<OrderResponse> getOrder(@RequestParam String id){
+        return ResponseEntity.ok().body(orderService.getOrderById(id));
     }
     @GetMapping("/list")
     public ResponseEntity<List<OrderResponse>> getAllOrder(){
-        return null;
+        return ResponseEntity.ok().body(orderService.getAllOrder());
+    }
+    @GetMapping("/get-orders-of-user")
+    public ResponseEntity<List<OrderResponse>> getAllOrdersOfUser(@RequestParam String user_id){
+        return ResponseEntity.ok().body(orderService.getAllOrderOfUser(user_id));
     }
 }

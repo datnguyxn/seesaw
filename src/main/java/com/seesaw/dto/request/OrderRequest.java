@@ -11,12 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderRequest {
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String address;
     private Float total_amount;
+    private String status;
     @NotEmpty
     private String user_id;
 }

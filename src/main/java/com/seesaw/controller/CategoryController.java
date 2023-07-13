@@ -17,28 +17,15 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-    @PostMapping("/add")
-    public ResponseEntity<CategoryResponse> addCategory(@RequestBody @Valid AddCategoryRequest category){
-        return ResponseEntity.ok().body(categoryService.addCategory(category));
-    }
     @GetMapping("/list")
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(){
-        return ResponseEntity.ok().body(categoryService.getAllCategories());
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok().body(categoryService.getAllCategories(page,size));
     }
-    @PostMapping("/search-category/{name}")
-    public ResponseEntity<CategoryModel> getCategoryByName(Model model, @RequestBody @Valid String name){
-        return ResponseEntity.ok().body(categoryService.getCategoryByName(name));
-    }
-    @GetMapping("/get-category/{id}")
-    public ResponseEntity<CategoryModel> getCategoryById(Model model,@PathVariable ("id") String id){
+    @GetMapping("/get-category")
+    public ResponseEntity<CategoryResponse> getCategoryById(@RequestParam String id){
         return ResponseEntity.ok().body(categoryService.getCategoryById(id));
-    }
-    @PutMapping("/update/{id}")
-    public ResponseEntity<CategoryModel> updateCategory(@PathVariable ("id") String id, @RequestBody AddCategoryRequest request){
-        return ResponseEntity.ok().body(categoryService.updateCategory(request,id));
-    }
-    @GetMapping("/delete/{id}")
-    public ResponseEntity<List<CategoryResponse>> deleteOneCategoryById(@PathVariable ("id") String id){
-        return ResponseEntity.ok().body(categoryService.deleteCategoryById(id));
     }
 }
