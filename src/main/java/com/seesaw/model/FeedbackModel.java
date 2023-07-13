@@ -29,4 +29,5 @@ public class FeedbackModel {
     private ProductModel products;
 
     private String note;
+    private int rating;
 }

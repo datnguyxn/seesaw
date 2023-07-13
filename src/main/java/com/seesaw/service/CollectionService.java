@@ -7,7 +7,10 @@ import com.seesaw.model.CollectionModel;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,74 +18,74 @@ import java.util.List;
 public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
-
     @Autowired
     private ProductService productService;
+    public CollectionResponse convertCollection(CollectionModel collect, List<ProductResponse> products){
+        return CollectionResponse.builder()
+                .id(collect.getId())
+                .name(collect.getName())
+                .description(collect.getDescription())
+                .products(products)
+                .build();
+    }
+    public CollectionResponse convertCollection(CollectionModel collect){
+        List<ProductResponse> productResponses = collect.getProducts().stream().map(product -> {
+            return productService.convertProduct(product);
+        }).toList();
+        return CollectionResponse.builder()
+                .id(collect.getId())
+                .name(collect.getName())
+                .description(collect.getDescription())
+                .products(productResponses)
+                .build();
+    }
 //    Create
     public CollectionResponse addCollection(AddCollectionRequest request){
         CollectionModel collect = CollectionModel.builder()
+                .id(request.getId())
                 .name(request.getName())
                 .description(request.getDescription())
                 .build();
         collectionRepository.save(collect);
-        return CollectionResponse.builder()
-                .name(collect.getName())
-                .description(collect.getDescription())
-                .products(new ArrayList<ProductResponse>())
-                .build();
+        return convertCollection(collect,new ArrayList<ProductResponse>());
     }
 //    Read
-    public List<CollectionResponse> getAllCollections() {
-        List<CollectionResponse> collections = collectionRepository.findAll().stream().map(collection->{
+    public List<CollectionResponse> getAllCollections(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size).withSort(Sort.by("name").ascending());
+        List<CollectionResponse> collections = collectionRepository.findAll(pageRequest).stream().map(collection->{
             List<ProductResponse> productResponses = new ArrayList<ProductResponse>();
             for(ProductModel p : collection.getProducts()){
-                ProductResponse productResponse = new ProductResponse();
-                productResponse.setId(p.getId());
-                productResponse.setName(p.getName());
-                productResponse.setDescription(p.getDescription());
-                productResponse.setBrand(p.getBrand());
-                productResponse.setPrice(p.getPrice());
-                productResponse.setQuantity(p.getQuantity());
+                ProductResponse productResponse = productService.convertProduct(p);
                 productResponses.add(productResponse);
             }
-            CollectionResponse collectionResponse = CollectionResponse.builder()
-                    .name(collection.getName())
-                    .description(collection.getDescription())
-                    .products(productResponses)
-                    .build();
-            return collectionResponse;
+            return convertCollection(collection,productResponses);
         }).toList();
         return collections;
     }
-    public CollectionModel getCollectionById(String id){
-        return collectionRepository.findById(id).orElse(null);
+    public CollectionResponse getCollectionById(String id) {
+        CollectionModel collect = collectionRepository.findById(id).orElseThrow();
+        return convertCollection(collect);
     }
-    public CollectionModel getCollectionByName(String name){
-        return collectionRepository.findByName(name).orElse(null);
+    public CollectionResponse getCollectionByName(String name){
+        CollectionModel collect = collectionRepository.findByName(name).orElseThrow();
+        return convertCollection(collect);
     }
 //    Update
-    public CollectionModel updateCollection(AddCollectionRequest request, String id){
-        CollectionModel collect = getCollectionById(id);
+    public CollectionResponse updateCollection(AddCollectionRequest request, String id){
+        CollectionModel collect = collectionRepository.findById(id).orElseThrow();
         collect.setName(request.getName());
         collect.setDescription(request.getDescription());
         collectionRepository.save(collect);
-        return collect;
+        return convertCollection(collect);
     }
 //    Delete
-    public List<CollectionResponse> deleteOneCollectionById(String id){
-        CollectionModel collection = getCollectionById(id);
-        if(collection != null){
-            productService.deleteProductOfCollection(collection);
-            collectionRepository.delete(collection);
-        }
-        return getAllCollections();
+    public List<CollectionResponse> deleteOneCollectionById(String id, int page, int size){
+        CollectionModel collection = collectionRepository.findById(id).orElseThrow();
+        productService.deleteProductOfCollection(collection);
+        collectionRepository.delete(collection);
+        return getAllCollections(page,size);
     }
-
     public void save(List<CollectionModel> collectionModel) {
         collectionRepository.saveAll(collectionModel);
-    }
-
-    public CollectionModel findById(String id) {
-        return collectionRepository.findById(id).orElse(null);
     }
 }

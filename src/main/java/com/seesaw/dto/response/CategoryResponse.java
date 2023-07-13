@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryResponse {
+    private String id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("description")

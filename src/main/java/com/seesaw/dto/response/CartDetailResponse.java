@@ -1,5 +1,6 @@
-package com.seesaw.dto.request;
+package com.seesaw.dto.response;
 
+import com.seesaw.model.CartDetailKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddProductRequest {
-    private String product_id;
-    private String cart_id;
+public class CartDetailResponse {
+    private CartDetailKey id;
+    private String product;
+    private Float price;
     private int quantity;
 }
