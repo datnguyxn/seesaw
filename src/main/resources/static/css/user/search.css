@@ -1,0 +1,31 @@
+.search-box {
+    max-width: 700px;
+    text-align: left;
+    margin: 120px auto 0;
+}
+
+.search-box input {
+    width: calc(100% - 50px);
+    height: 3em;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    box-shadow: none;
+    color: rgb(var(--black));
+}
+
+.search-box input:focus {
+    border-color: transparent;
+    border-bottom: 1px solid black;
+    box-shadow: none;
+}
+
+.search-box button {
+    border: none;
+}
+
+.search-box button:hover {
+    opacity: .7;
+}

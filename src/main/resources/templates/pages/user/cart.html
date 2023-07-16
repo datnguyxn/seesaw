@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<th:block th:insert="~{/fragments/heading/heading :: heading(title='Cart')}" />
+<body>
+    <th:block th:insert="~{fragments/util/header :: header}"/>
+    <div class="cart min-vh-100 mx-auto p-5">
+        <div class="cart__title d-flex justify-content-between align-items-center">
+            <h2>Your cart</h2>
+            <a href="#">Continue shopping</a>
+        </div>
+        <div class="cart-content my-3">
+            <div class="cart-item--list">
+                <div class="row cart--heading mx-0 mb-3" style="font-weight: 400;">
+                    <div class="col p-1">PRODUCT</div>
+                    <div class="col pl-5 py-1">QUANTITY</div>
+                </div>
+<!--                <div class="line m-0 " style="opacity: 0"></div>-->
+                <div class="line mx-0 mt-0" style="background-color: #909090;"></div>
+
+                <div class="row cart--body">
+                    <div class="col d-flex flex-column gap-4">
+                        <div class="row d-flex align-items-center gap-2 m-0">
+                            <div class="col-md-2">
+                                <img th:src="@{/images/product1.png}" alt="error">
+                            </div>
+                            <div class="col-md-4 cart__item--name">
+                                <h4>Natural Honey</h4>
+                                <p class="cart__item--color">
+                                    Color: Crystal Pink
+                                </p>
+                                <p class="cart__item--price">
+                                    $99
+                                </p>
+                            </div>
+                            <div class="col-md-4 quantity p-0">
+                                <button class="minus-btn btn  disabled" type="button">-</button>
+                                <input id="quantity" type="text" value="1" readonly>
+                                <button class="btn plus-btn" type="button">+</button>
+                            </div>
+                            <div class="col cart--remove-item">
+                                <u class="cart--remove-item">Remove</u>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center gap-2 m-0">
+                            <div class="col-md-2">
+                                <img th:src="@{/images/product2.png}" alt="">
+                            </div>
+                            <div class="col-md-4 cart__item--name">
+                                <h4>Natural Honey</h4>
+                                <p class="cart__item--color">
+                                    Color: Crystal Pink
+                                </p>
+                                <p class="cart__item--price">
+                                    $99
+                                </p>
+                            </div>
+                            <div class="col-md-4 quantity p-0">
+                                <button class="minus-btn btn  disabled" type="button">-</button>
+                                <input id="quantity" type="text" value="1" readonly>
+                                <button class="btn plus-btn" type="button">+</button>
+                            </div>
+                            <div class="col cart--remove-item">
+                                <u class="cart--remove-item">Remove</u>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center gap-2 m-0">
+                            <div class="col-md-2">
+                                <img th:src="@{/images/product3.png}" alt="">
+                            </div>
+                            <div class="col-md-4 cart__item--name">
+                                <h4>Natural Honey</h4>
+                                <p class="cart__item--color">
+                                    Color: Crystal Pink
+                                </p>
+                                <p class="cart__item--price">
+                                    $99
+                                </p>
+                            </div>
+                            <div class="col-md-4 quantity p-0">
+                                <button class="minus-btn btn  disabled" type="button">-</button>
+                                <input id="quantity" type="text" value="1" readonly>
+                                <button class="btn plus-btn" type="button">+</button>
+                            </div>
+                            <div class="col cart--remove-item">
+                                <u class="cart--remove-item">Remove</u>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+             <div class="line mx-0 "></div>
+            <div class="checkout-section row mt-5">
+                <div class="checkout-section--left d-flex flex-column gap-3 col-md-4 p-0">
+                    <div class="checkout--subtotal d-flex flex-row justify-content-between">
+                        <p style="font-weight: 700;">Subtotal</p>
+                        <p class="checkout--total-price">$999</p>
+                    </div>
+                    <p class="checkout--tax">Tax included. Shipping calculated at checkout.</p>
+                    <div class="content__button--add">
+                        <button class="collections__button mb-5 mt-2" role="button">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    <th:block th:insert="~{fragments/util/footer :: footer}"/>-->
+    <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
+    <script>
+
+    </script>
+</body>
+</html>

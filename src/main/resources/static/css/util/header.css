@@ -2,6 +2,7 @@
     font-size: 1rem;
     font-weight: 300;
     gap: 3rem;
+    flex-direction: row;
 }
 
 .header__menu .navbar-nav .nav-link:hover {

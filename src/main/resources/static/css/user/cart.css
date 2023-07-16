@@ -1,0 +1,19 @@
+.cart {
+    width: calc(100% - 25%);
+}
+
+.cart--remove-item {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.checkout-section--left {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.checkout--tax {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+}
