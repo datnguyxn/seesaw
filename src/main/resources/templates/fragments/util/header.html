@@ -1,6 +1,6 @@
 <nav th:fragment="header" class="navbar navbar-expand-lg navbar-light bg-light justify-content-between px-5 py-3">
     <div class="header__logo">
-        <img th:src="@{/images/logo.png}" alt="" />
+        <img th:src="@{/images/logo.png}" alt=""/>
     </div>
     <div class="header__menu">
         <ul class="navbar-nav flex-row me-auto mb-2 mb-lg-0">
@@ -11,10 +11,10 @@
                 <a class="nav-link active" aria-current="page" href="#">Shop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">About</a>
+                <a class="nav-link active" aria-current="page" th:href="@{/about}">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Contact</a>
+                <a class="nav-link active" aria-current="page" th:href="@{/contact}">Contact</a>
             </li>
         </ul>
     </div>
@@ -22,20 +22,31 @@
         <ul class="navbar-nav d-flex flex-row">
             <!-- Icons -->
             <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link" th:href="@{search}">
+                <a class="nav-link" th:href="@{/search}">
                     <i class="bi bi-search"></i>
                 </a>
             </li>
             <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link" th:href="@{cart}">
+                <a class="nav-link" th:href="@{/cart}">
                     <i class="bi bi-cart2"></i>
                 </a>
             </li>
-            <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link" th:href="@{/login}">
+            <li class="nav-item me-3 me-lg-0 dropdown">
+                <a class="nav-link dropdown position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button" data-bs-target="#dropdownUser">
                     <i class="bi bi-person"></i>
                 </a>
+                <ul class="dropdown-menu position-absolute text-center" style="left: -5rem" id="dropdownUser">
+                    <li class="dropdown-item">
+                        <a th:href="@{/user/update}" class="dropdown-link text-decoration-none text-dark" id="btn-check">Update</a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a href="#" class="dropdown-link btn-person text-decoration-none text-dark">Logout</a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
+
+    <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
+    <script th:src="@{/js/util/header.js}"></script>
 </nav>

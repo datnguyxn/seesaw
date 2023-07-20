@@ -1,6 +1,5 @@
 package com.seesaw.controller;
 
-import com.seesaw.dto.request.OrderRequest;
 import com.seesaw.dto.response.OrderResponse;
 import com.seesaw.service.OrderService;
 import jakarta.validation.Valid;

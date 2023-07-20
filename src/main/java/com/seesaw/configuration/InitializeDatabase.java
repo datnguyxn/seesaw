@@ -1,8 +1,11 @@
 package com.seesaw.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seesaw.dto.request.ProductRequest;
 import com.seesaw.exception.UserExistException;
 import com.seesaw.model.*;
+import com.seesaw.repository.CategoryRepository;
+import com.seesaw.repository.CollectionRepository;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,12 @@ public class InitializeDatabase {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private CollectionRepository collectionRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private CategoryService categoryService;
@@ -81,31 +90,12 @@ public class InitializeDatabase {
 
     private void loadCategory() {
         ObjectMapper mapper = new ObjectMapper();
+        TypeReference<List<CategoryModel>> categoryReference = new TypeReference<List<CategoryModel>>() {};
+        InputStream categoryStream = TypeReference.class.getResourceAsStream("/json/categories.json");
         try {
-            TypeReference<List<CategoryModel>> categoryReference = new TypeReference<List<CategoryModel>>() {};
-            InputStream categoryStream = TypeReference.class.getResourceAsStream("/json/categories.json");
             List<CategoryModel> categories = mapper.readValue(categoryStream, categoryReference);
             categoryService.save(categories);
             System.out.println("Categories Saved!");
-
-            TypeReference <List<CollectionModel>> collectionReference = new TypeReference<List<CollectionModel>>() {};
-            InputStream collectionStream = TypeReference.class.getResourceAsStream("/json/collections.json");
-            List<CollectionModel> collections = mapper.readValue(collectionStream, collectionReference);
-            collectionService.save(collections);
-            System.out.println("Collections Saved!");
-
-            TypeReference<List<ProductModel>> productReference = new TypeReference<List<ProductModel>>() {};
-            InputStream productStream = TypeReference.class.getResourceAsStream("/json/products.json");
-            List<ProductModel> products = mapper.readValue(productStream, productReference);
-
-            products.forEach(product -> {
-               product.setDate_created(new Date());
-               product.setCollection(collections.get(0));
-               product.setCategory(categories.get(0));
-            });
-            productService.save(products);
-            System.out.println("Products Saved!");
-
         } catch (IOException e) {
             System.out.println("Unable to save categories: " + e.getMessage());
         }
@@ -141,20 +131,31 @@ public class InitializeDatabase {
 
     private void loadProducts() {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<ProductModel>> typeReference = new TypeReference<List<ProductModel>>() {};
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/products.json");
-        try {
-            List<ProductModel> products = mapper.readValue(inputStream, typeReference);
-            products.forEach(product -> {
-                product.setCategory(categoryModel);
-                System.out.println(product.getCategory().getName());
-            });
-            productService.save(products);
-            System.out.println("Products Saved!");
-
-        } catch (IOException e) {
-            System.out.println("Unable to save products: " + e.getMessage());
-        }
+//        TypeReference<List<ProductModel>> typeReference = new TypeReference<List<ProductModel>>() {};
+//        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/products.json");
+//        var collection = collectionRepository.findById("1b362eed-5446-413e-a013-8acfc2769830");
+//        var category = categoryRepository.findByName("Glasses");
+        var collection = collectionService.getCollectionById("52d36858-00e7-49d8-a8bb-5cf8a448725d");
+        System.out.println(collection);
+//        System.out.println(category);
+//        try {
+////            List<ProductModel> products = mapper.readValue(inputStream, typeReference);
+////            products.forEach(product -> {
+////                ProductRequest productRequest = new ProductRequest();
+////                productRequest.setName(product.getName());
+////                productRequest.setPrice(product.getPrice());
+////                productRequest.setQuantity(product.getQuantity());
+////                productRequest.setDescription(product.getDescription());
+////                productRequest.setImage_path(product.getImage_path());
+//////                productRequest.setCollection_id(collection.getId());
+//////                productRequest.setCategory_id(category.getId());
+////                productService.addProduct(productRequest);
+////            });
+//            System.out.println("Products Saved!");
+//
+//        } catch (IOException e) {
+//            System.out.println("Unable to save products: " + e.getMessage());
+//        }
     }
 
     private void loadOrder() {
@@ -221,8 +222,10 @@ public class InitializeDatabase {
                 .password(passwordEncoder.encode(password))
                 .gender(gender)
                 .contact(contact)
-                .avatar("avatar ne")
+                .address("tdtu")
+                .avatar("/images/avtDefault.jpg")
                 .date_created(Date.from(java.time.Instant.now()))
+                .date_updated(null)
                 .role(role)
                 .build();
         if (userRepository.existsUserModelByEmail(email)) {
@@ -233,6 +236,9 @@ public class InitializeDatabase {
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             saveUserToken(savedUser, jwtToken);
+            cartService.addCart(CartModel.builder()
+                    .user(savedUser)
+                    .build());
             System.out.println("User saved!");
             userRepository.save(user);
         }

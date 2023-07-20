@@ -6,8 +6,6 @@ import com.seesaw.model.OrderModel;
 import com.seesaw.model.UserModel;
 import com.seesaw.repository.OrderRepository;
 import com.seesaw.repository.UserRepository;
-import org.apache.catalina.User;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

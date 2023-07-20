@@ -75,4 +75,14 @@ public class ThymeleafServiceImp implements ThymeleafService {
 
         return templateEngine.process(MAIL_TEMPLATE_BASE_NAME + template, context);
     }
+
+    @Override
+    public String createContentToIntroNewProduct(String template, Mail variables) {
+        final Context context = new Context();
+        context.setVariables(Map.of("name", variables.getTo()));
+        context.setVariables(Map.of("product", variables.getContent()));
+
+        return templateEngine.process(MAIL_TEMPLATE_BASE_NAME + template, context);
+    }
+
 }

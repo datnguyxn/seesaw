@@ -1,0 +1,14 @@
+.about__content .content__body {
+    padding: 0 10rem;
+}
+
+.about__content .content__body .content__description {
+    font-family: Roboto, serif;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 44px;
+    letter-spacing: 0;
+    top: 269px;
+    left: 141px;
+
+}

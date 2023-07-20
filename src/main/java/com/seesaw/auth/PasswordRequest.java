@@ -19,13 +19,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PasswordRequest {
+
+        private String email;
+
         @NotEmpty(message = "Password is required")
-        @Min(value = 8, message = "Password must be at least 8 characters")
-        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one number")
+//        @Min(value = 8, message = "Password must be at least 8 characters")
+        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\\d).*$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one number")
         private String password;
 
-        @NotEmpty(message = "Password confirm is required")
-        @Min(value = 8, message = "Password must be at least 8 characters")
-        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one number")
+//        @NotEmpty(message = "Password confirm is required")
+//        @Min(value = 8, message = "Password must be at least 8 characters")
+//        @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain at least one uppercase letter, one lowercase letter, and one number")
         private String confirmPassword;
 }

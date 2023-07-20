@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.thymeleaf.org">
-<th:block th:insert="~{/fragments/heading/heading :: heading(title='Order')}" />
+<th:block th:insert="~{/fragments/heading/heading :: heading(title='404')}" />
 <style>
     .content--404 h1 span{
         font-size: 18vw;
@@ -36,7 +36,7 @@
     <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
     <script>
         $( ".back-to-home--button" ).on( "click", function() {
-            th:window.location = "@{/}";
+           window.location.href =  "/";
         } );
     </script>
 </body>

@@ -1,4 +1,4 @@
-package com.seesaw.controller;
+package com.seesaw.controller.api;
 
 import com.seesaw.auth.*;
 import com.seesaw.dto.response.MailResponse;
@@ -7,12 +7,13 @@ import com.seesaw.service.AuthenticationService;
 import com.seesaw.service.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 
@@ -21,9 +22,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthenticationService authenticationService;
-
-    private final LogoutService logoutService;
+    @Autowired
+    private  AuthenticationService authenticationService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -37,6 +37,10 @@ public class AuthController {
         return ResponseEntity.ok(authenticationService.authenticate(request, httpServletResponse));
     }
 
+    @PostMapping("/login-success")
+    public String loginSuccess(@RequestBody String token) {
+        return authenticationService.loginSuccess(token);
+    }
 
     @PostMapping("/refresh-token")
     public void refreshToken(
@@ -54,22 +58,19 @@ public class AuthController {
 
     @PostMapping("/verify-token")
     public ResponseEntity<MessageResponse> verifyToken(
-            @RequestBody @Valid TokenRequest request, HttpSession session) {
-        return ResponseEntity.ok(authenticationService.verifyToken(request, session));
+            @RequestBody @Valid TokenRequest request) {
+        return ResponseEntity.ok(authenticationService.verifyToken(request));
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<MessageResponse> resetPassword(
-            @RequestBody @Valid PasswordRequest request, HttpSession session) {
-        return ResponseEntity.ok(authenticationService.changePassword(request, session));
+    @PostMapping("/change-password")
+    public ResponseEntity<MessageResponse> changePassword(
+            @RequestBody @Valid PasswordRequest request) {
+        return ResponseEntity.ok(authenticationService.changePassword(request));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<MessageResponse> logout(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) {
-        logoutService.logout(request, response, null);
-        return ResponseEntity.ok(MessageResponse.builder().message("Logout successful").build());
+    @PostMapping("/check-email")
+    public ResponseEntity<MessageResponse> checkEmail(
+            @RequestBody @Valid EmailRequest request) {
+        return ResponseEntity.ok(authenticationService.checkEmail(request));
     }
 }

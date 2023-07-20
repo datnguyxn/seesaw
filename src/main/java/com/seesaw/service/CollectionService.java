@@ -1,11 +1,16 @@
 package com.seesaw.service;
 
+import com.seesaw.auth.EmailRequest;
 import com.seesaw.dto.request.AddCollectionRequest;
 import com.seesaw.dto.response.CollectionResponse;
+import com.seesaw.dto.response.MailResponse;
+import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.ProductResponse;
 import com.seesaw.model.CollectionModel;
+import com.seesaw.model.Mail;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CollectionRepository;
+import com.seesaw.service.impl.MailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,8 +23,16 @@ import java.util.List;
 public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
+
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private MailServiceImpl mailService;
+
+    @Autowired
+    private UserService userService;
+
     public CollectionResponse convertCollection(CollectionModel collect, List<ProductResponse> products){
         return CollectionResponse.builder()
                 .id(collect.getId())
@@ -87,5 +100,21 @@ public class CollectionService {
     }
     public void save(List<CollectionModel> collectionModel) {
         collectionRepository.saveAll(collectionModel);
+    }
+
+    public MailResponse sendMailToIntroNewCollection() {
+        var users = userService.getAllUsers();
+        for (var user: users) {
+            Mail mail = Mail.builder()
+                    .to(user.getEmail())
+                    .subject("New Collection")
+                    .content("mail-newCollection.html")
+                    .build();
+        mailService.sendEmail(mail, "mail-newProduct.html");
+        }
+        return MailResponse.builder()
+                .message("Send mail successfully")
+                .status(true)
+                .build();
     }
 }

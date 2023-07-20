@@ -27,6 +27,11 @@ public class SecurityConfig {
             "/",
             "/login",
             "/register",
+            "/email",
+            "/admin/**",
+            "/api/user/**",
+            "/user/**",
+            "/forgot-password",
             "/products/**",
             "/collections/**",
             "/cart/**",
@@ -53,6 +58,10 @@ public class SecurityConfig {
             "/admin",
             "/order",
             "/forgot-password",
+            "product-detail/**",
+            "error/**",
+            "/payment",
+            "/order/**",
             "/webjars/**",
             "/css/**",
             "/js/**",
@@ -80,6 +89,9 @@ public class SecurityConfig {
                                     .requestMatchers(new String[]{
                                             "/api/v1/admin/**"
                                     }).hasRole(Role.ADMIN.name())
+                                    .requestMatchers(
+                                            "/admin/**"
+                                    ).hasRole(Role.ADMIN.name())
                                     .anyRequest().authenticated();
                         }
                 )

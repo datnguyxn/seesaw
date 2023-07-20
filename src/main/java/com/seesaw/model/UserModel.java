@@ -45,9 +45,13 @@ public class UserModel implements UserDetails {
 
     private String password;
 
+    private String address;
+
     private String avatar;
 
     private Date date_created;
+
+    private Date date_updated;
 
     @Enumerated(EnumType.STRING)
     private Role role;

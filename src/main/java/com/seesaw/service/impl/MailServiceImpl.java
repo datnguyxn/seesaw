@@ -27,7 +27,6 @@ public class MailServiceImpl implements MailService {
     public void sendEmail(Mail mail, String path) {
 
         Properties props = new Properties();
-//        props.put("mail.transport.protocol", mailDetail.getProtocol());
         props.put("mail.smtp.auth", mailDetail.getAuth());
         props.put("mail.smtp.starttls.enable", mailDetail.getStarttls());
         props.put("mail.smtp.host", mailDetail.getHost());
@@ -53,11 +52,15 @@ public class MailServiceImpl implements MailService {
                 String html;
                 if (path.equals("mail-sender.html")) {
                     html = thymeleafServiceImpl.createContent(path, mail);
-                } else {
+                } else if (path.equals("mail-success.html")) {
                     html = thymeleafServiceImpl.createContentSuccessMail(path, mail);
+                } else {
+                    html = thymeleafServiceImpl.createContentToIntroNewProduct(path, mail);
                 }
                 message.setSubject(mail.getSubject());
                 message.setContent(html, "text/html; charset=utf-8");
+                message.reply(false);
+                message.addFrom(new InternetAddress[]{addressFrom});
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(mail.getTo()));
                 Transport.send(message);
         } catch (Exception e) {

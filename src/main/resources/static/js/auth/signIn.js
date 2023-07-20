@@ -1,23 +1,31 @@
-// const signInForm = document.getElementById("formSignIn");
-
-const signInForm = $("#formSignIn");
-let errorText = $(".error");
 $(document).ready(function () {
-    signInForm.on("submit", function (e){
+
+    const signInForm = $("#formSignIn");
+    const rememberMe = $("#remember-me");
+    const showPassword = $('#show-password')
+    const email = $("#email");
+    const password = $("#password");
+
+    let errorText = $(".error");
+    if (localStorage.getItem('emailLogin') !== null && localStorage.getItem('password') !== null) {
+        email.val(localStorage.getItem('emailLogin'))
+        password.val(localStorage.getItem('password'))
+        rememberMe.prop("checked", true)
+    }
+
+    signInForm.on("submit", function (e) {
         e.preventDefault()
-        const email = $("#exampleInputEmail1").val();
-        const password = $("#exampleInputPassword1").val();
-        const data = JSON.stringify({email, password});
+        // const data = JSON.stringify({email, password});
         $.ajax({
             url: "/api/v1/auth/login",
             type: "POST",
-            data: data,
+            data: JSON.stringify({email: email.val(), password: password.val()}),
             contentType: "application/json",
             success: function (data) {
                 const {access_token, refresh_token} = data;
                 localStorage.setItem('token', access_token);
                 localStorage.setItem('refreshToken', refresh_token);
-                window.location.href = "/";
+                loginSuccess(access_token);
             },
             error: function (error) {
                 console.log(error)
@@ -25,4 +33,48 @@ $(document).ready(function () {
             }
         })
     })
+
+    rememberMe.on("change", function (e) {
+        if (rememberMe.is(":checked")) {
+            localStorage.setItem('emailLogin', email.val())
+            localStorage.setItem('password', password.val())
+        } else {
+            localStorage.removeItem('emailLogin')
+            localStorage.removeItem('password')
+        }
+    })
+
+    showPassword.on("change", function (e) {
+        if (showPassword.is(":checked")) {
+            password.attr("type", this.checked ? "text" : "password");
+        } else {
+            password.attr("type", this.checked ? "text" : "password");
+        }
+    })
+
+    if (localStorage.getItem("email") !== null) {
+        email.val(localStorage.getItem("email"));
+        localStorage.removeItem("email");
+    }
+
+    function loginSuccess(token) {
+        if (token) {
+            $.ajax({
+                url: "/api/v1/auth/login-success",
+                type: "POST",
+                data: token,
+                contentType: "application/json",
+                success: function (data) {
+                    console.log(data)
+                    window.location.href = data;
+                },
+                error: function (error) {
+                    console.log(error)
+                    window.location.href = '/login'
+                }
+            })
+        } else {
+            window.location.href = '/login'
+        }
+    }
 })
