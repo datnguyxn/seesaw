@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" th:href="@{/webjars/jquery/3.6.4/jquery.min.js}">
+    <link th:href="@{https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/styles.css}"/>
+    <title>User account</title>
+    <style>
+        main {
+            background-color: var(--grey);
+        }
+
+        .user--table img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<section id="sidebar">
+    <a th:href="@{/admin}" class="brand"><i class="bx bxs-smile icon"></i> AdminSite</a>
+    <ul class="side-menu">
+        <li>
+            <a th:href="@{/admin}" class=""><i class='bx bxs-bar-chart-alt-2 icon'></i> Dashboard</a>
+        </li>
+        <li class="divider" data-text="main">Main</li>
+        <li>
+            <a href="#" class="active"><i class='bx bxs-user icon'></i> User account</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-barcode icon'></i> Token</a>
+        </li>
+        <li class="divider" data-text="seesaw product">Seesaw Product</li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-mask icon'></i>Product</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-box icon'></i> Categories</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-widget icon'></i> Collections</a>
+        </li>
+        <li class="divider" data-text="sale manage">Sale manage</li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-cart-alt icon'></i> Orders</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-discount icon'></i> Invoices</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-comment-dots icon'></i> Feedback</a>
+        </li>
+    </ul>
+    <div class="ads">
+        <div class="wrapper">
+            <a href="#" class="btn-upgrade">Upgrade</a>
+            <p>Become a <span>PRO</span> member and enjoy <span>All Features</span></p>
+        </div>
+    </div>
+</section>
+<!-- SIDEBAR -->
+
+<!-- NAVBAR -->
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+        <i class="bx bx-menu toggle-sidebar"></i>
+        <form action="#">
+            <div class="form-group">
+                <input type="text" placeholder="Search..."/>
+                <i class="bx bx-search icon"></i>
+            </div>
+        </form>
+        <a href="#" class="nav-link">
+            <i class="bx bxs-bell icon"></i>
+            <span class="badge">5</span>
+        </a>
+        <a href="#" class="nav-link">
+            <i class="bx bxs-message-square-dots icon"></i>
+            <span class="badge">8</span>
+        </a>
+        <span class="divider"></span>
+        <div class="profile">
+            <img
+                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                    alt=""
+            />
+            <ul class="profile-link">
+                <li>
+                    <a href="#"><i class="bx bxs-user-circle icon"></i> Profile</a>
+                </li>
+                <li>
+                    <a href="#"><i class="bx bxs-cog"></i> Settings</a>
+                </li>
+                <li>
+                    <a href="#"><i class="bx bxs-log-out-circle"></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main class="container-fluid">
+        <div class="row m-1">
+            <div class="col m-0 p-0">
+                <h1>User account</h1>
+            </div>
+            <div class="col m-0 p-0">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary me-md-2" type="button">Add account</button>
+                    <button class="btn btn-primary" type="button">Delete Account</button>
+                </div>
+            </div>
+        </div>
+        <div class="row m-1">
+            <div class="col-12 p-3 bg-light">
+                <div class="table-responsive">
+                    <table class="table table-hover user--table">
+                        <thead>
+                        <tr class="align-middle">
+                            <th scope="col" width="5%">
+                                <input class="form-check-input" type="checkbox"/>
+                            </th>
+                            <th scope="col" width="5%">#</th>
+                            <th scope="col" width="20%">Date</th>
+                            <th scope="col" width="10%">Status</th>
+                            <th scope="col" width="20%">Customer</th>
+                            <th scope="col" width="20%">Purchased</th>
+                            <th scope="col" class="text-end" width="20%"><span>Revenue</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle">
+                            <th scope="row"><input class="form-check-input" type="checkbox"/></th>
+                            <td>12</td>
+                            <td>1 Oct, 21</td>
+                            <td>
+                                <i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span>
+                            </td>
+                            <td>
+                                <img
+                                        src="https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
+                                />
+                                Althan Travis
+                            </td>
+                            <td>Wirecard for figma</td>
+                            <td class="text-end">
+                                <span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h ms-2"></i>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <th scope="row"><input class="form-check-input" type="checkbox"/></th>
+                            <td>12</td>
+                            <td>1 Oct, 21</td>
+                            <td>
+                                <i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span>
+                            </td>
+                            <td>
+                                <img
+                                        src="https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
+                                />
+                                Althan Travis
+                            </td>
+                            <td>Wirecard for figma</td>
+                            <td class="text-end">
+                                <span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h ms-2"></i>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <th scope="row"><input class="form-check-input" type="checkbox"/></th>
+                            <td>12</td>
+                            <td>1 Oct, 21</td>
+                            <td>
+                                <i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span>
+                            </td>
+                            <td>
+                                <img
+                                        src="https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
+                                />
+                                Althan Travis
+                            </td>
+                            <td>Wirecard for figma</td>
+                            <td class="text-end">
+                                <span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h ms-2"></i>
+                            </td>
+                        </tr>
+                        <tr class="align-middle">
+                            <th scope="row"><input class="form-check-input" type="checkbox"/></th>
+                            <td>12</td>
+                            <td>1 Oct, 21</td>
+                            <td>
+                                <i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span>
+                            </td>
+                            <td>
+                                <img
+                                        src="https://images.unsplash.com/photo-1505628346881-b72b27e84530?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"
+                                />
+                                Althan Travis
+                            </td>
+                            <td>Wirecard for figma</td>
+                            <td class="text-end">
+                                <span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h ms-2"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+
+<script th:src="@{/js/admin/script.js}"></script>
+</body>
+</html>
