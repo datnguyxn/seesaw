@@ -29,8 +29,17 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/userAccount")
+    public String getUserAccount(HttpServletRequest request) {
+        if (checkURL(request)) {
+            return "pages/admin/userAccount";
+        } else {
+            return "pages/404/404";
+        }
+    }
+
     @GetMapping("/products")
-    public String getProduct(Model model, HttpServletRequest request){
+    public String getProduct(Model model, HttpServletRequest request) {
 //        model.addAttribute("products", productService.getAllProducts());
         if (checkURL(request)) {
             return "pages/admin/dashboard";
@@ -40,7 +49,7 @@ public class AdminController {
     }
 
     @GetMapping("/orders")
-    public String getOrder(Model model, HttpServletRequest request){
+    public String getOrder(Model model, HttpServletRequest request) {
         if (checkURL(request)) {
             return "pages/admin/dashboard";
         } else {
