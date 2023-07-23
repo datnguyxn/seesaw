@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:insert="~{fragments/heading/heading :: heading(title = 'Product')}"/>
-<body>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="Products"></title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/jquery/3.6.4/jquery.min.js}">
+    <link th:href="@{https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css}" rel="stylesheet"/>
+    <!--    <link rel="stylesheet" th:href="@{/css/util/reset.css}">-->
+    <link rel="stylesheet" th:href="@{/css/util/header.css}">
+    <link rel="stylesheet" th:href="@{/css/util/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/user/products.css}">
+</head>
 <body>
 <th:block th:insert="~{fragments/util/header :: header}"/>
 <th:block th:insert="~{fragments/user/products :: products}"/>
 <th:block th:insert="~{fragments/util/footer :: footer}"/>
 
 
-<th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
+<script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/font-awesome/6.4.0/js/fontawesome.min.js}"></script>
 <script th:src="@{/js/user/products.js}"></script>
 </body>
 </html>
