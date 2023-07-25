@@ -1,7 +1,7 @@
 package com.seesaw.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seesaw.auth.*;
+import com.seesaw.authentication.*;
 import com.seesaw.configuration.TokenType;
 import com.seesaw.dto.response.MailResponse;
 import com.seesaw.dto.response.MessageResponse;
@@ -85,14 +85,15 @@ public class AuthenticationService {
             throw new UserExistException("User already exist");
         }
         var user = UserModel.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .gender(request.getGender())
-                .contact(request.getContact())
                 .avatar("/images/avtDefault.jpg")
                 .date_created(Date.from(java.time.Instant.now()))
                 .date_updated(null)
                 .role(Role.USER)
+                .provider(Provider.LOCAL)
                 .build();
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -100,13 +101,14 @@ public class AuthenticationService {
         saveUserToken(savedUser, jwtToken);
         cartService.addCart(CartModel.builder()
                 .user(savedUser)
+                .total_amount(0.0F)
                 .build());
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
-    private void saveUserToken(UserModel user, String jwtToken) {
+    protected void saveUserToken(UserModel user, String jwtToken) {
         var token = TokenModel.builder()
                 .users(user)
                 .token(jwtToken)
@@ -146,7 +148,7 @@ public class AuthenticationService {
         }
     }
 
-    private void revokeAllUserTokens(UserModel user) {
+    protected void revokeAllUserTokens(UserModel user) {
         var validToken = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validToken.isEmpty()) {
             return;
@@ -209,7 +211,7 @@ public class AuthenticationService {
         throw new UserNotFoundException("User not found");
     }
 
-    private void createCookie(String token, HttpServletResponse response) {
+    protected void createCookie(String token, HttpServletResponse response) {
         Cookie cookie = new Cookie("refreshToken", token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
@@ -217,7 +219,7 @@ public class AuthenticationService {
         response.addCookie(cookie);
     }
 
-    private void createCookieForRole(String role, HttpServletResponse response) {
+    protected void createCookieForRole(String role, HttpServletResponse response) {
         Cookie cookie = new Cookie("role", role);
         cookie.setHttpOnly(true);
         cookie.setPath("/");

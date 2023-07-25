@@ -5,8 +5,8 @@ $(document).ready(function () {
     const showPassword = $('#show-password')
     const email = $("#email");
     const password = $("#password");
-
     let errorText = $(".error");
+
     if (localStorage.getItem('emailLogin') !== null && localStorage.getItem('password') !== null) {
         email.val(localStorage.getItem('emailLogin'))
         password.val(localStorage.getItem('password'))
@@ -29,7 +29,10 @@ $(document).ready(function () {
             },
             error: function (error) {
                 console.log(error)
-                errorText.text("Email or password is incorrect")
+                errorText.text(error.responseJSON.message)
+                if (error.responseJSON.message === "Bad credentials") {
+                    errorText.text("Email or password is incorrect")
+                }
             }
         })
     })

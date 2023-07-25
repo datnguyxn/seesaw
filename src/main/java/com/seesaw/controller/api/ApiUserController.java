@@ -1,5 +1,7 @@
 package com.seesaw.controller.api;
 
+import com.seesaw.authentication.AuthenticationResponse;
+import com.seesaw.authentication.EmailRequest;
 import com.seesaw.dto.request.AddUserRequest;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
@@ -7,10 +9,7 @@ import com.seesaw.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +26,13 @@ public class ApiUserController {
         return ResponseEntity.ok(userService.findUserByToken(token));
     }
 
+    @PostMapping("/get-user-by-email")
+    public ResponseEntity<AuthenticationResponse> getUserByEmail(@RequestBody String email) {
+        return ResponseEntity.ok(userService.findUserByEmail(email));
+    }
+
     @PostMapping("/update")
-    public ResponseEntity<MessageResponse> update(@RequestBody  AddUserRequest request) {
+    public ResponseEntity<MessageResponse> update(@RequestBody AddUserRequest request) {
         return ResponseEntity.ok(userService.updateUser(request));
     }
 
@@ -37,4 +41,13 @@ public class ApiUserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    @PostMapping("/delete-user")
+    public ResponseEntity<MessageResponse> deleteUser(@RequestBody EmailRequest request) {
+        return ResponseEntity.ok(userService.deleteUser(request));
+    }
+
+    @PostMapping("delete-all-user")
+    public ResponseEntity<MessageResponse> deleteAllUser() {
+        return ResponseEntity.ok(userService.deleteAllUsers());
+    }
 }

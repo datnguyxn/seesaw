@@ -1,13 +1,16 @@
 package com.seesaw.service;
 
+import com.seesaw.authentication.AuthenticationResponse;
+import com.seesaw.authentication.EmailRequest;
 import com.seesaw.configuration.ApplicationConfig;
 import com.seesaw.dto.request.AddUserRequest;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
 import com.seesaw.exception.UserNotFoundException;
-import com.seesaw.model.UserModel;
+import com.seesaw.model.*;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,6 +31,15 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     private ApplicationConfig applicationConfig;
 
@@ -102,4 +114,87 @@ public class UserService implements UserDetailsService {
         return users.toList();
     }
 
+    public MessageResponse deleteUser(EmailRequest request) {
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user != null) {
+            var tokens = tokenRepository.findAllValidTokenByUser(user.getId());
+            for (TokenModel token : tokens) {
+                tokens.remove(token);
+                tokenRepository.delete(token);
+            }
+            cartService.deleteCartOfUser(user);
+            userRepository.delete(user);
+            return MessageResponse.builder()
+                    .message("User deleted")
+                    .build();
+        } else {
+            return MessageResponse.builder()
+                    .message("User not found")
+                    .build();
+        }
+    }
+
+    public MessageResponse deleteAllUsers() {
+        var users = userRepository.findAll();
+        if (!users.isEmpty()) {
+            tokenRepository.deleteAll();
+            users.forEach(user -> {
+                cartService.deleteCartOfUser(user);
+                userRepository.delete(user);
+            });
+            return MessageResponse.builder()
+                    .message("All users deleted")
+                    .build();
+        } else {
+            throw new UserNotFoundException("All Users not found");
+        }
+    }
+
+    public boolean isExistUser(String email) {
+        return userRepository.existsUserModelByEmail(email);
+    }
+
+    public void processOAuthPostLogin(String email, HttpServletResponse httpServletResponse) {
+       var user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user != null) {
+            user.setDate_updated(Date.from(java.time.Instant.now()));
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            authenticationService.revokeAllUserTokens(user);
+            authenticationService.saveUserToken(user, jwtToken);
+            authenticationService.createCookie(refreshToken, httpServletResponse);
+            authenticationService.createCookieForRole(user.getRole().toString(), httpServletResponse);
+            userRepository.save(user);
+        }
+    }
+
+    public void processOAuthPostRegister(String email) {
+        var user = UserModel.builder()
+                .email(email)
+                .provider(Provider.GOOGLE)
+                .role(Role.USER)
+                .avatar("/images/avtDefault.jpg")
+                .date_created(Date.from(java.time.Instant.now()))
+                .build();
+        var savedUser = userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        authenticationService.saveUserToken(savedUser, jwtToken);
+        cartService.addCart(CartModel.builder()
+                .user(savedUser)
+                .total_amount(0.0F)
+                .build());
+    }
+
+    public AuthenticationResponse findUserByEmail(String email) {
+        String tokenValid = "";
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+        List<TokenModel> tokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        for (TokenModel token : tokens) {
+          tokenValid = token.getToken();
+        }
+        return AuthenticationResponse.builder()
+                .accessToken(tokenValid)
+                .build();
+    }
 }

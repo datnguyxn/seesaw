@@ -1,4 +1,4 @@
-package com.seesaw.auth;
+package com.seesaw.authentication;
 
 import com.seesaw.validator.PasswordConfirmation;
 import jakarta.validation.constraints.*;
@@ -19,6 +19,12 @@ import org.hibernate.validator.constraints.Length;
 )
 public class RegisterRequest {
 
+    @NotEmpty(message = "First name is required")
+    private String firstname;
+
+    @NotEmpty(message = "Last name is required")
+    private String lastname;
+
     @Email(message = "Email is not valid")
     @NotEmpty(message = "Email cannot be empty")
     @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email is not valid")
@@ -31,7 +37,4 @@ public class RegisterRequest {
 
     private String confirmPassword;
 
-    private String gender;
-
-    private String contact;
 }

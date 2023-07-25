@@ -73,7 +73,7 @@ public class InitializeDatabase {
     public CommandLineRunner loadDatabase() {
         return args -> {
             addUser("admin", "admin", "admin@gmail.com", "123456", "male", "0123456789", Role.ADMIN);
-            addUser("trong", "dat", "nguyentrongdat1108@gmail.com", "123456", "male", "0123456789", Role.USER);
+            addUser("trong", "dat", "trongdat@gmail.com", "123456", "male", "0123456789", Role.USER);
             addUser("quoc", "bao", "quocbao@gmail.com", "123456", "male", "0123456789", Role.USER);
             addUser("Lam", "Nhu", "lamnhu@gmail.com", "123456", "female", "0123456789", Role.USER);
             addUser("Minh", "Thu", "minhthu@gmail.com", "123456", "female", "0123456789", Role.USER);
@@ -227,6 +227,7 @@ public class InitializeDatabase {
                 .date_created(Date.from(java.time.Instant.now()))
                 .date_updated(null)
                 .role(role)
+                .provider(Provider.LOCAL)
                 .build();
         if (userRepository.existsUserModelByEmail(email)) {
             userRepository.delete(user);
@@ -238,6 +239,7 @@ public class InitializeDatabase {
             saveUserToken(savedUser, jwtToken);
             cartService.addCart(CartModel.builder()
                     .user(savedUser)
+                    .total_amount(0.0F)
                     .build());
             System.out.println("User saved!");
             userRepository.save(user);

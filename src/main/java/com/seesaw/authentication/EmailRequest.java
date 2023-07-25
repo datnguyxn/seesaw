@@ -1,4 +1,4 @@
-package com.seesaw.auth;
+package com.seesaw.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

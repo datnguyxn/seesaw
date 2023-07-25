@@ -1,11 +1,10 @@
-package com.seesaw.auth;
+package com.seesaw.authentication;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Builder

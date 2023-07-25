@@ -81,6 +81,7 @@ public class ThymeleafServiceImp implements ThymeleafService {
         final Context context = new Context();
         context.setVariables(Map.of("name", variables.getTo()));
         context.setVariables(Map.of("product", variables.getContent()));
+//        context.setVariables(Map.of("logo",  variables.getLogo()));
 
         return templateEngine.process(MAIL_TEMPLATE_BASE_NAME + template, context);
     }

@@ -1,19 +1,31 @@
 package com.seesaw.security;
 
+import com.seesaw.authentication.AuthenticationResponse;
 import com.seesaw.configuration.JwtAuthenticationFilter;
+import com.seesaw.model.CustomOAuth2User;
 import com.seesaw.model.Role;
+import com.seesaw.service.CustomOAuth2UserService;
+import com.seesaw.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.config.http.SessionCreationPolicy;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -23,15 +35,20 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+
+    @Autowired
+    private CustomOAuth2UserService oauthUserService;
+
+    @Autowired
+    private UserService userService;
+
     private final String[] routes = new String[] {
             "/",
-            "/login",
-            "/register",
+            "/auth/**",
             "/email",
             "/admin/**",
             "/api/user/**",
             "/user/**",
-            "/forgot-password",
             "/products/**",
             "/collections/**",
             "/cart/**",
@@ -57,7 +74,6 @@ public class SecurityConfig {
             "/admin/**",
             "/admin",
             "/order",
-            "/forgot-password",
             "product-detail/**",
             "error/**",
             "/payment",
@@ -94,6 +110,32 @@ public class SecurityConfig {
                                     ).hasRole(Role.ADMIN.name())
                                     .anyRequest().authenticated();
                         }
+                )
+                .formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/auth/login")
+                                .permitAll()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/auth/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oauthUserService)
+                        )
+                        .successHandler(new AuthenticationSuccessHandler() {
+                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                                Authentication authentication) throws IOException, ServletException {
+
+                                CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
+
+                                if (userService.isExistUser(oauthUser.getEmail())) {
+                                    userService.processOAuthPostLogin(oauthUser.getEmail(), response);
+                                    response.sendRedirect("/user/login-google-again?email=" + oauthUser.getEmail());
+                                } else {
+                                    userService.processOAuthPostRegister(oauthUser.getEmail());
+                                    response.sendRedirect("/user/login-google-success?email=" + oauthUser.getEmail());
+                                }
+                            }
+                        })
                 )
                 .authenticationProvider(authenticationProvider)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

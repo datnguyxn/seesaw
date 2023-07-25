@@ -27,15 +27,18 @@
                 </a>
             </li>
             <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link" th:href="@{/cart}">
+                <a class="nav-link check-auth" style="cursor: pointer">
                     <i class="bi bi-cart2"></i>
                 </a>
             </li>
             <li class="nav-item me-3 me-lg-0 dropdown">
-                <a class="nav-link dropdown position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button" data-bs-target="#dropdownUser">
+                <a class="nav-link dropdown position-relative check-token" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button" data-bs-target="#dropdownUser">
                     <i class="bi bi-person"></i>
                 </a>
-                <ul class="dropdown-menu position-absolute text-center" style="left: -5rem" id="dropdownUser">
+                <ul class="dropdown-menu position-absolute text-center ul-display d-none" style="left: -5rem" id="dropdownUser">
+                    <li class="dropdown-item">
+                        <a th:href="@{/auth/login}" class="dropdown-link text-decoration-none text-dark">Login</a>
+                    </li>
                     <li class="dropdown-item">
                         <a th:href="@{/user/update}" class="dropdown-link text-decoration-none text-dark" id="btn-check">Update</a>
                     </li>

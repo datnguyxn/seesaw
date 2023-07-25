@@ -4,18 +4,20 @@ $(document).ready(function () {
     const email = $("#email");
     const password = $("#password");
     const confirmPassword = $("#confirmPassword");
-    const gender = $("#gender");
-    const contact = $("#contact");
+    const firstName = $("#firstname");
+    const lastName = $("#lastname");
 
     formSignUp.on("submit", function (e) {
         e.preventDefault()
         const data = JSON.stringify({
+            firstname: firstName.val(),
+            lastname: lastName.val(),
             email: email.val(),
             password: password.val(),
             confirmPassword: confirmPassword.val(),
-            gender: gender.val(),
-            contact: contact.val()
         });
+        checkPassword()
+        console.log(data)
         $.ajax({
             url: "/api/v1/auth/register",
             type: "POST",
@@ -36,5 +38,13 @@ $(document).ready(function () {
     if (localStorage.getItem("email") !== null) {
         email.val(localStorage.getItem("email"));
         localStorage.removeItem("email");
+    }
+
+    function checkPassword() {
+        if (password.val() !== confirmPassword.val()) {
+            errorText.text("Password and Confirm Password must be same")
+            return false
+        }
+        return true
     }
 });

@@ -1,7 +1,6 @@
-package com.seesaw.auth;
+package com.seesaw.authentication;
 
 import com.seesaw.validator.PasswordConfirmation;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

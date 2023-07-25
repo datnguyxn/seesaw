@@ -1,10 +1,8 @@
 package com.seesaw.service;
 
-import com.seesaw.auth.EmailRequest;
 import com.seesaw.dto.request.AddCollectionRequest;
 import com.seesaw.dto.response.CollectionResponse;
 import com.seesaw.dto.response.MailResponse;
-import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.ProductResponse;
 import com.seesaw.model.CollectionModel;
 import com.seesaw.model.Mail;
@@ -108,7 +106,7 @@ public class CollectionService {
             Mail mail = Mail.builder()
                     .to(user.getEmail())
                     .subject("New Collection")
-                    .content("mail-newCollection.html")
+                    .content("images")
                     .build();
         mailService.sendEmail(mail, "mail-newProduct.html");
         }

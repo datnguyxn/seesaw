@@ -1,4 +1,4 @@
-package com.seesaw.auth;
+package com.seesaw.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

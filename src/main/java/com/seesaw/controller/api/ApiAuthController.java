@@ -1,10 +1,9 @@
 package com.seesaw.controller.api;
 
-import com.seesaw.auth.*;
+import com.seesaw.authentication.*;
 import com.seesaw.dto.response.MailResponse;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.service.AuthenticationService;
-import com.seesaw.service.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -13,14 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class ApiAuthController {
 
     @Autowired
     private  AuthenticationService authenticationService;

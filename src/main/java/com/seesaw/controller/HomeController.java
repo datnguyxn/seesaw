@@ -12,21 +12,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "pages/auth/signin";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "pages/auth/signup";
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        return "pages/auth/signin";
-    }
-
     @GetMapping("/search")
     public String search() {
         return "pages/user/search";
@@ -56,13 +41,5 @@ public class HomeController {
     @GetMapping("/order")
     public String order() {return "pages/user/order";}
 
-//    @GetMapping("/order")
-//    public String order() {return "mail/mail-newProduct";}
-
-
-    @GetMapping("/forgot-password")
-    public String forgotPassword() {
-        return "pages/auth/forgotpassword";
-    }
 
 }

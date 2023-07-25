@@ -8,7 +8,7 @@ $(document).ready(function () {
     const contact = $("#contact")
     const address = $("#address")
     const formUpdateUser = $("#formUpdateUser")
-    let newURL = window.location.protocol + "/" + window.location.host;
+    const error = $(".error")
 
     if (localStorage.getItem("token") == null) {
         window.location.href = "/login"
@@ -24,7 +24,7 @@ $(document).ready(function () {
         $.ajax({
             url: "/api/user/get-user",
             type: "POST",
-            data:  token,
+            data: token,
             contentType: "application/json",
             success: function (data) {
                 console.log(data)
@@ -35,7 +35,6 @@ $(document).ready(function () {
                 contact.val(data.contact)
                 address.val(data.address)
                 img.attr("src", data.avatar)
-                console.log(data.avatar)
             },
             error: function (error) {
                 console.log(error)
@@ -44,12 +43,12 @@ $(document).ready(function () {
     }
 
     function updateUser() {
-       formUpdateUser.on("submit", function (e) {
-           e.preventDefault()
-           $.ajax({
+        formUpdateUser.on("submit", function (e) {
+            e.preventDefault()
+            $.ajax({
                 url: "/api/user/update",
                 type: "POST",
-                data:  JSON.stringify({
+                data: JSON.stringify({
                     firstname: firstName.val(),
                     lastname: lastName.val(),
                     email: email.val(),
@@ -60,13 +59,15 @@ $(document).ready(function () {
                 contentType: "application/json",
                 success: function (data) {
                     console.log(data)
-                   // window.location.href = "/"
+                    window.location.href = "/"
+                    alert("Update Success")
                 },
                 error: function (error) {
                     console.log(error)
+                    error.text(error.responseJSON.message)
                 }
-           })
-       })
+            })
+        })
     }
 })
 

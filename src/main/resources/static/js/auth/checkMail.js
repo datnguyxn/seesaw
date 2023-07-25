@@ -14,12 +14,12 @@ const formEmail = $('#formEmailCheckUser')
             success: function (data) {
                 console.log(data)
                 localStorage.setItem('email', email)
-                window.location.href = '/login'
+                window.location.href = '/auth/login'
             },
             error: function (error) {
                 console.log(error)
                 localStorage.setItem('email', email)
-                window.location.href = '/register'
+                window.location.href = '/auth/register'
             }
         })
     })

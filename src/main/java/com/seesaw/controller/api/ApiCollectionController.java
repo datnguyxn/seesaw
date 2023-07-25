@@ -1,10 +1,8 @@
 package com.seesaw.controller.api;
 
-import com.seesaw.auth.EmailRequest;
 import com.seesaw.dto.request.AddCollectionRequest;
 import com.seesaw.dto.response.CollectionResponse;
 import com.seesaw.dto.response.MailResponse;
-import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.service.CollectionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +35,8 @@ public class ApiCollectionController {
         return ResponseEntity.ok().body(collectionService.deleteOneCollectionById(id, page, size));
     }
 
-//    @PostMapping("/send-mail")
-//    public ResponseEntity<MailResponse> sendMail() {
-//        return ResponseEntity.ok(collectionService.sendMailToIntroNewCollection());
-//    }
+    @PostMapping("/send-mail")
+    public ResponseEntity<MailResponse> sendMail() {
+        return ResponseEntity.ok(collectionService.sendMailToIntroNewCollection());
+    }
 }

@@ -56,6 +56,9 @@ public class UserModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
     @OneToMany(mappedBy = "users",targetEntity = TokenModel.class)
     private Collection<TokenModel> tokens;
 
