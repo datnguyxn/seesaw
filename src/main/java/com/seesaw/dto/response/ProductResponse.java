@@ -13,6 +13,9 @@ public class ProductResponse {
     private String id;
     private String name;
     private String brand;
+    private String image_path;
+    private String collection;
+    private String category;
     private String description;
     private Float price;
     private Integer quantity;

@@ -38,11 +38,11 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/products")
+    @GetMapping("/product")
     public String getProduct(Model model, HttpServletRequest request) {
 //        model.addAttribute("products", productService.getAllProducts());
         if (checkURL(request)) {
-            return "pages/admin/dashboard";
+            return "pages/admin/product";
         } else {
             return "pages/404/404";
         }
