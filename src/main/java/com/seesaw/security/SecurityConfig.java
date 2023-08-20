@@ -42,7 +42,7 @@ public class SecurityConfig {
     @Autowired
     private UserService userService;
 
-    private final String[] routes = new String[] {
+    private final String[] routes = new String[]{
             "/",
             "/auth/**",
             "/email",
@@ -91,7 +91,11 @@ public class SecurityConfig {
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/category/**",
+            "/collection/**",
+            "/category",
+            "/collection"
     };
 
     @Bean
