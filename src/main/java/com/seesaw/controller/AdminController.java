@@ -48,6 +48,24 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/category")
+    public String getCategory(Model model, HttpServletRequest request) {
+        if (checkURL(request)) {
+            return "pages/admin/category";
+        } else {
+            return "pages/404/404";
+        }
+    }
+
+    @GetMapping("/collection")
+    public String getCollection(Model model, HttpServletRequest request) {
+        if (checkURL(request)) {
+            return "pages/admin/collection";
+        } else {
+            return "pages/404/404";
+        }
+    }
+
     @GetMapping("/orders")
     public String getOrder(Model model, HttpServletRequest request) {
         if (checkURL(request)) {
