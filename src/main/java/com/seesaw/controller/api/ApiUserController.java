@@ -2,6 +2,8 @@ package com.seesaw.controller.api;
 
 import com.seesaw.authentication.AuthenticationResponse;
 import com.seesaw.authentication.EmailRequest;
+import com.seesaw.authentication.TokenRequest;
+import com.seesaw.dto.request.AddTokenRequest;
 import com.seesaw.dto.request.AddUserRequest;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
@@ -31,7 +33,7 @@ public class ApiUserController {
         return ResponseEntity.ok(userService.findUserByEmail(email));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<MessageResponse> update(@RequestBody AddUserRequest request) {
         return ResponseEntity.ok(userService.updateUser(request));
     }
@@ -41,12 +43,12 @@ public class ApiUserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping("/delete-user")
-    public ResponseEntity<MessageResponse> deleteUser(@RequestBody EmailRequest request) {
-        return ResponseEntity.ok(userService.deleteUser(request));
+    @DeleteMapping("/delete-user/{id}")
+    public ResponseEntity<MessageResponse> deleteUser(@PathVariable("id") String request) {
+        return ResponseEntity.ok().body(userService.deleteUserById(request));
     }
 
-    @PostMapping("delete-all-user")
+    @DeleteMapping("delete-all-user")
     public ResponseEntity<MessageResponse> deleteAllUser() {
         return ResponseEntity.ok(userService.deleteAllUsers());
     }

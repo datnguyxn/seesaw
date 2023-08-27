@@ -10,6 +10,4 @@ public interface UserRepository extends JpaRepository<UserModel, String> {
     Optional<UserModel> findByEmail(String email);
 
     boolean existsUserModelByEmail(String email);
-
-    Optional<UserModel> findByPassword(String password);
 }

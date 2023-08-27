@@ -74,7 +74,7 @@ public class AuthenticationService {
       var checkToken = tokenRepository.findByToken(token).orElseThrow(() -> new UserNotFoundException("Token not found"));
       var user = checkToken.getUsers();
         if (user.getRole().equals(Role.ADMIN)) {
-            return "/admin/dashboard";
+            return "/admin/login";
         } else {
             return "/";
         }
@@ -147,6 +147,7 @@ public class AuthenticationService {
 
         }
     }
+
 
     protected void revokeAllUserTokens(UserModel user) {
         var validToken = tokenRepository.findAllValidTokenByUser(user.getId());

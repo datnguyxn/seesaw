@@ -67,17 +67,20 @@ $(document).ready(function () {
                 type: "POST",
                 data: token,
                 contentType: "application/json",
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
                 success: function (data) {
                     console.log(data)
                     window.location.href = data;
                 },
                 error: function (error) {
                     console.log(error)
-                    window.location.href = '/login'
+                    window.location.href = '/auth/login'
                 }
             })
         } else {
-            window.location.href = '/login'
+            window.location.href = '/auth/login'
         }
     }
 })

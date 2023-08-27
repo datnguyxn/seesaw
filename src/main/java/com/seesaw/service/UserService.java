@@ -3,6 +3,7 @@ package com.seesaw.service;
 import com.seesaw.authentication.AuthenticationResponse;
 import com.seesaw.authentication.EmailRequest;
 import com.seesaw.configuration.ApplicationConfig;
+import com.seesaw.dto.request.AddTokenRequest;
 import com.seesaw.dto.request.AddUserRequest;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
@@ -10,6 +11,7 @@ import com.seesaw.exception.UserNotFoundException;
 import com.seesaw.model.*;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,24 +116,19 @@ public class UserService implements UserDetailsService {
         return users.toList();
     }
 
-    public MessageResponse deleteUser(EmailRequest request) {
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("User not found"));
+    public MessageResponse deleteUserById(String id) {
+        var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
         if (user != null) {
-            var tokens = tokenRepository.findAllValidTokenByUser(user.getId());
-            for (TokenModel token : tokens) {
-                tokens.remove(token);
-                tokenRepository.delete(token);
-            }
+            List<TokenModel> tokens = tokenRepository.findAllByUsersId(id);
+            tokenRepository.deleteAll(tokens);
             cartService.deleteCartOfUser(user);
             userRepository.delete(user);
-            return MessageResponse.builder()
-                    .message("User deleted")
-                    .build();
         } else {
-            return MessageResponse.builder()
-                    .message("User not found")
-                    .build();
+            throw new UserNotFoundException("User not found");
         }
+        return MessageResponse.builder()
+                .message("User deleted")
+                .build();
     }
 
     public MessageResponse deleteAllUsers() {
@@ -168,7 +165,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void processOAuthPostRegister(String email) {
+    public void processOAuthPostRegister(String email, HttpServletResponse response) {
         var user = UserModel.builder()
                 .email(email)
                 .provider(Provider.GOOGLE)
@@ -180,6 +177,8 @@ public class UserService implements UserDetailsService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         authenticationService.saveUserToken(savedUser, jwtToken);
+        authenticationService.createCookie(refreshToken, response);
+        authenticationService.createCookieForRole(savedUser.getRole().toString(), response);
         cartService.addCart(CartModel.builder()
                 .user(savedUser)
                 .total_amount(0.0F)

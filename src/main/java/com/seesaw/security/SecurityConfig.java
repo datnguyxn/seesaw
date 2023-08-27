@@ -1,18 +1,19 @@
 package com.seesaw.security;
 
-import com.seesaw.authentication.AuthenticationResponse;
 import com.seesaw.configuration.JwtAuthenticationFilter;
 import com.seesaw.model.CustomOAuth2User;
 import com.seesaw.model.Role;
 import com.seesaw.service.CustomOAuth2UserService;
 import com.seesaw.service.UserService;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +48,6 @@ public class SecurityConfig {
             "/auth/**",
             "/email",
             "/admin/**",
-            "/api/user/**",
             "/user/**",
             "/products/**",
             "/collections/**",
@@ -60,8 +60,6 @@ public class SecurityConfig {
             "/about/**",
             "/search/**",
             "/product-detail/**",
-            "/admin/**",
-            "/admin",
             "/orders/**",
             "/cart",
             "/categories/**",
@@ -71,8 +69,6 @@ public class SecurityConfig {
             "/search",
             "/search/**",
             "/product-detail",
-            "/admin/**",
-            "/admin",
             "/order",
             "product-detail/**",
             "error/**",
@@ -82,6 +78,7 @@ public class SecurityConfig {
             "/css/**",
             "/js/**",
             "/images/**",
+            "/api/user/**",
             "/api/v1/auth/**",
             "/v2/api-docs",
             "/v3/api-docs",
@@ -106,11 +103,8 @@ public class SecurityConfig {
                             authorize
                                     .requestMatchers(routes)
                                     .permitAll()
-                                    .requestMatchers(new String[]{
-                                            "/api/v1/admin/**"
-                                    }).hasRole(Role.ADMIN.name())
                                     .requestMatchers(
-                                            "/admin/**"
+                                            "/api/v1/admin/**"
                                     ).hasRole(Role.ADMIN.name())
                                     .anyRequest().authenticated();
                         }
@@ -118,6 +112,7 @@ public class SecurityConfig {
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/auth/login")
+                                .loginPage("/admin/login")
                                 .permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
@@ -135,7 +130,7 @@ public class SecurityConfig {
                                     userService.processOAuthPostLogin(oauthUser.getEmail(), response);
                                     response.sendRedirect("/user/login-google-again?email=" + oauthUser.getEmail());
                                 } else {
-                                    userService.processOAuthPostRegister(oauthUser.getEmail());
+                                    userService.processOAuthPostRegister(oauthUser.getEmail(), response);
                                     response.sendRedirect("/user/login-google-success?email=" + oauthUser.getEmail());
                                 }
                             }

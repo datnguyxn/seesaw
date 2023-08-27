@@ -186,19 +186,19 @@ public class InitializeDatabase {
         }
     }
 
-    private void loadCarts() {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<CartModel>> typeReference = new TypeReference<List<CartModel>>() {};
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/carts.json");
-        try {
-            List<CartModel> carts = mapper.readValue(inputStream, typeReference);
-            cartService.save(carts);
-            System.out.println("Carts Saved!");
-
-        } catch (IOException e) {
-            System.out.println("Unable to save carts: " + e.getMessage());
-        }
-    }
+//    private void loadCarts() {
+//        ObjectMapper mapper = new ObjectMapper();
+//        TypeReference<List<CartModel>> typeReference = new TypeReference<List<CartModel>>() {};
+//        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/carts.json");
+//        try {
+//            List<CartModel> carts = mapper.readValue(inputStream, typeReference);
+//            cartService.save(carts);
+//            System.out.println("Carts Saved!");
+//
+//        } catch (IOException e) {
+//            System.out.println("Unable to save carts: " + e.getMessage());
+//        }
+//    }
 
     private void loadCartDetail() {
         ObjectMapper mapper = new ObjectMapper();

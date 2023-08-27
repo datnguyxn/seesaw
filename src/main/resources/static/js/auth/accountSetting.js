@@ -47,7 +47,7 @@ $(document).ready(function () {
             e.preventDefault()
             $.ajax({
                 url: "/api/user/update",
-                type: "POST",
+                type: "PUT",
                 data: JSON.stringify({
                     firstname: firstName.val(),
                     lastname: lastName.val(),

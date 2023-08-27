@@ -16,7 +16,8 @@ public class CartService {
     private CartRepository cartRepository;
     @Autowired
     private CartDetailService cartDetailService;
-    public void addCart(CartModel request){
+
+    public void addCart(CartModel request) {
         UserModel user = userRepository.findById(request.getUser().getId()).orElseThrow();
         CartModel cart = CartModel.builder()
                 .id(request.getId())
@@ -25,12 +26,16 @@ public class CartService {
                 .build();
         cartRepository.save(cart);
     }
-    public void deleteCartOfUser(UserModel user){
-        CartModel cart = cartRepository.findByUser(user).orElseThrow();
-        cartDetailService.deleteCartDetailOfCart(cart);
-        cartRepository.delete(cart);
-    }
-    public void save(List<CartModel> cartModels) {
-        cartRepository.saveAll(cartModels);
+
+    public void deleteCartOfUser(UserModel user) {
+        var cart = cartRepository.findByUser(user);
+        if (cart.isPresent()) {
+            if (cart.get().getCart_detail().isEmpty()) {
+                cartRepository.delete(cart.get());
+            } else {
+                cartDetailService.deleteCartDetailOfCart(cart.get());
+                cartRepository.delete(cart.get());
+            }
+        }
     }
 }

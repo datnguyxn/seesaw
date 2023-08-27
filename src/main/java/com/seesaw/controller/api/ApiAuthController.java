@@ -4,6 +4,8 @@ import com.seesaw.authentication.*;
 import com.seesaw.dto.response.MailResponse;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.service.AuthenticationService;
+import com.seesaw.service.LogoutService;
+import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 
@@ -23,6 +26,9 @@ public class ApiAuthController {
     @Autowired
     private  AuthenticationService authenticationService;
 
+    @Autowired
+    private LogoutService logoutService;
+
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody @Email @Valid RegisterRequest request) {
@@ -33,6 +39,15 @@ public class ApiAuthController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody @Valid AuthenticationRequest request, HttpServletResponse httpServletResponse) {
         return ResponseEntity.ok(authenticationService.authenticate(request, httpServletResponse));
+    }
+
+    @PostMapping("/logout")
+    public void logout(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication
+    ) throws IOException {
+        logoutService.logout(request, response, authentication);
     }
 
     @PostMapping("/login-success")
