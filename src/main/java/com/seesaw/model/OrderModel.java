@@ -1,16 +1,17 @@
 package com.seesaw.model;
 
-import com.fasterxml.classmate.AnnotationOverrides;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -34,8 +35,11 @@ public class OrderModel {
     private String email;
     private String phone;
     private String address;
-    private Float total_amount;
-    private Date date_created;
+    private Double total_amount;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column
+    @CreatedDate
+    private LocalDate createdDate;
     private String status;
 
     @ManyToOne(targetEntity = UserModel.class)
@@ -43,6 +47,6 @@ public class OrderModel {
     private UserModel users;
 
     @OneToMany(mappedBy = "orders",targetEntity = InvoiceModel.class)
-    private Collection<InvoiceModel> invoices;
+    private Set<InvoiceModel> invoices;
 
 }

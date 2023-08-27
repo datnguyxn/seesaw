@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderResponse {
-    private String id;
+public class InvoiceResponse {
+    private String order_id;
     private String name;
     private String email;
     private String phone;
@@ -22,4 +23,5 @@ public class OrderResponse {
     private String status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
+    private List<OrderProductResponse> products;
 }

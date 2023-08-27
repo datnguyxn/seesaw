@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -26,6 +27,6 @@ public class CategoryModel {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "category", targetEntity = ProductModel.class)
-    private Collection<ProductModel> products;
+    @OneToMany(mappedBy = "category", targetEntity = ProductModel.class,fetch = FetchType.EAGER)
+    private Set<ProductModel> products;
 }

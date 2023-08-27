@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 public class ApiCategoryController {
     @Autowired
     private CategoryService categoryService;
@@ -19,12 +19,26 @@ public class ApiCategoryController {
     public ResponseEntity<CategoryResponse> addCategory(@RequestBody @Valid AddCategoryRequest category){
         return ResponseEntity.ok().body(categoryService.addCategory(category));
     }
-    @PostMapping("/search-category")
-    public ResponseEntity<CategoryResponse> getCategoryByName(@RequestBody @Valid String name){
-        return ResponseEntity.ok().body(categoryService.getCategoryByName(name));
+//    @PostMapping("/search-category")
+//    public ResponseEntity<CategoryResponse> getCategoryByName(@RequestBody @Valid String name){
+//        return ResponseEntity.ok().body(categoryService.getCategoryByName(name));
+//    }
+    @GetMapping("/list")
+    public ResponseEntity<List<CategoryResponse>> getAllCategories(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok().body(categoryService.get());
+    }
+    @GetMapping("/get-category")
+    public ResponseEntity<CategoryResponse> getCategoryById(@RequestParam String id){
+        return ResponseEntity.ok().body(categoryService.getCategoryById(id));
     }
     @PutMapping("/update")
-    public ResponseEntity<CategoryResponse> updateCategory(@RequestParam String id, @RequestBody AddCategoryRequest request){
+    public ResponseEntity<CategoryResponse> updateCategory(
+            @RequestParam String id,
+            @RequestBody AddCategoryRequest request
+    ){
         return ResponseEntity.ok().body(categoryService.updateCategory(request,id));
     }
     @DeleteMapping("/delete")
@@ -33,6 +47,6 @@ public class ApiCategoryController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
-        return ResponseEntity.ok().body(categoryService.deleteCategoryById(id,page,size));
+        return ResponseEntity.ok().body(categoryService.deleteCategoryById(id));
     }
 }

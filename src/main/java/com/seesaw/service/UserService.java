@@ -181,7 +181,7 @@ public class UserService implements UserDetailsService {
         authenticationService.createCookieForRole(savedUser.getRole().toString(), response);
         cartService.addCart(CartModel.builder()
                 .user(savedUser)
-                .total_amount(0.0F)
+                .total_amount(0.0D)
                 .build());
     }
 

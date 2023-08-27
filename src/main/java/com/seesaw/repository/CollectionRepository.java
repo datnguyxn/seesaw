@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface CollectionRepository extends JpaRepository<CollectionModel, String> {
     Optional<CollectionModel> findByName(String name);
+
 }

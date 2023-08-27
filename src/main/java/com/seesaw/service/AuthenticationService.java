@@ -101,7 +101,7 @@ public class AuthenticationService {
         saveUserToken(savedUser, jwtToken);
         cartService.addCart(CartModel.builder()
                 .user(savedUser)
-                .total_amount(0.0F)
+                .total_amount(0.0D)
                 .build());
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)

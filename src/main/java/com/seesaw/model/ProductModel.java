@@ -1,12 +1,14 @@
 package com.seesaw.model;
 
-import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Set;
 
-import com.seesaw.dto.response.CollectionResponse;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Builder
@@ -28,26 +30,33 @@ public class ProductModel {
     private String name;
     private String brand;
     private String description;
-    private Float price;
-    private Integer quantity;
+    private Double price;
+    private int quantity;
     private String image_path;
-    private Date date_created;
-    private Date date_updated;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column
+    @CreatedDate
+    private LocalDate createdDate;
 
-    @ManyToOne(targetEntity = CollectionModel.class)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "updated_date")
+    @LastModifiedDate
+    private LocalDate updatedDate;
+
+    @ManyToOne(targetEntity = CollectionModel.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "collection_id")
     private CollectionModel collection;
 
-    @ManyToOne(targetEntity = CategoryModel.class)
+    @ManyToOne(targetEntity = CategoryModel.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private CategoryModel category;
 
     @OneToMany(mappedBy = "products",targetEntity = FeedbackModel.class)
-    private Collection<FeedbackModel> feedbacks;
+    private Set<FeedbackModel> feedbacks;
 
-    @OneToMany(mappedBy = "products")
-    private Collection<InvoiceModel> invoices;
+    @OneToMany(mappedBy = "products", targetEntity = InvoiceModel.class)
+    private Set<InvoiceModel> invoices;
 
-    @OneToMany(mappedBy = "products")
-    private Collection<CartDetailModel> cart_detail;
+    @OneToMany(mappedBy = "products", targetEntity = CartDetailModel.class)
+    private Set<CartDetailModel> cart_detail;
 }

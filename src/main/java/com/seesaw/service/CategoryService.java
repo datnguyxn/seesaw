@@ -8,7 +8,9 @@ import com.seesaw.model.CategoryModel;
 import com.seesaw.model.CollectionModel;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,55 +24,44 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductService productService;
-    public CategoryResponse convertCategory(CategoryModel category, List<ProductResponse> products){
+    public CategoryResponse toResponse(CategoryModel category){
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
-                .products(products)
+                .products(category.getProducts() == null ? null : productService.toResponse(category.getProducts()).stream().toList())
                 .build();
     }
-    public CategoryResponse convertCategory(CategoryModel category){
-        List<ProductResponse> productResponses = category.getProducts().stream().map(product -> {
-            return productService.convertProduct(product);
-        }).toList();
-        return CategoryResponse.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .description(category.getDescription())
-                .products(productResponses)
-                .build();
-    }
-//    Create
-    public CategoryResponse addCategory(AddCategoryRequest request){
-        CategoryModel category = CategoryModel.builder()
+    public CategoryModel toEntity(AddCategoryRequest request) {
+        return CategoryModel.builder()
                 .id(request.getId())
                 .name(request.getName())
                 .description(request.getDescription())
                 .build();
+    }
+    public List<CategoryResponse> toResponse(List<CategoryModel> categories) {
+        return categories.stream().map(this::toResponse).toList();
+    }
+//    Create
+    public CategoryResponse addCategory(AddCategoryRequest request){
+        var category = toEntity(request);
         categoryRepository.save(category);
-        return convertCategory(category,new ArrayList<ProductResponse>());
+        return toResponse(category);
     }
 //    Read
-    public List<CategoryResponse> getAllCategories(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page,size).withSort(Sort.by("name").ascending());
-        List<CategoryResponse> categories = categoryRepository.findAll(pageRequest).stream().map(category->{
-            List<ProductResponse> productResponses = new ArrayList<ProductResponse>();
-            for(ProductModel p : category.getProducts()){
-                ProductResponse productResponse = productService.convertProduct(p);
-                productResponses.add(productResponse);
-            }
-            return convertCategory(category,productResponses);
-        }).toList();
-        return categories;
+    public Page<?> get(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return categoryRepository.findAll(pageRequest).map(this::toResponse);
+    }
+    public List<CategoryResponse> get(){
+        return toResponse(categoryRepository.findAll());
+    }
+    public List<CategoryResponse> findAll(){
+        return toResponse(categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
     }
     public CategoryResponse getCategoryById(String id){
         CategoryModel category = categoryRepository.findById(id).orElseThrow();
-        return convertCategory(category);
-    }
-    public CategoryResponse getCategoryByName(String name){
-        CategoryModel category = categoryRepository.findByName(name).orElseThrow();
-        return convertCategory(category);
+        return toResponse(category);
     }
 //    Update
     public CategoryResponse updateCategory(AddCategoryRequest request, String id){
@@ -78,14 +69,15 @@ public class CategoryService {
         category.setName(request.getName());
         category.setDescription(request.getDescription());
         categoryRepository.save(category);
-        return convertCategory(category);
+        return toResponse(category);
     }
 //    Delete
-    public List<CategoryResponse> deleteCategoryById(String id, int page, int size){
+    @Transactional
+    public List<CategoryResponse> deleteCategoryById(String id){
         CategoryModel category = categoryRepository.findById(id).orElseThrow();
-        productService.deleteProductOfCategory(category);
+        productService.deleteProductOfCategory(id);
         categoryRepository.delete(category);
-        return getAllCategories(page,size);
+        return findAll();
     }
     public void save(List<CategoryModel> categoryModel) {
         categoryRepository.saveAll(categoryModel);

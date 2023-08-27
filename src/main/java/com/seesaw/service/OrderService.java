@@ -1,16 +1,21 @@
 package com.seesaw.service;
 
+import com.seesaw.dto.request.OrderProduct;
 import com.seesaw.dto.request.OrderRequest;
 import com.seesaw.dto.response.OrderResponse;
+import com.seesaw.model.InvoiceModel;
 import com.seesaw.model.OrderModel;
 import com.seesaw.model.UserModel;
+import com.seesaw.repository.InvoiceRepository;
 import com.seesaw.repository.OrderRepository;
+import com.seesaw.repository.ProductRepository;
 import com.seesaw.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -18,64 +23,111 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
-    public OrderResponse convertOrder(OrderModel order){
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+    public static OrderModel toEntity(OrderRequest request) {
+        return OrderModel.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .phone(request.getPhone())
+                .address(request.getAddress())
+                .build();
+    }
+    public OrderResponse toResponse(OrderModel order){
         return OrderResponse.builder()
-                .firstName(order.getFirstName())
-                .lastName(order.getLastName())
+                .id(order.getId())
+                .name(order.getFirstName() + " " + order.getLastName())
                 .email(order.getEmail())
                 .phone(order.getPhone())
                 .address(order.getAddress())
                 .total_amount(order.getTotal_amount())
                 .status(order.getStatus())
+                .createdAt(order.getCreatedDate())
                 .build();
     }
+    @Transactional
     public OrderResponse addOrder(OrderRequest request){
-        UserModel user = userRepository.findById(request.getUser_id()).orElse(null);
-        if(user != null){
-            OrderModel order = OrderModel.builder()
-                    .firstName(request.getFirstName())
-                    .lastName(request.getLastName())
-                    .email(request.getEmail())
-                    .phone(request.getPhone())
-                    .address(request.getAddress())
-                    .total_amount(request.getTotal_amount())
-                    .date_created(Date.from(java.time.Instant.now()))
-                    .status("unpaid")
-                    .users(user)
+        var user = userRepository.findById(request.getUser_id()).orElseThrow();
+        Map<String, Integer> mapProducts = new HashMap<>();
+        var products = request.getProducts().stream().map(product -> {
+            var productEntity = productRepository.findById(product.getId()).orElseThrow();
+            mapProducts.put(productEntity.getId(), product.getQuantity());
+            return productEntity;
+        }).toList();
+        var order = toEntity(request);
+        order.setTotal_amount(0d);
+        var orderSaved = orderRepository.save(order);
+        System.out.println(order);
+        var orderDetails = products.stream().map(product -> {
+            order.setTotal_amount(order.getTotal_amount() + product.getPrice() * mapProducts.get(product.getId()));
+            return InvoiceModel.builder()
+                    .orders(order)
+                    .products(product)
+                    .quantity(mapProducts.get(product.getId()))
+                    .price(product.getPrice() * mapProducts.get(product.getId()))
                     .build();
-            orderRepository.save(order);
-            user.getOrders().add(order);
-            userRepository.save(user);
-            return convertOrder(order);
-        }
-        return null;
+        }).toList();
+        invoiceRepository.saveAll(orderDetails);
+        orderSaved.setUsers(user);
+        return toResponse(orderSaved);
     }
-    public List<OrderResponse> getAllOrder(){
-        return orderRepository.findAll().stream().map(this::convertOrder).toList();
+    public List<OrderResponse> getAllOrder(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return orderRepository.findAll(pageRequest).stream().map(this::toResponse).toList();
     }
-    public List<OrderResponse> getAllOrderOfUser(String user_id){
-        UserModel user = userRepository.findById(user_id).orElseThrow();
-        return orderRepository.findByUsers(user).stream().map(this::convertOrder).toList();
+    public List<OrderResponse> get(int page, int size, String user_id) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        var user = userRepository.findById(user_id).orElseThrow();
+        return orderRepository.findAllByUser_Id(user.getId(),pageRequest).stream().map(this::toResponse).toList();
     }
-    public OrderResponse getOrderById(String id){
-        return convertOrder(orderRepository.findById(id).orElseThrow());
+    public OrderResponse updateOrder(String id, OrderRequest request){
+        var order = orderRepository.findById(id).orElseThrow();
+        Map<String, Integer> mapProducts = new HashMap<>();
+        var products = request.getProducts().stream().map(product -> {
+            var productEntity = productRepository.findById(product.getId()).orElseThrow();
+            mapProducts.put(productEntity.getId(), product.getQuantity());
+            return productEntity;
+        }).toList();
+        var orderDetails = products.stream().map(product ->{
+            var invoice = invoiceRepository.findByOrder_IdAndProduct_Id(id,product.getId());
+            if(invoice != null){
+                invoice.setQuantity(mapProducts.get(product.getId()));
+                invoice.setPrice(product.getPrice() * mapProducts.get(product.getId()));
+                order.setTotal_amount(getTotalPrice(id));
+                return invoice;
+            }
+            order.setTotal_amount(order.getTotal_amount() + product.getPrice() * mapProducts.get(product.getId()));
+            return InvoiceModel.builder()
+                    .orders(order)
+                    .products(product)
+                    .quantity(mapProducts.get(product.getId()))
+                    .price(product.getPrice() + mapProducts.get(product.getId()))
+                    .build();
+        }).toList();
+        var orderSaved = orderRepository.save(order);
+        invoiceRepository.saveAll(orderDetails);
+        return toResponse(orderSaved);
     }
-    public OrderResponse updateOrder(OrderRequest request){
-        OrderModel order = orderRepository.findById(request.getId()).orElseThrow();
-        order.setFirstName(request.getFirstName());
-        order.setLastName(request.getLastName());
-        order.setEmail(request.getEmail());
-        order.setPhone(request.getPhone());
-        order.setAddress(request.getAddress());
-        order.setStatus(request.getStatus());
-        orderRepository.save(order);
-        return convertOrder(order);
-    }
-    public void deleteOrderOfUser(UserModel user){
-        List<OrderModel> order = orderRepository.findByUsers(user);
-        orderRepository.deleteAll(order);
+    public OrderResponse delete(String id){
+        var order = orderRepository.findById(id).orElseThrow();
+        invoiceRepository.deleteInvoiceByOrderId(id);
+        orderRepository.deleteOrderId(id);
+        return toResponse(order);
     }
     public void save(List<OrderModel> orderModels) {
         orderRepository.saveAll(orderModels);
+    }
+    public Double getTotalPrice(String order_id) {
+        Double totalPrice = 0d;
+        List<InvoiceModel> orderDetails = invoiceRepository.findByOrderId(order_id);
+        for (InvoiceModel orderDetail : orderDetails) {
+            totalPrice += orderDetail.getPrice();
+        }
+        return totalPrice;
     }
 }

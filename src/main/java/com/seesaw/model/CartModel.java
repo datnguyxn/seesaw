@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -26,12 +27,12 @@ public class CartModel {
             columnDefinition = "VARCHAR(255)"
     )
     private String id;
-    private Float total_amount;
+    private Double total_amount;
 
     @OneToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "user_id")
     private UserModel user;
 
     @OneToMany(mappedBy = "carts", targetEntity = CartDetailModel.class)
-    private Collection<CartDetailModel> cart_detail;
+    private Set<CartDetailModel> cart_detail;
 }

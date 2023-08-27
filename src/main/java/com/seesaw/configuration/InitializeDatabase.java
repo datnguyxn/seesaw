@@ -239,7 +239,7 @@ public class InitializeDatabase {
             saveUserToken(savedUser, jwtToken);
             cartService.addCart(CartModel.builder()
                     .user(savedUser)
-                    .total_amount(0.0F)
+                    .total_amount(0.0D)
                     .build());
             System.out.println("User saved!");
             userRepository.save(user);

@@ -1,11 +1,10 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -27,6 +26,6 @@ public class CollectionModel {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "collection",targetEntity = ProductModel.class)
-    private Collection<ProductModel> products;
+    @OneToMany(mappedBy = "collection",targetEntity = ProductModel.class,fetch = FetchType.EAGER)
+    private Set<ProductModel> products;
 }

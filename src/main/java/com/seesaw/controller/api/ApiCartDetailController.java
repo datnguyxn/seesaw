@@ -2,15 +2,11 @@ package com.seesaw.controller.api;
 
 import com.seesaw.dto.request.AddProductRequest;
 import com.seesaw.dto.response.CartDetailResponse;
-import com.seesaw.model.CartDetailKey;
 import com.seesaw.service.CartDetailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +19,15 @@ public class ApiCartDetailController {
     public void add(@RequestBody @Valid AddProductRequest request){
         cartDetailService.addToCart(request);
     }
+    @GetMapping("/list")
+    public ResponseEntity<CartDetailResponse> getAllProductOfCart(String cart_id){
+        return ResponseEntity.ok().body(cartDetailService.getAllProductOfCart(cart_id));
+    }
     @PostMapping("/delete")
-    public ResponseEntity<List<CartDetailResponse>> deleteProductOfCart(@RequestBody @Valid CartDetailKey id){
-        return ResponseEntity.ok().body(cartDetailService.deleteProductOfCart(id));
+    public ResponseEntity<CartDetailResponse> deleteProductOfCart(
+            @RequestParam String product_id,
+            @RequestParam String cart_id
+    ){
+        return ResponseEntity.ok().body(cartDetailService.deleteProductOfCart(product_id, cart_id));
     }
 }

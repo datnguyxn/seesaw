@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Builder
 @AllArgsConstructor
@@ -12,19 +14,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "cart_detail")
 @Data
 public class CartDetailModel {
-    @EmbeddedId
-    private CartDetailKey id;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("cartId")
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(
+            name = "id",
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String id;
+    private int quantity;
+    private Double price;
+    @ManyToOne(targetEntity = CartModel.class)
     @JoinColumn(name = "cart_id")
     private CartModel carts;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("productId")
+    @ManyToOne(targetEntity = ProductModel.class)
     @JoinColumn(name = "product_id")
     private ProductModel products;
-
-    private Float price;
-    private Integer quantity;
 }

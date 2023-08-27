@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/collections")
+@RequestMapping("/api/collections")
 public class ApiCollectionController {
     @Autowired
     private CollectionService collectionService;
@@ -21,9 +21,26 @@ public class ApiCollectionController {
     public ResponseEntity<CollectionResponse> addCollection(@RequestBody @Valid AddCollectionRequest collection) {
         return ResponseEntity.ok().body(collectionService.addCollection(collection));
     }
-
+    @GetMapping("/list")
+    public ResponseEntity<List<CollectionResponse>> getAllCollections(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
+    ){
+        return ResponseEntity.ok().body(collectionService.get());
+    }
+//    @GetMapping("/search-collection")
+//    public ResponseEntity<CollectionResponse> getCollectionByName(@RequestParam @Valid String name){
+//        return ResponseEntity.ok().body(collectionService.getCollectionByName(name));
+//    }
+    @GetMapping("/get-collection")
+    public ResponseEntity<CollectionResponse> getCollectionById(@RequestParam String id){
+        return ResponseEntity.ok().body(collectionService.getCollectionById(id));
+    }
     @PutMapping("/update")
-    public ResponseEntity<CollectionResponse> updateCollection(@RequestParam String id, @RequestBody @Valid AddCollectionRequest request) {
+    public ResponseEntity<CollectionResponse> updateCollection(
+            @RequestParam String id,
+            @RequestBody @Valid AddCollectionRequest request
+    ) {
         return ResponseEntity.ok().body(collectionService.updateCollection(request, id));
     }
 

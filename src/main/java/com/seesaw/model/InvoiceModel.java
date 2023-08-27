@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
 
@@ -15,20 +16,24 @@ import java.io.Serializable;
 @Table(name = "invoices")
 @Data
 public class InvoiceModel {
-    @EmbeddedId
-    private InvoiceKey id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("orderId")
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(
+            name = "id",
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String id;
+    private int quantity;
+    private Double price;
+    @ManyToOne(targetEntity = OrderModel.class)
     @JoinColumn(name = "order_id")
     private OrderModel orders;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("productId")
+    @ManyToOne(targetEntity = ProductModel.class)
     @JoinColumn(name = "product_id")
     private ProductModel products;
-
-    private Integer quantity;
-    private Float price;
-
 }

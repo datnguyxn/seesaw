@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,8 +19,7 @@ public class OrderRequest {
     private String email;
     private String phone;
     private String address;
-    private Float total_amount;
-    private String status;
     @NotEmpty
     private String user_id;
+    private List<OrderProduct> products;
 }

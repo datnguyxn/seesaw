@@ -24,7 +24,7 @@ public class FeedbackService {
     private ProductRepository productRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
-    public FeedbackResponse convertFeedback(FeedbackModel feedback){
+    public FeedbackResponse toResponse(FeedbackModel feedback){
         return FeedbackResponse.builder()
                 .id(feedback.getId())
                 .user(feedback.getUsers().getFirstname() + " " + feedback.getUsers().getLastname())
@@ -34,8 +34,8 @@ public class FeedbackService {
                 .build();
     }
     public FeedbackResponse addFeedback(AddFeedbackRequest request){
-        UserModel user = userRepository.findById(request.getUser_id()).orElseThrow();
-        ProductModel product = productRepository.findById(request.getProduct_id()).orElseThrow();
+        var user = userRepository.findById(request.getUser_id()).orElseThrow();
+        var product = productRepository.findById(request.getProduct_id()).orElseThrow();
         FeedbackKey key = FeedbackKey.builder()
                 .userId(user.getId())
                 .productId(product.getId())
@@ -52,21 +52,21 @@ public class FeedbackService {
         product.getFeedbacks().add(feedback);
         userRepository.save(user);
         productRepository.save(product);
-        return convertFeedback(feedback);
+        return toResponse(feedback);
     }
     public List<FeedbackResponse> getAllFeedbacks(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size).withSort(Sort.by("rating").descending());
-        return feedbackRepository.findAll(pageRequest).stream().map(this::convertFeedback).toList();
+        return feedbackRepository.findAll(pageRequest).stream().map(this::toResponse).toList();
     }
     public List<FeedbackResponse> getFeedbacksByProductId(String productId){
-        return feedbackRepository.findByProductId(productId).stream().map(this::convertFeedback).toList();
+        return feedbackRepository.findByProductId(productId).stream().map(this::toResponse).toList();
     }
     public List<FeedbackResponse> deleteFeedbackById(FeedbackKey id, int page, int size){
         feedbackRepository.deleteByUserIdAndProductId(id.getUserId(),id.getProductId());
         return getAllFeedbacks(page,size);
     }
     public void deleteFeedbacksOfProduct(ProductModel product){
-        List<FeedbackModel> feedback = feedbackRepository.findByProducts(product);
+        var feedback = feedbackRepository.findByProducts(product);
         feedback.forEach(f -> feedbackRepository.deleteByUserIdAndProductId(f.getId().getUserId(),f.getId().getProductId()));
     }
     public void save(List<FeedbackModel> feedbackModels) {

@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDetailResponse {
-    private String cart_id;
+public class OrderProductResponse {
+    private String name;
+    private String brand;
+    private int quantity;
     private Double price;
-    private List<CartProductResponse> products;
 }
