@@ -1,3 +1,5 @@
+const TOKEN = localStorage.getItem('token');
+
 // js to get all products data
 const productTable = $('#productTable');
 const tbody = $('#productTable tbody');
@@ -6,6 +8,7 @@ let myModal = new bootstrap.Modal(document.getElementById('editProductModal'), o
 
 // ajax request to get all products
 $(document).ready(function () {
+
     ajaxAllProduct();
     ajaxAllCollectionsName();
     ajaxAllCategoryName();
@@ -46,6 +49,9 @@ function ajaxAllProduct() {
         type: "GET",
         dataType: "json",
         contentType: "application/json",
+        headers: {
+            Authorization: "Bearer " + TOKEN
+        },
         async: false,
         success: function (data) {
             $.each(data, function (key, value) {

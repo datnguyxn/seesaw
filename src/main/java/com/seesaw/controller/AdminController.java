@@ -66,10 +66,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/order")
     public String getOrder(Model model, HttpServletRequest request) {
         if (checkURL(request)) {
-            return "pages/admin/dashboard";
+            return "pages/admin/order";
         } else {
             return "pages/404/404";
         }

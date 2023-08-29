@@ -95,7 +95,10 @@ public class SecurityConfig {
             "/category/**",
             "/collection/**",
             "/category",
-            "/collection"
+            "/collection",
+            "/order",
+            "/order/**"
+
     };
 
     @Bean

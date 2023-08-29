@@ -1,3 +1,5 @@
+const TOKEN = localStorage.getItem('token');
+
 // js to get all products data
 const userTable = $('#userTable');
 const tbody = $('#userTable tbody');
@@ -42,6 +44,9 @@ function editUser() {
                     type: "POST",
                     dataType: "json",
                     contentType: "application/json",
+                    header: {
+                        authorization: "Bearer " + TOKEN,
+                    },
                     async: false,
                     data: JSON.stringify({
                         "firstname": editModal.find('#firstname').val(),

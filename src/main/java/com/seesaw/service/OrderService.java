@@ -6,9 +6,15 @@ import com.seesaw.model.OrderModel;
 import com.seesaw.model.UserModel;
 import com.seesaw.repository.OrderRepository;
 import com.seesaw.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -18,28 +24,34 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
-    public OrderResponse convertOrder(OrderModel order){
+
+    public OrderResponse convertOrder(OrderModel order) {
         return OrderResponse.builder()
+                .id(order.getId())
                 .firstName(order.getFirstName())
                 .lastName(order.getLastName())
                 .email(order.getEmail())
                 .phone(order.getPhone())
                 .address(order.getAddress())
                 .total_amount(order.getTotal_amount())
+                .date_created(order.getDate_created())
                 .status(order.getStatus())
                 .build();
     }
-    public OrderResponse addOrder(OrderRequest request){
+
+    @SneakyThrows
+    public OrderResponse addOrder(OrderRequest request) {
         UserModel user = userRepository.findById(request.getUser_id()).orElse(null);
-        if(user != null){
+        if (user != null) {
             OrderModel order = OrderModel.builder()
+                    .id(request.getId())
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
                     .email(request.getEmail())
                     .phone(request.getPhone())
                     .address(request.getAddress())
                     .total_amount(request.getTotal_amount())
-                    .date_created(Date.from(java.time.Instant.now()))
+                    .date_created(new Date())
                     .status("unpaid")
                     .users(user)
                     .build();
@@ -50,17 +62,21 @@ public class OrderService {
         }
         return null;
     }
-    public List<OrderResponse> getAllOrder(){
+
+    public List<OrderResponse> getAllOrder() {
         return orderRepository.findAll().stream().map(this::convertOrder).toList();
     }
-    public List<OrderResponse> getAllOrderOfUser(String user_id){
+
+    public List<OrderResponse> getAllOrderOfUser(String user_id) {
         UserModel user = userRepository.findById(user_id).orElseThrow();
         return orderRepository.findByUsers(user).stream().map(this::convertOrder).toList();
     }
-    public OrderResponse getOrderById(String id){
+
+    public OrderResponse getOrderById(String id) {
         return convertOrder(orderRepository.findById(id).orElseThrow());
     }
-    public OrderResponse updateOrder(OrderRequest request){
+
+    public OrderResponse updateOrder(OrderRequest request) {
         OrderModel order = orderRepository.findById(request.getId()).orElseThrow();
         order.setFirstName(request.getFirstName());
         order.setLastName(request.getLastName());
@@ -71,10 +87,12 @@ public class OrderService {
         orderRepository.save(order);
         return convertOrder(order);
     }
-    public void deleteOrderOfUser(UserModel user){
+
+    public void deleteOrderOfUser(UserModel user) {
         List<OrderModel> order = orderRepository.findByUsers(user);
         orderRepository.deleteAll(order);
     }
+
     public void save(List<OrderModel> orderModels) {
         orderRepository.saveAll(orderModels);
     }

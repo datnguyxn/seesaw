@@ -1,3 +1,5 @@
+const TOKEN = localStorage.getItem('token');
+
 // js to get all products data
 const productTable = $('#categoryTable');
 const tbody = $('#categoryTable tbody');
@@ -19,6 +21,9 @@ function ajaxAllCategory() {
         method: "GET",
         dataType: "json",
         contentType: "application/json",
+        header: {
+            authorization: "Bearer " + TOKEN,
+        },
         async: false,
         success: function (data) {
             $.each(data, function (key, value) {
@@ -69,6 +74,9 @@ function ajaAddCategory() {
                 }
             ),
             contentType: "application/json",
+            header: {
+                authorization: "Bearer " + TOKEN,
+            },
             success: function (data) {
                 console.log("Add category success");
                 window.location.reload();
@@ -110,6 +118,9 @@ function ajaxEditCategory() {
                         },
                     ),
                     contentType: "application/json",
+                    header: {
+                        authorization: "Bearer " + TOKEN,
+                    },
                     success: function (data) {
                         console.log("Update category success");
                         window.location.reload();

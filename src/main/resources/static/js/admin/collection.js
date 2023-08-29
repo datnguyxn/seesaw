@@ -1,3 +1,5 @@
+const TOKEN = localStorage.getItem('token');
+
 // js to get all collection data
 const productTable = $('#collectionTable');
 const tbody = $('#collectionTable tbody');
@@ -19,6 +21,9 @@ function ajaxAllCollection() {
         method: "GET",
         dataType: "json",
         contentType: "application/json",
+        header: {
+            authorization: "Bearer " + TOKEN,
+        },
         async: false,
         success: function (data) {
             $.each(data, function (key, value) {
