@@ -15,7 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
-@Data
+@Getter
+@Setter
 public class ProductModel {
     @Id
     @GeneratedValue(generator = "UUID")

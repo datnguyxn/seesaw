@@ -16,7 +16,7 @@ public class ApiProductController {
     @Autowired
     private ProductService productService;
     @PostMapping("/add")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody @Valid ProductRequest request){
+    public ResponseEntity<ProductResponse> addProduct(@ModelAttribute @Valid ProductRequest request){
         return ResponseEntity.ok().body(productService.addProduct(request));
     }
     @GetMapping("/list")

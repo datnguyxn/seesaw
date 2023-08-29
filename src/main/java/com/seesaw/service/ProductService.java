@@ -12,6 +12,7 @@ import com.seesaw.repository.ProductRepository;
 import com.seesaw.utils.FileUploadUtil;
 import com.seesaw.utils.ProductSpecification;
 import com.seesaw.utils.SearchCriteria;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +64,7 @@ public class ProductService {
                 .build();
     }
 //    Create
+    @Transactional
     public ProductResponse addProduct(ProductRequest request){
         var product = productRepository.findById(request.getName()).orElse(null);
         var category = categoryRepository.findById(request.getCategory_id()).orElse(null);
