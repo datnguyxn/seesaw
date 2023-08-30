@@ -26,6 +26,7 @@ $(document).ready(function () {
                 localStorage.setItem('token', access_token);
                 localStorage.setItem('refreshToken', refresh_token);
                 loginSuccess(access_token);
+
             },
             error: function (error) {
                 console.log(error)

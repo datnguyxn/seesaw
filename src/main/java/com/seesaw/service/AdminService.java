@@ -25,7 +25,7 @@ public class AdminService {
         if (isAdminRequire(request)) {
             return url;
         } else {
-            return "redirect:/error";
+            return "redirect:/error/403";
         }
     }
 }

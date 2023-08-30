@@ -73,10 +73,10 @@ public class AuthenticationService {
     public String loginSuccess(String token) {
       var checkToken = tokenRepository.findByToken(token).orElseThrow(() -> new UserNotFoundException("Token not found"));
       var user = checkToken.getUsers();
-        if (user.getRole().equals(Role.ADMIN)) {
-            return "/admin/login";
+        if (user.getRole().equals(Role.USER)) {
+           return "/";
         } else {
-            return "/";
+            return "/auth/login";
         }
     }
 
