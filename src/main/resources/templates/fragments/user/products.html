@@ -48,69 +48,90 @@
         </div>
 
         <div class="product-list row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 p-0">
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img
-                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                    />
-                    <h3 class="name">Natural honey Bottle</h3>
-                    <p class="price">$59</p>
-                </div>
-            </div>
+
+            <th:block th:if="${#strings.equalsIgnoreCase(type, 'all')}">
+                <th:block th:each="entity : ${category}">
+                    <th:block th:each="product : ${entity.products}">
+                        <div class="col">
+                            <div class="card">
+                                <img
+                                        src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                                />
+                                <h3 class="name" th:text="${product.name}">Natural honey Bottle</h3>
+                                <p class="price" th:text="${product.price}">$59</p>
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
+            </th:block>
+
+            <th:block th:if="!${#strings.equalsIgnoreCase(type, 'all')}">
+                <th:block th:each="product : ${category.products}">
+                    <div class="col">
+                        <div class="card">
+                            <img
+                                    src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
+                            />
+                            <h3 class="name" th:text="${product.name}">Natural honey Bottle</h3>
+                            <p class="price" th:text="${product.price}">$59</p>
+                        </div>
+                    </div>
+                </th:block>
+            </th:block>
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div class="card">-->
+<!--                    <img-->
+<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
+<!--                    />-->
+<!--                    <h3 class="name">Natural honey Bottle</h3>-->
+<!--                    <p class="price">$59</p>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <div class="row m-5">
             <div class="col text-center">

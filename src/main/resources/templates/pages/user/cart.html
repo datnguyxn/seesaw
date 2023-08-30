@@ -6,7 +6,7 @@
     <div class="cart min-vh-100 mx-auto p-5">
         <div class="cart__title d-flex justify-content-between align-items-center">
             <h2>Your cart</h2>
-            <a href="#">Continue shopping</a>
+            <a th:href="@{/products}">Continue shopping</a>
         </div>
         <div class="cart-content my-3">
             <div class="cart-item--list">
@@ -98,7 +98,7 @@
                     </div>
                     <p class="checkout--tax">Tax included. Shipping calculated at checkout.</p>
                     <div class="content__button--add">
-                        <button class="collections__button mb-5 mt-2" role="button">
+                        <button class="checkout-button collections__button mb-5 mt-2" role="button">
                             Checkout
                         </button>
                     </div>
@@ -109,7 +109,9 @@
     <th:block th:insert="~{fragments/util/footer :: footer}"/>
     <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
     <script>
-
+        $('.checkout-button').on( "click", function() {
+            window.location.href =  "/checkout";
+        } );
     </script>
 </body>
 </html>

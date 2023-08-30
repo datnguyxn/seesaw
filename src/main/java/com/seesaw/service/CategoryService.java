@@ -89,6 +89,11 @@ public class CategoryService {
         categoryRepository.save(category);
         return toResponse(category);
     }
+
+    public List<CategoryResponse> getAll(){
+        return toResponse(categoryRepository.findAll());
+    }
+
 //    Delete
     @Transactional
     public List<CategoryResponse> deleteCategoryById(String id){

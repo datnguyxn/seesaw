@@ -34,6 +34,7 @@ public class ApiCategoryController {
     public ResponseEntity<CategoryResponse> getCategoryById(@RequestParam String id){
         return ResponseEntity.ok().body(categoryService.getCategoryById(id));
     }
+
     @PutMapping("/update")
     public ResponseEntity<CategoryResponse> updateCategory(
             @RequestParam String id,
