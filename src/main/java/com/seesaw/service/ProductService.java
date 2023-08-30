@@ -108,7 +108,20 @@ public class ProductService {
     public List<ProductResponse> getAllProductOfCollection(int page, int size, String value) {
         return productRepository.findAllByCollection_Id(value).stream().map(this::toResponse).collect(Collectors.toList());
     }
-    public List<ProductResponse> filter(int page, int size, String filter) {
+    public List<ProductResponse> sort(int page, int size, String value, String category_id) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        if(category_id == null){
+            if (value.equals("name")) {
+                return productRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream().map(this::toResponse).collect(Collectors.toList());
+            } else if (value.equals("price")) {
+                return productRepository.findAll(Sort.by(Sort.Direction.ASC, "price")).stream().map(this::toResponse).collect(Collectors.toList());
+            }
+        }
+        var products = productRepository.findAll();
+        products.sort(Comparator.comparing(ProductModel::getName));
+        return null;
+    }
+    public List<ProductResponse> filter(int page, int size, String filter, String by, String sorted) {
         PageRequest pageRequest = PageRequest.of(page, size);
         var temp = filter.split(";");
         System.out.println("temp: "+ Arrays.toString(temp));
@@ -157,8 +170,10 @@ public class ProductService {
         for (var criteria : fil) {
             spec = spec.and(ProductSpecification.builder().criteria(criteria).build());
         }
-
-        return productRepository.findAll(spec).stream().map(this::toResponse).collect(Collectors.toList());
+        if(sorted.equals("DESC")){
+            return productRepository.findAll(spec, Sort.by(by).descending()).stream().map(this::toResponse).collect(Collectors.toList());
+        }
+        return productRepository.findAll(spec, Sort.by(by).ascending()).stream().map(this::toResponse).collect(Collectors.toList());
     }
 //    Update
     public ProductResponse updateProduct(ProductRequest request, String id){

@@ -18,5 +18,6 @@ public class CollectionResponse {
     private String name;
     @JsonProperty("description")
     private String description;
+    private String image;
     private List<ProductResponse> products;
 }

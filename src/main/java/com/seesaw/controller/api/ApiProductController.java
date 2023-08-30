@@ -58,9 +58,11 @@ public class ApiProductController {
     public ResponseEntity<List<ProductResponse>> filterProduct(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "filter") String filter
+            @RequestParam(name = "filter") String filter,
+            @RequestParam(name = "by", defaultValue = "name") String by,
+            @RequestParam(name = "sorted", defaultValue = "ASC") String sorted
     ){
-        return ResponseEntity.ok().body(productService.filter(page, size, filter));
+        return ResponseEntity.ok().body(productService.filter(page, size, filter,by,sorted));
     }
     @PutMapping("/update")
     public ResponseEntity<ProductResponse> updateProduct(

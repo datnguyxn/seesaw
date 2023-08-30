@@ -8,6 +8,7 @@ import com.seesaw.model.CategoryModel;
 import com.seesaw.model.CollectionModel;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CategoryRepository;
+import com.seesaw.utils.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class CategoryService {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .image(category.getImage())
                 .products(category.getProducts() == null ? null : productService.toResponse(category.getProducts()).stream().toList())
                 .build();
     }
@@ -45,7 +48,14 @@ public class CategoryService {
 //    Create
     public CategoryResponse addCategory(AddCategoryRequest request){
         var category = toEntity(request);
-        categoryRepository.save(category);
+        var categorySaved = categoryRepository.save(category);
+        try{
+            FileUploadUtil.saveFile("category",category.getId() + ".jpg", request.getImage());
+            categorySaved.setImage("uploads/categories/" + category.getId() + ".jpg");
+            categoryRepository.save(categorySaved);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
         return toResponse(category);
     }
 //    Read
@@ -65,9 +75,17 @@ public class CategoryService {
     }
 //    Update
     public CategoryResponse updateCategory(AddCategoryRequest request, String id){
-        CategoryModel category = categoryRepository.findById(id).orElseThrow();
+        var category = categoryRepository.findById(id).orElseThrow();
         category.setName(request.getName());
         category.setDescription(request.getDescription());
+        try{
+            String file = category.getImage();
+            FileUploadUtil.deleteFile(file);
+            FileUploadUtil.saveFile("category",category.getId() + ".jpg", request.getImage());
+            category.setImage("uploads/categories/" + category.getId() + ".jpg");
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
         categoryRepository.save(category);
         return toResponse(category);
     }
@@ -77,6 +95,11 @@ public class CategoryService {
         CategoryModel category = categoryRepository.findById(id).orElseThrow();
         productService.deleteProductOfCategory(id);
         categoryRepository.delete(category);
+        try{
+            FileUploadUtil.deleteFile(category.getImage());
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
         return findAll();
     }
     public void save(List<CategoryModel> categoryModel) {

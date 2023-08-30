@@ -4,6 +4,7 @@ import com.seesaw.model.ProductModel;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +26,5 @@ public interface ProductRepository extends JpaRepository<ProductModel, String> {
     List<ProductModel> findAllByCategory_Id(String id);
     List<ProductModel> findAllByCollection_Id(String id);
 //    Page<ProductModel> findAll(Specification<ProductModel> spec, Pageable pageRequest);
-    List<ProductModel> findAll(Specification<ProductModel> spec);
+    List<ProductModel> findAll(Specification<ProductModel> spec, Sort sort);
 }

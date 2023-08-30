@@ -12,6 +12,7 @@ import com.seesaw.model.Mail;
 import com.seesaw.model.ProductModel;
 import com.seesaw.repository.CollectionRepository;
 import com.seesaw.service.impl.MailServiceImpl;
+import com.seesaw.utils.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,7 @@ public class CollectionService {
                 .id(collect.getId())
                 .name(collect.getName())
                 .description(collect.getDescription())
+                .image(collect.getImage())
                 .products(collect.getProducts() == null ? null : productService.toResponse(collect.getProducts()).stream().toList())
                 .build();
     }
@@ -56,10 +58,17 @@ public class CollectionService {
     }
 //    Create
     public CollectionResponse addCollection(AddCollectionRequest request){
-        var collect = toEntity(request);
-        collectionRepository.save(collect);
+        var collection = toEntity(request);
+        var collectionSaved = collectionRepository.save(collection);
+        try{
+            FileUploadUtil.saveFile("collection",collection.getId() + ".jpg", request.getImage());
+            collectionSaved.setImage("uploads/collections/" + collection.getId() + ".jpg");
+            collectionRepository.save(collectionSaved);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
         sendMailToIntroNewCollection();
-        return toResponse(collect);
+        return toResponse(collection);
     }
 //    Read
     public Page<?> get(int page, int size) {
@@ -73,16 +82,24 @@ public class CollectionService {
         return toResponse(collectionRepository.findAll(Sort.by(Sort.Direction.ASC,"name")));
     }
     public CollectionResponse getCollectionById(String id) {
-        CollectionModel collect = collectionRepository.findById(id).orElseThrow();
-        return toResponse(collect);
+        CollectionModel collection = collectionRepository.findById(id).orElseThrow();
+        return toResponse(collection);
     }
 //    Update
     public CollectionResponse updateCollection(AddCollectionRequest request, String id){
-        CollectionModel collect = collectionRepository.findById(id).orElseThrow();
-        collect.setName(request.getName());
-        collect.setDescription(request.getDescription());
-        collectionRepository.save(collect);
-        return toResponse(collect);
+        CollectionModel collection = collectionRepository.findById(id).orElseThrow();
+        collection.setName(request.getName());
+        collection.setDescription(request.getDescription());
+        try{
+            String file = collection.getImage();
+            FileUploadUtil.deleteFile(file);
+            FileUploadUtil.saveFile("collection",collection.getId() + ".jpg", request.getImage());
+            collection.setImage("uploads/collections/" + collection.getId() + ".jpg");
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+        collectionRepository.save(collection);
+        return toResponse(collection);
     }
 //    Delete
     @Transactional
@@ -90,6 +107,11 @@ public class CollectionService {
         CollectionModel collection = collectionRepository.findById(id).orElseThrow();
         productService.deleteProductOfCollection(id);
         collectionRepository.delete(collection);
+        try{
+            FileUploadUtil.deleteFile(collection.getImage());
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
         return findAll();
     }
     public void save(List<CollectionModel> collectionModel) {

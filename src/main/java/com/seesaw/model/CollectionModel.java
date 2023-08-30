@@ -25,7 +25,7 @@ public class CollectionModel {
     private String id;
     private String name;
     private String description;
-
+    private String image;
     @OneToMany(mappedBy = "collection",targetEntity = ProductModel.class,fetch = FetchType.EAGER)
     private Set<ProductModel> products;
 }
