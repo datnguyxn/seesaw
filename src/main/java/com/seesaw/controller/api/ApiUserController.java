@@ -28,6 +28,11 @@ public class ApiUserController {
         return ResponseEntity.ok(userService.findUserByToken(token));
     }
 
+    @PostMapping("/get-cart")
+    public String getCart(@RequestBody String token) {
+        return userService.findCartIdByToken(token);
+    }
+
     @PostMapping("/get-user-by-email")
     public ResponseEntity<AuthenticationResponse> getUserByEmail(@RequestBody String email) {
         return ResponseEntity.ok(userService.findUserByEmail(email));

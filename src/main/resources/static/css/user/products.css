@@ -57,6 +57,9 @@ body {
 }
 
 /* product list */
+.card {
+        cursor: pointer;
+}
 .product-list .card {
     margin-bottom: 20px;
 }

@@ -16,75 +16,74 @@
                 </div>
 <!--                <div class="line m-0 " style="opacity: 0"></div>-->
                 <div class="line mx-0 mt-0" style="background-color: #909090;"></div>
-
                 <div class="row cart--body">
-                    <div class="col d-flex flex-column gap-4">
-                        <div class="row d-flex align-items-center gap-2 m-0">
-                            <div class="col-md-2">
-                                <img th:src="@{/images/product1.png}" alt="error">
-                            </div>
-                            <div class="col-md-4 cart__item--name">
-                                <h4>Natural Honey</h4>
-                                <p class="cart__item--color">
-                                    Color: Crystal Pink
-                                </p>
-                                <p class="cart__item--price">
-                                    $99
-                                </p>
-                            </div>
-                            <div class="col-md-4 quantity p-0">
-                                <button class="minus-btn btn  disabled" type="button">-</button>
-                                <input id="quantity" type="text" value="1" readonly>
-                                <button class="btn plus-btn" type="button">+</button>
-                            </div>
-                            <div class="col cart--remove-item">
-                                <u class="cart--remove-item">Remove</u>
-                            </div>
-                        </div>
-                        <div class="row d-flex align-items-center gap-2 m-0">
-                            <div class="col-md-2">
-                                <img th:src="@{/images/product2.png}" alt="">
-                            </div>
-                            <div class="col-md-4 cart__item--name">
-                                <h4>Natural Honey</h4>
-                                <p class="cart__item--color">
-                                    Color: Crystal Pink
-                                </p>
-                                <p class="cart__item--price">
-                                    $99
-                                </p>
-                            </div>
-                            <div class="col-md-4 quantity p-0">
-                                <button class="minus-btn btn  disabled" type="button">-</button>
-                                <input id="quantity" type="text" value="1" readonly>
-                                <button class="btn plus-btn" type="button">+</button>
-                            </div>
-                            <div class="col cart--remove-item">
-                                <u class="cart--remove-item">Remove</u>
-                            </div>
-                        </div>
-                        <div class="row d-flex align-items-center gap-2 m-0">
-                            <div class="col-md-2">
-                                <img th:src="@{/images/product3.png}" alt="">
-                            </div>
-                            <div class="col-md-4 cart__item--name">
-                                <h4>Natural Honey</h4>
-                                <p class="cart__item--color">
-                                    Color: Crystal Pink
-                                </p>
-                                <p class="cart__item--price">
-                                    $99
-                                </p>
-                            </div>
-                            <div class="col-md-4 quantity p-0">
-                                <button class="minus-btn btn  disabled" type="button">-</button>
-                                <input id="quantity" type="text" value="1" readonly>
-                                <button class="btn plus-btn" type="button">+</button>
-                            </div>
-                            <div class="col cart--remove-item">
-                                <u class="cart--remove-item">Remove</u>
-                            </div>
-                        </div>
+                    <div class="cart--detail col d-flex flex-column gap-4">
+<!--                        <div class="row d-flex align-items-center gap-2 m-0">-->
+<!--                            <div class="col-md-2">-->
+<!--                                <img th:src="@{/images/product1.png}" alt="error">-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 cart__item&#45;&#45;name">-->
+<!--                                <h4>Natural Honey</h4>-->
+<!--                                <p class="cart__item&#45;&#45;color">-->
+<!--                                    Color: Crystal Pink-->
+<!--                                </p>-->
+<!--                                <p class="cart__item&#45;&#45;price">-->
+<!--                                    $99-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 quantity p-0">-->
+<!--                                <button class="minus-btn btn  disabled" type="button">-</button>-->
+<!--                                <input id="quantity" type="text" value="1" readonly>-->
+<!--                                <button class="btn plus-btn" type="button">+</button>-->
+<!--                            </div>-->
+<!--                            <div class="col cart&#45;&#45;remove-item">-->
+<!--                                <u class="cart&#45;&#45;remove-item">Remove</u>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row d-flex align-items-center gap-2 m-0">-->
+<!--                            <div class="col-md-2">-->
+<!--                                <img th:src="@{/images/product2.png}" alt="">-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 cart__item&#45;&#45;name">-->
+<!--                                <h4>Natural Honey</h4>-->
+<!--                                <p class="cart__item&#45;&#45;color">-->
+<!--                                    Color: Crystal Pink-->
+<!--                                </p>-->
+<!--                                <p class="cart__item&#45;&#45;price">-->
+<!--                                    $99-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 quantity p-0">-->
+<!--                                <button class="minus-btn btn  disabled" type="button">-</button>-->
+<!--                                <input id="quantity" type="text" value="1" readonly>-->
+<!--                                <button class="btn plus-btn" type="button">+</button>-->
+<!--                            </div>-->
+<!--                            <div class="col cart&#45;&#45;remove-item">-->
+<!--                                <u class="cart&#45;&#45;remove-item">Remove</u>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="row d-flex align-items-center gap-2 m-0">-->
+<!--                            <div class="col-md-2">-->
+<!--                                <img th:src="@{/images/product3.png}" alt="">-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 cart__item&#45;&#45;name">-->
+<!--                                <h4>Natural Honey</h4>-->
+<!--                                <p class="cart__item&#45;&#45;color">-->
+<!--                                    Color: Crystal Pink-->
+<!--                                </p>-->
+<!--                                <p class="cart__item&#45;&#45;price">-->
+<!--                                    $99-->
+<!--                                </p>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 quantity p-0">-->
+<!--                                <button class="minus-btn btn  disabled" type="button">-</button>-->
+<!--                                <input id="quantity" type="text" value="1" readonly>-->
+<!--                                <button class="btn plus-btn" type="button">+</button>-->
+<!--                            </div>-->
+<!--                            <div class="col cart&#45;&#45;remove-item">-->
+<!--                                <u class="cart&#45;&#45;remove-item">Remove</u>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                 </div>
                 <br>
@@ -94,7 +93,7 @@
                 <div class="checkout-section--left d-flex flex-column gap-3 col-md-4 p-0">
                     <div class="checkout--subtotal d-flex flex-row justify-content-between">
                         <p style="font-weight: 700;">Subtotal</p>
-                        <p class="checkout--total-price">$999</p>
+                        <p class="checkout--total-price"></p>
                     </div>
                     <p class="checkout--tax">Tax included. Shipping calculated at checkout.</p>
                     <div class="content__button--add">
@@ -108,10 +107,6 @@
     </div>
     <th:block th:insert="~{fragments/util/footer :: footer}"/>
     <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
-    <script>
-        $('.checkout-button').on( "click", function() {
-            window.location.href =  "/checkout";
-        } );
-    </script>
+    <script th:src="@{/js/user/cart.js}"></script>
 </body>
 </html>

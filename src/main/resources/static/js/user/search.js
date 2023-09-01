@@ -28,9 +28,9 @@ $(document).ready(function () {
                 } else {
                     const result = data.map((product) => {
                         return `
-                        <div class="product-item col-lg-3 col-md-6 mb-4">
+                        <div class="product-item col-lg-3 col-md-6 mb-4" data-id="${product.id}">
                             <div class="product-img">
-                                <a href="/product/${product.id}">
+                                <a>
                                     <img src="${product.image_path}" alt="error">
                                 </a>
                             </div>
@@ -59,7 +59,7 @@ $(document).ready(function () {
     function assignProductListener() {
         $('.product-item').on('click', function (e) {
             console.log("click")
-            window.location.href = "/product-detail";
+            window.location.href = `/product-detail?id=${$(this).data('id')}`;
         })
     }
 })

@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<th:block th:insert="~{/fragments/heading/heading :: heading(title='Collection')}" />
 <body>
-  <th:block th:each="product: ${products}" >
-    <p th:text="${product.name}"></p>
-
-  </th:block>
+<th:block th:insert="~{fragments/util/header :: header}"/>
+  <div class="container-md container-fluid filters">
+    <div class="product-list row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 mt-5 p-0">
+      <th:block th:each="product : ${products}">
+        <div class="col mb-3">
+          <div class="product-item card" th:data-id="${product.id}">
+            <img
+                    th:src="${product.image_path}"
+            />
+            <h3 class="name" th:text="${product.name}"></h3>
+            <p class="price" th:text="${product.price}"></p>
+          </div>
+        </div>
+      </th:block>
+  </div>
+</div>
+</th:block>
+<th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
+<script th:src="@{/js/user/collection.js}"></script>
 </body>
 </html>

@@ -3,74 +3,11 @@
     <th:block th:insert="~{/fragments/heading/heading :: heading(title='Detail')}" />
 <body>
     <th:block th:insert="~{fragments/util/header :: header}"/>
-    <div class="productDetail__content d-flex justify-content-center row m-5 min-vh-100">
-        <div class="content__image col-md-4 col-10" >
-            <img th:src="@{/images/product1.png}" alt="error">
-        </div>
-        <div class="content__information col-md-4 col-10 mx-2">
-            <div class="content__information--title">
-                <h2>Natural Honey Bottle</h2>
-                <p class="content__information--title">$99</p>
-            </div>
-            <div class="content__body">
-                <p class="content__information--description">
-                    Inspired by the classic round frame design, The Flow 01 was researched with a focus on form to find the best ratio round lens.
-                </p>
-                <p class="content__information--collection">
-                    by Name.
-                </p>
-                <div class="content__information--quantity">
-                    <p>Quantity</p>
-                    <div class="quantity">
-                        <button class="minus-btn btn  disabled" type="button">-</button>
-                        <input id="quantity" type="text" value="1" readonly>
-                        <button class="btn plus-btn" type="button">+</button>
-                    </div>
-                </div>
-                <div class="content__button--add">
-                    <button class="collections__button mb-5 mt-2" role="button">
-                        Add to cart
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="productDetail__content ">
+
     </div>
     <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
-    <script>
-        //setting default attribute to disabled
-        document.querySelector(".minus-btn").setAttribute("disabled", "disabled");
-
-
-        //plus button
-        document.querySelector(".plus-btn").addEventListener("click", function() {
-            //getting value of input
-            var valueCount = document.getElementById("quantity").value;
-            //input value increment by 1
-            valueCount++;
-            //setting increment input value
-            document.getElementById("quantity").value = valueCount;
-
-            //input value is > 1 using removeattribute and removeclass method
-            if (valueCount > 1) {
-                document.querySelector(".minus-btn").removeAttribute("disabled");
-                document.querySelector(".minus-btn").classList.remove("disabled")
-            }
-
-        })
-
-        //same process for minus button
-        document.querySelector(".minus-btn").addEventListener("click", function() {
-            var valueCount = document.getElementById("quantity").value;
-            //input value decrement by 1
-            valueCount--;
-            document.getElementById("quantity").value = valueCount;
-            console.log(valueCount);
-            if (valueCount == 1) {
-                document.querySelector(".minus-btn").setAttribute("disabled", "disabled")
-
-            }
-        })
-    </script>
+    <script th:src="@{/js/user/detail.js}"></script>
     <th:block th:insert="~{fragments/util/footer :: footer}"/>
 </body>
 </html>

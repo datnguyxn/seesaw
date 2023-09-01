@@ -72,16 +72,28 @@ public class CartDetailService {
         return totalPrice;
     }
     public CartDetailResponse getAllProductOfCart(String cart_id){
-        Map<String, Integer> mapProducts = new HashMap<>();
-        List<CartProductResponse> products = new ArrayList<>();
-        cartDetailRepository.findByCartId(cart_id).stream().map(c -> mapProducts.put(c.getProducts().getId(), c.getQuantity()));
-        mapProducts.forEach((key, value) -> {
-            products.add(productResponse(key,value));
-        });
+//        Map<String, Integer> mapProducts = new HashMap<>();
+//        List<CartProductResponse> products = new ArrayList<>();
+//        cartDetailRepository.findByCartId(cart_id).stream().map(c -> mapProducts.put(c.getProducts().getId(), c.getQuantity()));
+//        mapProducts.forEach((key, value) -> {
+//            products.add(productResponse(key,value));
+//        });
+//        System.out.println(products.size());
+//        var cart = cartRepository.findById(cart_id).orElseThrow();
+//        return toResponse(cart, products);
+        var products = cartDetailRepository.findByCartId(cart_id).stream().map(c -> productResponse(c.getProducts().getId(),c.getQuantity())).toList();
+        if (products.isEmpty()){
+            return CartDetailResponse.builder()
+                    .cart_id(cart_id)
+                    .price(0d)
+                    .products(products)
+                    .build();
+        }
         var cart = cartRepository.findById(cart_id).orElseThrow();
         return toResponse(cart, products);
+
     }
-    public CartDetailResponse deleteProductOfCart(String cart_id, String product_id){
+    public CartDetailResponse deleteProductOfCart(String product_id, String cart_id){
         cartDetailRepository.deleteProductOfCart(product_id,cart_id);
         CartModel cart = cartRepository.findById(cart_id).orElseThrow();
         cart.setTotal_amount(getTotalPrice(cart.getId()));

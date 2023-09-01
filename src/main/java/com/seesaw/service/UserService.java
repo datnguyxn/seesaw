@@ -9,6 +9,7 @@ import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
 import com.seesaw.exception.UserNotFoundException;
 import com.seesaw.model.*;
+import com.seesaw.repository.CartRepository;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -33,6 +34,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private CartService cartService;
@@ -88,6 +92,11 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UserNotFoundException("User not found");
         }
+    }
+
+    public String findCartIdByToken(String token) {
+        String user_id = findUserByToken(token).getId();
+        return cartRepository.findByUserId(user_id).orElseThrow(() -> new UserNotFoundException("User not found")).getId();
     }
 
 

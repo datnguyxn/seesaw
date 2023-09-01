@@ -29,3 +29,7 @@
 .search-box button:hover {
     opacity: .7;
 }
+
+.product-item:hover {
+    cursor: pointer;
+}

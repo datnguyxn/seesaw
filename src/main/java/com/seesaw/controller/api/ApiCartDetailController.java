@@ -20,7 +20,7 @@ public class ApiCartDetailController {
         cartDetailService.addToCart(request);
     }
     @GetMapping("/list")
-    public ResponseEntity<CartDetailResponse> getAllProductOfCart(String cart_id){
+    public ResponseEntity<CartDetailResponse> getAllProductOfCart(@RequestParam String cart_id){
         return ResponseEntity.ok().body(cartDetailService.getAllProductOfCart(cart_id));
     }
     @PostMapping("/delete")

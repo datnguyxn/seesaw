@@ -58,7 +58,7 @@ $(document).ready(function () {
             // console.log(data);
             const product = data.slice(0, 3).map((product, index) => {
                 return `
-                    <div class="col-3" style="width: 20rem">
+                    <div class="product-item col-3" style="width: 20rem" data-id="${product.id}">
                         <img
                                 class=""
                                 src="${product.image_path}"
@@ -72,6 +72,7 @@ $(document).ready(function () {
                 `;
             })
             $('.product__items').append(product);
+            productClick();
         },
         error: function (error) {
             console.log(error)
@@ -93,6 +94,15 @@ $(document).ready(function () {
             const id = $(this).data('id');
             console.log(id);
             window.location.href = `/products/collection?id=${id}`;
+        })
+    }
+
+    // click product
+    function productClick() {
+        $('.product-item').on('click', function (e) {
+            // const id = $(this).data('id');
+            // console.log(id);
+            window.location.href = `/product-detail?id=${$(this).data('id')}`;
         })
     }
 
