@@ -66,7 +66,7 @@ public class ApiProductController {
     }
     @PutMapping("/update")
     public ResponseEntity<ProductResponse> updateProduct(
-            @RequestBody @Valid ProductRequest request,
+            @ModelAttribute @Valid ProductRequest request,
             @RequestParam String id){
         return ResponseEntity.ok().body(productService.updateProduct(request,id));
     }

@@ -11,8 +11,12 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class FileUploadUtil {
     private static final String uploadDir = System.getProperty("user.dir") + "/src/main/uploads/products/";
+    private static final String[] allowedTypes = {"image/png", "image/jpeg", "image/jpg", "image/gif"};
 
     public static void saveFile(String path, String fileName, MultipartFile file) throws Exception {
+        if (!isAllowedType(file.getContentType())) {
+            throw new Exception("File type not allowed");
+        }
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
@@ -37,5 +41,14 @@ public class FileUploadUtil {
 
         Path filePath = uploadPath.resolve(fileName);
         Files.deleteIfExists(filePath);
+    }
+
+    private static boolean isAllowedType(String contentType) {
+        for (String type : allowedTypes) {
+            if (type.equalsIgnoreCase(contentType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

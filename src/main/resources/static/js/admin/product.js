@@ -42,7 +42,7 @@ function ajaxAllProduct() {
     let html = "";
     let index = 1;
     $.ajax({
-        url: "/products/list",
+        url: "/api/products/list",
         type: "GET",
         dataType: "json",
         contentType: "application/json",
@@ -54,8 +54,8 @@ function ajaxAllProduct() {
                         <tr id="${value.id}">
                                 <td>${index++}</td>
                                 <td>
-                                    <img src="${value.image_path}"
-                                         alt="Glasses" width="200px" height="auto">
+                                    <img src="${value?.image_path ? value.image_path : '/images/default_product_placeholder.png'}"
+                                         alt="Glasses" width="200px" height="120px" style="object-fit: cover;">
                                 </td>
                                 <td style="min-width: 200px;">
                                     <p>${value.name}</p>
@@ -64,10 +64,10 @@ function ajaxAllProduct() {
                                     <p>${value.brand}</p>
                                 </td>
                                 <td>
-                                    <p>${value.collection}</p>
+                                    <p>${value.collection_name}</p>
                                 </td>
                                 <td>
-                                    <p>${value.category}</p>
+                                    <p>${value.category_name}</p>
                                 </td>
                                 <td>
                                     <p>${value.description}</p>
@@ -103,7 +103,7 @@ function ajaxAllCollectionsName() {
     let collectionSelect = $('.product_collection');
     let html = "";
     $.ajax({
-        url: "/collections/list",
+        url: "/api/collections/list",
         type: "GET",
         dataType: "json",
         contentType: "application/json",
@@ -130,7 +130,7 @@ function ajaxAllCategoryName() {
     let categorySelect = $('.product_category');
     let html = "";
     $.ajax({
-        url: "/categories/list",
+        url: "/api/categories/list",
         type: "GET",
         dataType: "json",
         contentType: "application/json",
@@ -158,6 +158,7 @@ function ajaxAddProduct() {
     let saveBtn = $('#addProductModal .saveBtn');
     let closeBtn = $('#addProductModal .closeBtn');
 
+
     saveBtn.on('click', function () {
         console.log("Save Product")
         console.log(addProductModal.find('#product_name').val())
@@ -169,22 +170,29 @@ function ajaxAddProduct() {
         console.log(addProductModal.find('#product_quantity').val())
         console.log(addProductModal.find('#product_image_path').val())
 
+        const data = new FormData();
+        let imageFile = $('#addProductModal #image_file');
+
+        data.append("name", addProductModal.find('#product_name').val());
+        data.append("brand", addProductModal.find('#product_brand').val());
+        data.append("collection_id", addProductModal.find('#product_collection').find('option:selected').attr('id'));
+        data.append("category_id", addProductModal.find('#product_category').find('option:selected').attr('id'));
+        data.append("description", addProductModal.find('#product_description').val());
+        data.append("price", addProductModal.find('#product_price').val());
+        data.append("quantity", addProductModal.find('#product_quantity').val());
+        if(imageFile[0].files[0] != null){
+            data.append("image_path", imageFile[0].files[0]);
+        }
+
         $.ajax({
-            url: "/products/add",
+            url: "/api/products/add",
             type: "POST",
-            dataType: "json",
-            contentType: "application/json",
+            contentType: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+            cache: false,
             async: false,
-            data: JSON.stringify({
-                "name": addProductModal.find('#product_name').val(),
-                "brand": addProductModal.find('#product_brand').val(),
-                "collection_id": addProductModal.find('#product_collection').find('option:selected').attr('id'),
-                "category_id": addProductModal.find('#product_category').find('option:selected').attr('id'),
-                "description": addProductModal.find('#product_description').val(),
-                "price": addProductModal.find('#product_price').val(),
-                "quantity": addProductModal.find('#product_quantity').val(),
-                "image_path": addProductModal.find('#product_image_path').val()
-            }),
+            data: data,
             success: function (data) {
                 console.log("Success Add Product");
                 window.location.reload();
@@ -217,22 +225,41 @@ function ajaxEditProduct() {
             let id = $(element).attr('id');
             let name = $(element).find('td:nth-child(3)').text().replace(/\s+/g, ' ').trim();
             let brand = $(element).find('td:nth-child(4)').text().replace(/\s+/g, ' ').trim();
-            let collection = $(element).find('td:nth-child(5)').text().replace(/\s+/g, ' ').trim();
-            let category = $(element).find('td:nth-child(6)').text().replace(/\s+/g, ' ').trim();
+            let collection = $(element).find('td:nth-child(5)').find('p').text().replace(/\s+/g, ' ').trim();
+            let category = $(element).find('td:nth-child(6)').find('p').text().replace(/\s+/g, ' ').trim();
             let description = $(element).find('td:nth-child(7)').text().replace(/\s+/g, ' ').trim();
             let price = $(element).find('td:nth-child(8)').text().replace(/\s+/g, ' ').trim().replace(' VNĐ', '');
             let quantity = $(element).find('td:nth-child(9)').text().replace(/\s+/g, ' ').trim();
             let image = $(element).find('td:nth-child(2)').find('img').attr('src').replace(/\s+/g, ' ').trim();
+            console.log(image)
 
             editProductModal.find('#product_id').val(id);
             editProductModal.find('#product_name').val(name);
             editProductModal.find('#product_brand').val(brand);
-            editProductModal.find('#product_collection').val(collection);
-            editProductModal.find('#product_category').val(category);
             editProductModal.find('#product_description').val(description);
             editProductModal.find('#product_price').val(price);
             editProductModal.find('#product_quantity').val(quantity);
             editProductModal.find('#product_image_path').val(image);
+            editProductModal.find('#product_collection').find('option').each(function (index, element) {
+                if ($(element).val() == collection) {
+                    $(element).attr('selected', 'selected');
+                }
+            });
+            editProductModal.find('#product_category').find('option').each(function (index, element) {
+                if ($(element).val() == category) {
+                    $(element).attr('selected', 'selected');
+                }
+            });
+
+            const data = new FormData();
+            let imageFile = $('#editProductModal #image_file2');
+            data.append("name", editProductModal.find('#product_name').val());
+            data.append("brand", editProductModal.find('#product_brand').val());
+            data.append("collection_id", editProductModal.find('#product_collection').find('option:selected').attr('id'));
+            data.append("category_id", editProductModal.find('#product_category').find('option:selected').attr('id'));
+            data.append("description", editProductModal.find('#product_description').val());
+            data.append("price", editProductModal.find('#product_price').val());
+            data.append("quantity", editProductModal.find('#product_quantity').val());
 
             icon2.css('display', 'none');
             imagePreview2.css('display', 'block');
@@ -252,40 +279,31 @@ function ajaxEditProduct() {
                 }
             });
 
+
             saveBtn.on('click', function () {
+                if(imageFile[0].files[0] != null){
+                    data.append("image_path", imageFile[0].files[0]);
+                }
+                console.log(data)
                 $.ajax({
-                    url: "/products/update?id=" + id,
+                    url: "/api/products/update?id=" + id,
                     type: "PUT",
-                    dataType: "json",
-                    contentType: "application/json",
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    cache: false,
                     async: false,
-                    data: JSON.stringify({
-                        "name": editProductModal.find('#product_name').val(),
-                        "brand": editProductModal.find('#product_brand').val(),
-                        "collection_id": editProductModal.find('#product_collection').find('option:selected').attr('id'),
-                        "category_id": editProductModal.find('#product_category').find('option:selected').attr('id'),
-                        "description": editProductModal.find('#product_description').val(),
-                        "price": editProductModal.find('#product_price').val(),
-                        "quantity": editProductModal.find('#product_quantity').val(),
-                        "image_path": editProductModal.find('#product_image_path').val()
-                    }),
+                    data: data,
                     success: function (data) {
                         console.log("Success Update Product");
                         window.location.reload();
                     },
                     error: function (error) {
+                        console.log(error.responseText)
                         console.log("Error Update Product");
                     }
                 })
             })
-
-            $.each(closeBtn, function (key, value) {
-                $(value).on('click', function () {
-                    clearInputModal('#editProductModal');
-                });
-            });
-
-
         });
     });
 }
@@ -300,7 +318,7 @@ function ajaxDeleteProduct() {
             deleteBtn.on('click', function () {
                 console.log("Delete Product Confirm Click")
                 $.ajax({
-                    url: "/products/delete?id=" + id,
+                    url: "/api/products/delete?id=" + id,
                     type: "DELETE",
                     dataType: "json",
                     contentType: "application/json",
