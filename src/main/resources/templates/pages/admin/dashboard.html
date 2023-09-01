@@ -55,31 +55,9 @@
 
 <!-- NAVBAR -->
 <section id="content">
-    <!-- NAVBAR -->
-    <nav>
-        <i class="bx bx-menu toggle-sidebar"></i>
-        <form action="#">
-            <div class="form-group">
-                <input type="text" placeholder="Search..."/>
-                <i class="bx bx-search icon"></i>
-            </div>
-        </form>
-        <div class="profile">
-            <img
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                    alt=""
-            />
-            <ul class="profile-link">
-                <li>
-                    <a th:href="@{/}"><i class='bx bxs-home'></i></i> Home page</a>
-                </li>
-                <li>
-                    <a th:href="@{/logout}"><i class="bx btn-logout bxs-log-out-circle"></i> Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- NAVBAR -->
+
+
+    <th:block th:insert="~{fragments/admin/util/header :: header}"/>
 
     <!-- MAIN -->
     <main>
@@ -226,6 +204,8 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"
 ></script>
+<script th:src="@{/webjars/jquery/3.6.4/jquery.js}"></script>
 <script th:src="@{/js/admin/script.js}"></script>
+<script th:src="@{/js/admin/header.js}"></script>
 </body>
 </html>
