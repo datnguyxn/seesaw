@@ -15,7 +15,7 @@ function ajaxAllCategory() {
     let html = "";
     let index = 1;
     $.ajax({
-        url: "/categories/list",
+        url: "/api/categories/list",
         method: "GET",
         dataType: "json",
         contentType: "application/json",
@@ -60,7 +60,7 @@ function ajaAddCategory() {
         let category_name = addCategoryModal.find('#category_name').val();
         let category_description = addCategoryModal.find('#category_description').val();
         $.ajax({
-            url: "/categories/add",
+            url: "/api/categories/add",
             method: "POST",
             data: JSON.stringify(
                 {
@@ -101,7 +101,7 @@ function ajaxEditCategory() {
             editCategoryModal.find('#category_description').val(description);
             saveBtn.click(function () {
                 $.ajax({
-                    url: "/categories/update?id=" + id,
+                    url: "/api/categories/update?id=" + id,
                     method: "PUT",
                     data: JSON.stringify(
                         {
@@ -134,7 +134,7 @@ function ajaxDeleteCategory() {
             let id = $(value).attr('id');
             saveBtn.click(function () {
                 $.ajax({
-                    url: "/categories/delete?id=" + id,
+                    url: "/api/categories/delete?id=" + id,
                     method: "DELETE",
                     success: function (data) {
                         console.log("Delete category success");
@@ -142,7 +142,7 @@ function ajaxDeleteCategory() {
                     },
                     error: function (error) {
                         console.log("error");
-                        console.log(error);
+                        console.log(ergror);
                     }
                 })
             });

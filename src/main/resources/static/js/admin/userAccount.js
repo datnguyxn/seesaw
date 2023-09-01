@@ -20,6 +20,7 @@ function editUser() {
 
     allRow.each(function (index, element) {
         $(element).find('button.editBtn').on('click', function () {
+            let id = $(element).find('td:nth-child(2)').text();
             let firstName = $(element).find('td:nth-child(3)').text();
             let lastName = $(element).find('td:nth-child(4)').text();
             let email = $(element).find('td:nth-child(5)').text();
@@ -33,17 +34,18 @@ function editUser() {
             editModal.find('#gender').val(contact);
             editModal.find('#contact').val(gender);
             editModal.find('#address').val(address);
-            console.log("firstName : " + firstName + ", lastName: " + lastName + ", email: " + email
-                + ", gender: " + gender + ", contact: " + contact + ", address: " + address);
 
             saveBtn.on('click', function () {
+                console.log("firstName : " + firstName + ", lastName: " + lastName + ", email: " + email
+                    + ", gender: " + gender + ", contact: " + contact + ", address: " + address);
                 $.ajax({
                     url: "/api/user/update",
-                    type: "POST",
+                    type: "PUT",
                     dataType: "json",
                     contentType: "application/json",
                     async: false,
                     data: JSON.stringify({
+                        "id": id,
                         "firstname": editModal.find('#firstname').val(),
                         "lastname": editModal.find('#lastname').val(),
                         "email": editModal.find('#email').val(),
@@ -122,18 +124,14 @@ function deleteUser() {
 
     allRow.each(function (index, element) {
         $(element).find('button.deleteBtn').on('click', function () {
-            let email = $(element).find('td:nth-child(5)').text();
+            let id = $(element).find('td:nth-child(2)').text();
             deleteBtn.on('click', function () {
-                console.log("email : " + email)
                 $.ajax({
-                    url: "/api/user/delete-user",
-                    type: "POST",
+                    url: "/api/user/delete-user/" + id,
+                    type: "DELETE",
                     dataType: "json",
                     contentType: "application/json",
                     async: false,
-                    data: JSON.stringify({
-                        "email": email
-                    }),
                     success: function (data) {
                         console.log("Success Delete User");
                         window.location.reload();

@@ -15,7 +15,7 @@ function ajaxAllCollection() {
     let html = "";
     let index = 1;
     $.ajax({
-        url: "/collections/list",
+        url: "/api/collections/list",
         method: "GET",
         dataType: "json",
         contentType: "application/json",
@@ -60,7 +60,7 @@ function ajaAddCollection() {
         let collection_name = addCollectionModal.find('#collection_name').val();
         let collection_description = addCollectionModal.find('#collection_description').val();
         $.ajax({
-            url: "/collections/add",
+            url: "/api/collections/add",
             method: "POST",
             data: JSON.stringify(
                 {
@@ -101,7 +101,7 @@ function ajaxEditCollection() {
             editCollectionModal.find('#collection_description').val(description);
             saveBtn.click(function () {
                 $.ajax({
-                    url: "/collections/update?id=" + id,
+                    url: "/api/collections/update?id=" + id,
                     method: "PUT",
                     data: JSON.stringify(
                         {
@@ -134,7 +134,7 @@ function ajaxDeleteCollection() {
             let id = $(value).attr('id');
             saveBtn.click(function () {
                 $.ajax({
-                    url: "/collections/delete?id=" + id,
+                    url: "/api/collections/delete?id=" + id,
                     method: "DELETE",
                     success: function (data) {
                         console.log("Delete collection success");

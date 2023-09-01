@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class FileUploadUtil {
-    private static final String uploadDir = System.getProperty("user.dir") + "/src/main/uploads/product/";
+    private static final String uploadDir = System.getProperty("user.dir") + "/src/main/uploads/products/";
 
     public static void saveFile(String path, String fileName, MultipartFile file) throws Exception {
         Path uploadPath = Paths.get(uploadDir);
