@@ -101,6 +101,12 @@ public class ProductService {
         var products = productRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream().map(this::toResponse);
         return products.toList();
     }
+
+    public Page<ProductResponse> getAllProductsPage(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        var products = productRepository.findAll(pageRequest).map(this::toResponse);
+        return products;
+    }
     public ProductResponse getProductById(String id){
         return toResponse(productRepository.findById(id).orElseThrow());
     }
