@@ -1,6 +1,7 @@
 package com.seesaw.controller.api;
 
 import com.seesaw.dto.request.AddProductRequest;
+import com.seesaw.dto.request.CartProduct;
 import com.seesaw.dto.response.CartDetailResponse;
 import com.seesaw.service.CartDetailService;
 import jakarta.validation.Valid;
@@ -22,6 +23,13 @@ public class ApiCartDetailController {
     @GetMapping("/list")
     public ResponseEntity<CartDetailResponse> getAllProductOfCart(@RequestParam String cart_id){
         return ResponseEntity.ok().body(cartDetailService.getAllProductOfCart(cart_id));
+    }
+    @PutMapping("/update")
+    public void updateProductOfCart(
+            @RequestParam String cart_id,
+            @RequestBody @Valid List<CartProduct> products
+    ){
+        cartDetailService.updateCart(cart_id, products);
     }
     @PostMapping("/delete")
     public ResponseEntity<CartDetailResponse> deleteProductOfCart(

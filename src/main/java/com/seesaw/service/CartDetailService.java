@@ -1,6 +1,7 @@
 package com.seesaw.service;
 
 import com.seesaw.dto.request.AddProductRequest;
+import com.seesaw.dto.request.CartProduct;
 import com.seesaw.dto.response.CartDetailResponse;
 import com.seesaw.dto.response.CartProductResponse;
 import com.seesaw.model.*;
@@ -62,6 +63,17 @@ public class CartDetailService {
         cart.setTotal_amount(getTotalPrice(cart.getId()));
         cartRepository.save(cart);
     }
+    public void updateCart(String cart_id, List<CartProduct> products){
+        var cart = cartRepository.findById(cart_id).orElseThrow();
+        for(CartProduct product : products){
+            var cartDetail = cartDetailRepository.findByProductIdAndCartId(product.getId(), cart.getId());
+            cartDetail.setQuantity(product.getQuantity());
+            cartDetail.setPrice(product.getPrice()*product.getQuantity());
+            cartDetailRepository.save(cartDetail);
+        }
+        cart.setTotal_amount(getTotalPrice(cart.getId()));
+        cartRepository.save(cart);
+    }
     public Double getTotalPrice(String cart_id) {
         Double totalPrice = 0d;
         List<CartDetailModel> cartDetailModels = cartDetailRepository.findByCartId(cart_id);
@@ -71,15 +83,6 @@ public class CartDetailService {
         return totalPrice;
     }
     public CartDetailResponse getAllProductOfCart(String cart_id){
-//        Map<String, Integer> mapProducts = new HashMap<>();
-//        List<CartProductResponse> products = new ArrayList<>();
-//        cartDetailRepository.findByCartId(cart_id).stream().map(c -> mapProducts.put(c.getProducts().getId(), c.getQuantity()));
-//        mapProducts.forEach((key, value) -> {
-//            products.add(productResponse(key,value));
-//        });
-//        System.out.println(products.size());
-//        var cart = cartRepository.findById(cart_id).orElseThrow();
-//        return toResponse(cart, products);
         var products = cartDetailRepository.findByCartId(cart_id).stream().map(c -> productResponse(c.getProducts().getId(),c.getQuantity())).toList();
         if (products.isEmpty()){
             return CartDetailResponse.builder()
