@@ -26,7 +26,8 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductService productService;
-    public CategoryResponse toResponse(CategoryModel category){
+
+    public CategoryResponse toResponse(CategoryModel category) {
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
@@ -35,6 +36,7 @@ public class CategoryService {
                 .products(category.getProducts() == null ? null : productService.toResponse(category.getProducts()).stream().toList())
                 .build();
     }
+
     public CategoryModel toEntity(AddCategoryRequest request) {
         return CategoryModel.builder()
                 .id(request.getId())
@@ -42,71 +44,86 @@ public class CategoryService {
                 .description(request.getDescription())
                 .build();
     }
+
     public List<CategoryResponse> toResponse(List<CategoryModel> categories) {
         return categories.stream().map(this::toResponse).toList();
     }
-//    Create
-    public CategoryResponse addCategory(AddCategoryRequest request){
+
+    //    Create
+    public CategoryResponse addCategory(AddCategoryRequest request) {
         var category = toEntity(request);
         var categorySaved = categoryRepository.save(category);
-        try{
-            FileUploadUtil.saveFile("/categories/",category.getId() + ".jpg", request.getImage());
-            categorySaved.setImage("uploads/categories/" + category.getId() + ".jpg");
-            categoryRepository.save(categorySaved);
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        if (request.getImage() != null) {
+            try {
+                FileUploadUtil.saveFile("/categories/", category.getId() + ".jpg", request.getImage());
+                categorySaved.setImage("/uploads/categories/" + category.getId() + ".jpg");
+                categoryRepository.save(categorySaved);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         return toResponse(category);
     }
-//    Read
-    public Page<?> get(int page, int size) {
+
+    //    Read
+    public Page<CategoryResponse> get(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return categoryRepository.findAll(pageRequest).map(this::toResponse);
     }
-    public List<CategoryResponse> get(){
+
+    public List<CategoryResponse> get() {
         return toResponse(categoryRepository.findAll());
     }
-    public List<CategoryResponse> findAll(){
+
+    public List<CategoryResponse> findAll() {
         return toResponse(categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
     }
-    public CategoryResponse getCategoryById(String id){
+
+    public CategoryResponse getCategoryById(String id) {
         CategoryModel category = categoryRepository.findById(id).orElseThrow();
         return toResponse(category);
     }
-//    Update
-    public CategoryResponse updateCategory(AddCategoryRequest request, String id){
+
+    //    Update
+    public CategoryResponse updateCategory(AddCategoryRequest request, String id) {
         var category = categoryRepository.findById(id).orElseThrow();
         category.setName(request.getName());
         category.setDescription(request.getDescription());
-        try{
+        if (request.getImage() != null) {
             String file = category.getImage();
-            FileUploadUtil.deleteFile(file);
-            FileUploadUtil.saveFile("/categories/",category.getId() + ".jpg", request.getImage());
-            category.setImage("uploads/categories/" + category.getId() + ".jpg");
-        }catch (Exception e){
-            throw new RuntimeException(e);
+            if (file != null) {
+                try {
+                    FileUploadUtil.deleteFile(file);
+                    FileUploadUtil.saveFile("/categories/", category.getId() + ".jpg", request.getImage());
+                    category.setImage("/uploads/categories/" + category.getId() + ".jpg");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
+
         categoryRepository.save(category);
         return toResponse(category);
     }
 
-    public List<CategoryResponse> getAll(){
+    public List<CategoryResponse> getAll() {
         return toResponse(categoryRepository.findAll());
     }
 
-//    Delete
+    //    Delete
     @Transactional
-    public List<CategoryResponse> deleteCategoryById(String id){
+    public List<CategoryResponse> deleteCategoryById(String id) {
         CategoryModel category = categoryRepository.findById(id).orElseThrow();
         productService.deleteProductOfCategory(id);
         categoryRepository.delete(category);
-        try{
+        try {
             FileUploadUtil.deleteFile(category.getImage());
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return findAll();
     }
+
     public void save(List<CategoryModel> categoryModel) {
         categoryRepository.saveAll(categoryModel);
     }

@@ -37,18 +37,43 @@ function uploadImage() {
     })
 }
 
-function ajaxAllProduct() {
+function registerPaginationEvent() {
+    const pageLinks = $('.page-link');
+    pageLinks.on('click', function (e) {
+        e.preventDefault();
+        if($(this).parent().hasClass('disabled')) {
+            return;
+        }
+        const page = $(this).data('page');
+        ajaxAllProduct(page);
+    });
+}
+
+function ajaxAllProduct(
+    page = 0,
+    size =5
+) {
     let tbody = $('#productTable tbody');
     let html = "";
     let index = 1;
     $.ajax({
-        url: "/api/products/list",
+        url: `/api/products/list?page=${page}&size=${size}`,
         type: "GET",
         dataType: "json",
         contentType: "application/json",
         async: false,
         success: function (data) {
-            $.each(data, function (key, value) {
+            const {
+                totalPages,
+                number
+            } = data;
+            console.log("totalPages: " + totalPages);
+            console.log("number: " + number);
+
+            const paginationTemplate = renderPagnigation(totalPages, number);
+            $('.pagination').html(paginationTemplate);
+            registerPaginationEvent();
+            $.each(data.content, function (key, value) {
                 html +=
                     `
                         <tr id="${value.id}">
@@ -90,7 +115,7 @@ function ajaxAllProduct() {
                             </tr>
                     `;
             })
-            tbody.append(html);
+            tbody.html(html);
         },
         error: function (error) {
             console.log("Error");
@@ -160,16 +185,6 @@ function ajaxAddProduct() {
 
 
     saveBtn.on('click', function () {
-        console.log("Save Product")
-        console.log(addProductModal.find('#product_name').val())
-        console.log(addProductModal.find('#product_brand').val())
-        console.log(addProductModal.find('#product_collection').find('option:selected').attr('id'))
-        console.log(addProductModal.find('#product_category').find('option:selected').attr('id'))
-        console.log(addProductModal.find('#product_description').val())
-        console.log(addProductModal.find('#product_price').val())
-        console.log(addProductModal.find('#product_quantity').val())
-        console.log(addProductModal.find('#product_image_path').val())
-
         const data = new FormData();
         let imageFile = $('#addProductModal #image_file');
 

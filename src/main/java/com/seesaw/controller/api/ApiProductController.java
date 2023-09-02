@@ -5,6 +5,7 @@ import com.seesaw.dto.response.ProductResponse;
 import com.seesaw.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,11 @@ public class ApiProductController {
         return ResponseEntity.ok().body(productService.addProduct(request));
     }
     @GetMapping("/list")
-    public ResponseEntity<List<ProductResponse>> getAllProduct(
+    public ResponseEntity<Page<ProductResponse>> getAllProduct(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
-        return ResponseEntity.ok().body(productService.getAllProducts(page, size));
+        return ResponseEntity.ok().body(productService.getAllProductsPage(page, size));
     }
     @GetMapping("/info")
     public ResponseEntity<ProductResponse> getProduct(@RequestParam String id){
