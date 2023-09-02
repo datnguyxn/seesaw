@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.seesaw.repository.CartDetailRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CartDetailService {
@@ -44,7 +41,7 @@ public class CartDetailService {
         CartModel cart = cartRepository.findById(request.getCart_id()).orElseThrow();
         ProductModel product = productRepository.findById(request.getProduct_id()).orElseThrow();
         if(!cartDetailRepository.findByCartId(request.getCart_id()).isEmpty() && !cartDetailRepository.findByProductId(request.getProduct_id()).isEmpty()){
-            updateCart(cartDetailRepository.findByProductIdAndCartId(request.getProduct_id(), request.getCart_id()),request.getQuantity(),product.getPrice());
+            updateCart(cart,cartDetailRepository.findByProductIdAndCartId(request.getProduct_id(), request.getCart_id()),request.getQuantity(),product.getPrice());
         }else{
             CartDetailModel cartDetail = CartDetailModel.builder()
                     .quantity(request.getQuantity())
@@ -54,14 +51,16 @@ public class CartDetailService {
                     .build();
             cartDetailRepository.save(cartDetail);
             cart.getCart_detail().add(cartDetail);
+            cart.setTotal_amount(getTotalPrice(request.getCart_id()));
+            cartRepository.save(cart);
         }
-        cart.setTotal_amount(getTotalPrice(request.getCart_id()));
-        cartRepository.save(cart);
     }
-    public void updateCart(CartDetailModel cartDetail, int quantity, double price){
+    public void updateCart(CartModel cart, CartDetailModel cartDetail, int quantity, double price){
         cartDetail.setQuantity(cartDetail.getQuantity()+quantity);
         cartDetail.setPrice(cartDetail.getPrice()+price*quantity);
         cartDetailRepository.save(cartDetail);
+        cart.setTotal_amount(getTotalPrice(cart.getId()));
+        cartRepository.save(cart);
     }
     public Double getTotalPrice(String cart_id) {
         Double totalPrice = 0d;

@@ -61,7 +61,7 @@ public class CollectionService {
         var collection = toEntity(request);
         var collectionSaved = collectionRepository.save(collection);
         try{
-            FileUploadUtil.saveFile("collection",collection.getId() + ".jpg", request.getImage());
+            FileUploadUtil.saveFile("/collections/",collection.getId() + ".jpg", request.getImage());
             collectionSaved.setImage("uploads/collections/" + collection.getId() + ".jpg");
             collectionRepository.save(collectionSaved);
         }catch (Exception e){
@@ -93,7 +93,7 @@ public class CollectionService {
         try{
             String file = collection.getImage();
             FileUploadUtil.deleteFile(file);
-            FileUploadUtil.saveFile("collection",collection.getId() + ".jpg", request.getImage());
+            FileUploadUtil.saveFile("/collections/",collection.getId() + ".jpg", request.getImage());
             collection.setImage("uploads/collections/" + collection.getId() + ".jpg");
         }catch(Exception e){
             throw new RuntimeException(e);

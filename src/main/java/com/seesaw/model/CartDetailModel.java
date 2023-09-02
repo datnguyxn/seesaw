@@ -1,18 +1,18 @@
 package com.seesaw.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "cart_detail")
-@Data
+@Getter
+@Setter
+@EntityListeners(AuditingEntityListener.class)
 public class CartDetailModel {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -27,6 +27,7 @@ public class CartDetailModel {
     private String id;
     private int quantity;
     private Double price;
+
     @ManyToOne(targetEntity = CartModel.class)
     @JoinColumn(name = "cart_id")
     private CartModel carts;

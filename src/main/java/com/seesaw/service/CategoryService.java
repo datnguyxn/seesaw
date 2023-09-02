@@ -50,7 +50,7 @@ public class CategoryService {
         var category = toEntity(request);
         var categorySaved = categoryRepository.save(category);
         try{
-            FileUploadUtil.saveFile("category",category.getId() + ".jpg", request.getImage());
+            FileUploadUtil.saveFile("/categories/",category.getId() + ".jpg", request.getImage());
             categorySaved.setImage("uploads/categories/" + category.getId() + ".jpg");
             categoryRepository.save(categorySaved);
         }catch (Exception e){
@@ -81,7 +81,7 @@ public class CategoryService {
         try{
             String file = category.getImage();
             FileUploadUtil.deleteFile(file);
-            FileUploadUtil.saveFile("category",category.getId() + ".jpg", request.getImage());
+            FileUploadUtil.saveFile("/categories/",category.getId() + ".jpg", request.getImage());
             category.setImage("uploads/categories/" + category.getId() + ".jpg");
         }catch (Exception e){
             throw new RuntimeException(e);

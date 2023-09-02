@@ -3,6 +3,7 @@ package com.seesaw.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Set;
 
@@ -11,7 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "collections")
-@Data
+@Getter
+@Setter
+@EntityListeners(AuditingEntityListener.class)
 public class CollectionModel {
     @Id
     @GeneratedValue(generator = "UUID")

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 public class AddFeedbackRequest {
     private String note;
     private int rating;
-    @NotEmpty
     private String product_id;
-    @NotEmpty
     private String user_id;
 }

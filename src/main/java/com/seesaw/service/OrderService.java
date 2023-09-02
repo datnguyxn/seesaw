@@ -36,6 +36,7 @@ public class OrderService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .address(request.getAddress())
+                .status("Đang giao")
                 .build();
     }
     public OrderResponse toResponse(OrderModel order){
@@ -99,6 +100,7 @@ public class OrderService {
                 invoice.setQuantity(mapProducts.get(product.getId()));
                 invoice.setPrice(product.getPrice() * mapProducts.get(product.getId()));
                 order.setTotal_amount(getTotalPrice(id));
+
                 return invoice;
             }
             order.setTotal_amount(order.getTotal_amount() + product.getPrice() * mapProducts.get(product.getId()));
@@ -109,6 +111,9 @@ public class OrderService {
                     .price(product.getPrice() + mapProducts.get(product.getId()))
                     .build();
         }).toList();
+        if(!request.getStatus().isEmpty()){
+            order.setStatus(request.getStatus());
+        }
         var orderSaved = orderRepository.save(order);
         invoiceRepository.saveAll(orderDetails);
         return toResponse(orderSaved);

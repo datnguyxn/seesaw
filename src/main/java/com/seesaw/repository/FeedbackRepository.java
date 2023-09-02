@@ -16,7 +16,7 @@ public interface FeedbackRepository extends JpaRepository<FeedbackModel, Feedbac
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM feedbacks WHERE user_id = ?1 AND product_id = ?2", nativeQuery = true)
-    void deleteByUserIdAndProductId(String userId, String productId);
+    void deleteByUserIdAndProductId(String user_id, String product_id);
 
     @Query(value = "SELECT * FROM feedbacks WHERE product_id = ?1",nativeQuery = true)
     List<FeedbackModel> findByProductId(String productID);

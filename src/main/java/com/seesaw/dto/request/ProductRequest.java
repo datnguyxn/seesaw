@@ -20,8 +20,6 @@ public class ProductRequest {
     private Double price;
     private int quantity;
     private MultipartFile image_path;
-    @NotEmpty
     private String collection_id;
-    @NotEmpty
     private String category_id;
 }

@@ -79,7 +79,7 @@ public class ProductService {
             String id = productSaved.getId();
             if(request.getImage_path() != null){
                 try{
-                    FileUploadUtil.saveFile("product", id + ".jpg", request.getImage_path());
+                    FileUploadUtil.saveFile("/products/", id + ".jpg", request.getImage_path());
                     productSaved.setImage_path("/uploads/products/" + id + ".jpg");
                     category.getProducts().add(productSaved);
                     collection.getProducts().add(productSaved);
@@ -197,18 +197,16 @@ public class ProductService {
                         filePath = filePath.replace("/uploads/products/", "");
                         FileUploadUtil.deleteFile(filePath);
                     }
-                    FileUploadUtil.saveFile("products", id + ".jpg", request.getImage_path());
+                    FileUploadUtil.saveFile("/products/", id + ".jpg", request.getImage_path());
                     product.setImage_path("/uploads/products/" + id + ".jpg");
                 } else {
-                    FileUploadUtil.saveFile("products", id + ".jpg", request.getImage_path());
+                    FileUploadUtil.saveFile("/products/", id + ".jpg", request.getImage_path());
                     product.setImage_path("/uploads/products/" + id + ".jpg");
                 }
             } catch (Exception e){
                 throw new RuntimeException(e);
             }
         }
-//        product.setUpdatedDate(LocalDate.from(java.time.Instant.now()));
-
         productRepository.save(product);
         System.out.println("image_path: "+product.getImage_path());
         return toResponse(product);
@@ -220,7 +218,7 @@ public class ProductService {
         try{
             String filePath = product.getImage_path();
             FileUploadUtil.deleteFile(filePath);
-            FileUploadUtil.saveFile("products", product.getId() + ".jpg", request.getImage_path());
+            FileUploadUtil.saveFile("/products/", product.getId() + ".jpg", request.getImage_path());
             product.setImage_path("/uploads/products/" + product.getId() + ".jpg");
         }catch(Exception e){
             throw new RuntimeException(e);

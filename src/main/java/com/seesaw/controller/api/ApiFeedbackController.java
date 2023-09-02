@@ -31,7 +31,7 @@ public class ApiFeedbackController {
     public ResponseEntity<List<FeedbackResponse>> getFeedbackOfProduct(@RequestParam String id){
         return ResponseEntity.ok().body(feedbackService.getFeedbacksByProductId(id));
     }
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<List<FeedbackResponse>> delete(
             @RequestBody @Valid FeedbackKey id,
             @RequestParam(name = "page", defaultValue = "0") int page,

@@ -1,8 +1,6 @@
 package com.seesaw.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seesaw.dto.request.ProductRequest;
-import com.seesaw.exception.UserExistException;
 import com.seesaw.model.*;
 import com.seesaw.repository.CategoryRepository;
 import com.seesaw.repository.CollectionRepository;

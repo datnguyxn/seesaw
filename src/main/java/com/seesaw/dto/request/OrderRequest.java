@@ -19,6 +19,7 @@ public class OrderRequest {
     private String email;
     private String phone;
     private String address;
+    private String status;
     @NotEmpty
     private String user_id;
     private List<OrderProduct> products;

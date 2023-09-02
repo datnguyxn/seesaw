@@ -18,7 +18,7 @@ public class ApiCollectionController {
     private CollectionService collectionService;
 
     @PostMapping("/add")
-    public ResponseEntity<CollectionResponse> addCollection(@RequestBody @Valid AddCollectionRequest collection) {
+    public ResponseEntity<CollectionResponse> addCollection(@ModelAttribute @Valid AddCollectionRequest collection) {
         return ResponseEntity.ok().body(collectionService.addCollection(collection));
     }
     @GetMapping("/list")
@@ -28,10 +28,6 @@ public class ApiCollectionController {
     ){
         return ResponseEntity.ok().body(collectionService.get());
     }
-//    @GetMapping("/search-collection")
-//    public ResponseEntity<CollectionResponse> getCollectionByName(@RequestParam @Valid String name){
-//        return ResponseEntity.ok().body(collectionService.getCollectionByName(name));
-//    }
     @GetMapping("/get-collection")
     public ResponseEntity<CollectionResponse> getCollectionById(@RequestParam String id){
         return ResponseEntity.ok().body(collectionService.getCollectionById(id));
@@ -39,7 +35,7 @@ public class ApiCollectionController {
     @PutMapping("/update")
     public ResponseEntity<CollectionResponse> updateCollection(
             @RequestParam String id,
-            @RequestBody @Valid AddCollectionRequest request
+            @ModelAttribute @Valid AddCollectionRequest request
     ) {
         return ResponseEntity.ok().body(collectionService.updateCollection(request, id));
     }

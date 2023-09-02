@@ -16,13 +16,9 @@ public class ApiCategoryController {
     @Autowired
     private CategoryService categoryService;
     @PostMapping("/add")
-    public ResponseEntity<CategoryResponse> addCategory(@RequestBody @Valid AddCategoryRequest category){
+    public ResponseEntity<CategoryResponse> addCategory(@ModelAttribute @Valid AddCategoryRequest category){
         return ResponseEntity.ok().body(categoryService.addCategory(category));
     }
-//    @PostMapping("/search-category")
-//    public ResponseEntity<CategoryResponse> getCategoryByName(@RequestBody @Valid String name){
-//        return ResponseEntity.ok().body(categoryService.getCategoryByName(name));
-//    }
     @GetMapping("/list")
     public ResponseEntity<List<CategoryResponse>> getAllCategories(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -38,7 +34,7 @@ public class ApiCategoryController {
     @PutMapping("/update")
     public ResponseEntity<CategoryResponse> updateCategory(
             @RequestParam String id,
-            @RequestBody AddCategoryRequest request
+            @ModelAttribute AddCategoryRequest request
     ){
         return ResponseEntity.ok().body(categoryService.updateCategory(request,id));
     }

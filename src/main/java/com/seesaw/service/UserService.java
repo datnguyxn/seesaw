@@ -1,9 +1,7 @@
 package com.seesaw.service;
 
 import com.seesaw.authentication.AuthenticationResponse;
-import com.seesaw.authentication.EmailRequest;
 import com.seesaw.configuration.ApplicationConfig;
-import com.seesaw.dto.request.AddTokenRequest;
 import com.seesaw.dto.request.AddUserRequest;
 import com.seesaw.dto.response.MessageResponse;
 import com.seesaw.dto.response.UserResponse;
@@ -12,7 +10,6 @@ import com.seesaw.model.*;
 import com.seesaw.repository.CartRepository;
 import com.seesaw.repository.TokenRepository;
 import com.seesaw.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

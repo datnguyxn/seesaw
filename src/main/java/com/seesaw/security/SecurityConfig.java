@@ -79,9 +79,7 @@ public class SecurityConfig {
             "/api/**",
             "/products/**",
             "/product-detail/**",
-            "/cart-detail/**",
             "/uploads/**",
-            "cart-detail/**"
     };
 
     @Bean
