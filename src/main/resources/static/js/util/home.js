@@ -7,7 +7,7 @@ $(document).ready(function () {
         contentType: 'application/json',
         success: function (data) {
             // console.log(data);
-            const template = data.slice(0, 3).map((category, index) => {
+            const template = data.content.slice(0, 3).map((category, index) => {
                 return `
                     <div class="category-item col-md-3 col-sm-6 col-10" style="max-width: 20rem" data-id="${category.id}">
                         <p class="category-name fw-bold mt-3">${category.name}</p>
@@ -29,7 +29,7 @@ $(document).ready(function () {
         contentType: 'application/json',
         success: function (data) {
             // console.log(data);
-            const collection = data.map((collection) => {
+            const collection = data.content.map((collection) => {
                 return `
                      <div class="collection-item col-md-3 col-sm-6 col-10" style="max-width: 20rem" data-id="${collection.id}">
                         <img
@@ -56,7 +56,7 @@ $(document).ready(function () {
         contentType: 'application/json',
         success: function (data) {
             // console.log(data);
-            const product = data.slice(0, 3).map((product, index) => {
+            const product = data.content.slice(0, 3).map((product, index) => {
                 return `
                     <div class="product-item col-3" style="width: 20rem" data-id="${product.id}">
                         <img

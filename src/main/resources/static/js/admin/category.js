@@ -45,7 +45,7 @@ function registerPaginationEvent() {
 
 function ajaxAllCategory(
     page = 0,
-    size = 2
+    size = 10
 ) {
     let tbody = $('#categoryTable tbody');
     let html = "";
@@ -78,7 +78,6 @@ function ajaxAllCategory(
                                     <img src="${value?.image ? value.image : '/images/default_product_placeholder.png'}"
                                          alt="Glasses" width="200px" height="120px" style="object-fit: cover;">
                             </td>
-                            <td>${value.id}</td>
                             <td>${value.name}</td>
                             <td>${value.description}</td>
                             <td>
@@ -152,9 +151,10 @@ function ajaxEditCategory() {
         let editBtn = $(value).find('.editBtn');
         editBtn.click(function () {
             let id = $(value).attr('id');
-            let name = $(value).find('td:nth-child(4)').text();
-            let description = $(value).find('td:nth-child(5)').text();
+            let name = $(value).find('td:nth-child(3)').text();
+            let description = $(value).find('td:nth-child(4)').text();
             let image = $(value).find('td:nth-child(2) img').attr('src');
+
             editCategoryModal.find('#category_id').val(id);
             editCategoryModal.find('#category_name').val(name);
             editCategoryModal.find('#category_description').val(description);
@@ -178,9 +178,6 @@ function ajaxEditCategory() {
             });
 
             saveBtn.click(function () {
-                console.log(editCategoryModal.find('#category_name').val());
-                console.log(editCategoryModal.find('#category_description').val());
-                console.log(imageFile2[0].files[0]);
                 data.append("name", editCategoryModal.find('#category_name').val());
                 data.append("description", editCategoryModal.find('#category_description').val());
                 if(imageFile2[0].files[0] != null){

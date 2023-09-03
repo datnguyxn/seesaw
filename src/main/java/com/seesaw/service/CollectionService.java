@@ -60,18 +60,20 @@ public class CollectionService {
     public CollectionResponse addCollection(AddCollectionRequest request){
         var collection = toEntity(request);
         var collectionSaved = collectionRepository.save(collection);
-        try{
-            FileUploadUtil.saveFile("/collections/",collection.getId() + ".jpg", request.getImage());
-            collectionSaved.setImage("uploads/collections/" + collection.getId() + ".jpg");
-            collectionRepository.save(collectionSaved);
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        if(request.getImage() != null) {
+            try{
+                FileUploadUtil.saveFile("/collections/",collection.getId() + ".jpg", request.getImage());
+                collectionSaved.setImage("/uploads/collections/" + collection.getId() + ".jpg");
+                collectionRepository.save(collectionSaved);
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
         }
-        sendMailToIntroNewCollection();
+//        sendMailToIntroNewCollection();
         return toResponse(collection);
     }
 //    Read
-    public Page<?> get(int page, int size) {
+    public Page<CollectionResponse> get(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return collectionRepository.findAll(pageRequest).map(this::toResponse);
     }
@@ -90,13 +92,24 @@ public class CollectionService {
         CollectionModel collection = collectionRepository.findById(id).orElseThrow();
         collection.setName(request.getName());
         collection.setDescription(request.getDescription());
-        try{
+        if (request.getImage() != null) {
             String file = collection.getImage();
-            FileUploadUtil.deleteFile(file);
-            FileUploadUtil.saveFile("/collections/",collection.getId() + ".jpg", request.getImage());
-            collection.setImage("uploads/collections/" + collection.getId() + ".jpg");
-        }catch(Exception e){
-            throw new RuntimeException(e);
+            if (file != null) {
+                try {
+                    FileUploadUtil.deleteFile(file);
+                    FileUploadUtil.saveFile("/collections/", collection.getId() + ".jpg", request.getImage());
+                    collection.setImage("/uploads/collections/" + collection.getId() + ".jpg");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    FileUploadUtil.saveFile("/collections/", collection.getId() + ".jpg", request.getImage());
+                    collection.setImage("/uploads/collections/" + collection.getId() + ".jpg");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         collectionRepository.save(collection);
         return toResponse(collection);
@@ -107,10 +120,12 @@ public class CollectionService {
         CollectionModel collection = collectionRepository.findById(id).orElseThrow();
         productService.deleteProductOfCollection(id);
         collectionRepository.delete(collection);
-        try{
-            FileUploadUtil.deleteFile(collection.getImage());
-        }catch(Exception e){
-            throw new RuntimeException(e);
+        if(collection.getImage() != null) {
+            try{
+                FileUploadUtil.deleteFile(collection.getImage());
+            }catch(Exception e){
+                throw new RuntimeException(e);
+            }
         }
         return findAll();
     }

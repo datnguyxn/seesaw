@@ -6,6 +6,7 @@ import com.seesaw.dto.response.MailResponse;
 import com.seesaw.service.CollectionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,11 @@ public class ApiCollectionController {
         return ResponseEntity.ok().body(collectionService.addCollection(collection));
     }
     @GetMapping("/list")
-    public ResponseEntity<List<CollectionResponse>> getAllCollections(
+    public ResponseEntity<Page<CollectionResponse>> getAllCollections(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){
-        return ResponseEntity.ok().body(collectionService.get());
+        return ResponseEntity.ok().body(collectionService.get(page, size));
     }
     @GetMapping("/get-collection")
     public ResponseEntity<CollectionResponse> getCollectionById(@RequestParam String id){
