@@ -99,6 +99,13 @@ public class CategoryService {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+            } else {
+                try {
+                    FileUploadUtil.saveFile("/categories/", category.getId() + ".jpg", request.getImage());
+                    category.setImage("/uploads/categories/" + category.getId() + ".jpg");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
