@@ -23,11 +23,10 @@
 
         /* Start: upload image   */
         .custum-file-upload {
-            height: 200px;
-            width: 100%;
+            /*height: 180px;*/
+
             display: flex;
-            flex-direction: column;
-            align-items: space-between;
+            flex-direction: row;
             gap: 20px;
             cursor: pointer;
             align-items: center;
@@ -68,6 +67,17 @@
         #image_preview {
             display: none;
             object-fit: cover;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        /*image start with image_preview*/
+        img[id^="image_preview"] {
+            min-height: 120px;
+            height: fit-content;
+            max-height: 300px;
         }
 
         /* End: upload image   */

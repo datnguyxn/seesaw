@@ -23,7 +23,8 @@
 
         /* Start: upload image   */
         .custum-file-upload {
-            height: 180px;
+            /*height: 180px;*/
+
             display: flex;
             flex-direction: row;
             gap: 20px;
@@ -66,6 +67,17 @@
         #image_preview {
             display: none;
             object-fit: cover;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        /*image start with image_preview*/
+        img[id^="image_preview"] {
+            min-height: 120px;
+            height: fit-content;
+            max-height: 300px;
         }
 
         /* End: upload image   */
