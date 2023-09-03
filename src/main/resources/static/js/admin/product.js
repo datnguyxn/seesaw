@@ -134,7 +134,7 @@ function ajaxAllCollectionsName() {
         contentType: "application/json",
         async: false,
         success: function (data) {
-            $.each(data, function (key, value) {
+            $.each(data.content, function (key, value) {
                 html +=
                     `
                         <option id="${value.id}" value="${value.name}">${value.name}</option>
@@ -161,7 +161,7 @@ function ajaxAllCategoryName() {
         contentType: "application/json",
         async: false,
         success: function (data) {
-            $.each(data, function (key, value) {
+            $.each(data.content, function (key, value) {
                 html +=
                     `
                         <option id="${value.id}" value="${value.name}">${value.name}</option>
