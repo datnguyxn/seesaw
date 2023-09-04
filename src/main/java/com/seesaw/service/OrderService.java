@@ -12,6 +12,7 @@ import com.seesaw.repository.ProductRepository;
 import com.seesaw.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -77,9 +78,10 @@ public class OrderService {
         orderSaved.setUsers(user);
         return toResponse(orderSaved);
     }
-    public List<OrderResponse> getAllOrder(int page, int size){
+    public Page<OrderResponse> getAllOrder(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
-        return orderRepository.findAll(pageRequest).stream().map(this::toResponse).toList();
+//        return orderRepository.findAll(pageRequest).stream().map(this::toResponse).toList();
+        return orderRepository.findAll(pageRequest).map(this::toResponse);
     }
     public List<OrderResponse> get(int page, int size, String user_id) {
         PageRequest pageRequest = PageRequest.of(page, size);
