@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link th:href="@{https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/admin/table/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/table/datatables.min.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/table/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/styles.css}"/>
+    <title>Order</title>
+    <style>
+        main {
+            background-color: var(--grey);
+        }
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<section id="sidebar">
+    <a th:href="@{/admin/dashboard}" class="brand"><i class="bx bxs-smile icon"></i> AdminSite</a>
+    <ul class="side-menu">
+        <li>
+            <a th:href="@{/admin/dashboard}" class=""><i class='bx bxs-bar-chart-alt-2 icon'></i> Dashboard</a>
+        </li>
+        <li class="divider" data-text="main">Main</li>
+        <li>
+            <a th:href="@{/admin/userAccount}" class=""><i class='bx bxs-user icon'></i> User account</a>
+        </li>
+        <li class="divider" data-text="seesaw product">Seesaw Product</li>
+        <li>
+            <a th:href="@{/admin/product}" class=""><i class="bx bxs-mask icon"></i>Product</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/category}" class=""><i class='bx bxs-box icon'></i> Categories</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/collection}" class=""><i class='bx bxs-widget icon'></i> Collections</a>
+        </li>
+        <li class="divider" data-text="sale manage">Sale manage</li>
+        <li>
+            <a href="#" class="active"><i class='bx bxs-cart-alt icon'></i> Orders</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-discount icon'></i> Invoices</a>
+        </li>
+        <li>
+            <a href="#" class=""><i class='bx bxs-comment-dots icon'></i> Feedback</a>
+        </li>
+    </ul>
+</section>
+<!-- SIDEBAR -->
+
+<!-- NAVBAR -->
+<section id="content">
+    <!-- NAVBAR -->
+    <th:block th:insert="~{fragments/admin/util/header :: header}"/>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main class="container-fluid">
+        <div class="row m-1">
+            <div class="col m-0 p-0">
+                <h1>Order</h1>
+            </div>
+            <div class="col m-0 p-0">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary me-md-2 p-2" type="button">Add order</button>
+                    <!--                    <button class="btn btn-primary p-2" type="button">Delete Account</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="row m-1">
+            <div class="col-12 p-0 m-0">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Active</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+                <div class="data_table table-responsive">
+                    <table id="orderTable" class="table table-borderless table-hover table-responsive">
+                        <thead class="">
+                        <tr>
+                            <th></th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Created at</th>
+                            <th>Details</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- MAIN -->
+</section>
+
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.js}"></script>
+<script th:src="@{/webjars/jquery/3.6.4/jquery.js}"></script>
+
+<script th:src="@{/js/admin/header.js}"></script>
+<script th:src="@{/js/admin/script.js}"></script>
+<script th:src="@{/js/util/renderPagnigation.js}"></script>
+<script th:src="@{/js/admin/order.js}"></script>
+
+<script th:src="@{/js/admin/table/vfs_fonts.js}"></script>
+<script th:src="@{/js/admin/table/datatables.min.js}"></script>
+<script th:src="@{/js/admin/table/pdfmake.min.js}"></script>
+
+
+</body>
+</html>

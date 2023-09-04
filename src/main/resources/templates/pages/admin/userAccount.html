@@ -13,13 +13,6 @@
         main {
             background-color: var(--grey);
         }
-
-        .user--table img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
     </style>
 </head>
 <body>
@@ -34,9 +27,6 @@
         <li>
             <a href="#" class="active"><i class='bx bxs-user icon'></i> User account</a>
         </li>
-        <li>
-            <a href="#" class=""><i class='bx bxs-barcode icon'></i> Token</a>
-        </li>
         <li class="divider" data-text="seesaw product">Seesaw Product</li>
         <li>
             <a th:href="@{/admin/product}" class=""><i class="bx bxs-mask icon"></i>Product</a>
@@ -49,7 +39,7 @@
         </li>
         <li class="divider" data-text="sale manage">Sale manage</li>
         <li>
-            <a href="#" class=""><i class='bx bxs-cart-alt icon'></i> Orders</a>
+            <a th:href="@{/admin/order}" class=""><i class='bx bxs-cart-alt icon'></i> Orders</a>
         </li>
         <li>
             <a href="#" class=""><i class='bx bxs-discount icon'></i> Invoices</a>

@@ -43,9 +43,9 @@ public class AdminController {
         return adminService.redirectTo(request, "pages/admin/collection");
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/order")
     public String getOrder(Model model, HttpServletRequest request) {
-        return adminService.redirectTo(request, "pages/admin/orders");
+        return adminService.redirectTo(request, "pages/admin/order");
     }
 
     @GetMapping("/login")
