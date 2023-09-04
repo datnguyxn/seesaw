@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleNotFoundError(HttpServletRequest request, Exception ex) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/404/404");
+        modelAndView.setViewName("error/404");
         return modelAndView;
     }
 
@@ -113,5 +113,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public String handleException(Exception ex, HttpServletRequest request) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("message", ex.getMessage());
+        model.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return "error/500";
     }
 }
