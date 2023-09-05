@@ -30,11 +30,8 @@
         <div class="row m-1 d-flex flex-row justify-content-start m-2">
             <h1 class="" style="width: fit-content">Filters</h1>
             <div class="col filter-list d-flex flex-md-row m-0 p-0" style="flex-direction: column">
-                <div class="d-flex flex-row align-items-center justify-content-between m-0 p-0 gap-3">
-                    <button class="choice all active">All</button>
-                    <button class="choice frames">Frames</button>
-                    <button class="choice sunglasses">Sunglasses</button>
-                    <button class="choice accessories">Accessories</button>
+                <div class="filter-categories d-flex flex-row align-items-center justify-content-between m-0 p-0 gap-3">
+                    <a href="/products" class="choice all active text-decoration-none text-dark">All</a>
                 </div>
                 <div class="filter-sort dropdown d-inline ms-auto m-1 my-md-1 my-2">
                     <select class="form-select" aria-label="Default select example">
@@ -47,18 +44,19 @@
             </div>
         </div>
 
-        <div class="product-list row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 p-0">
-
+        <div class="product-list row row-cols-2 row-cols-md-3 row-cols-lg-4 m-0 p-0">
             <th:block th:if="${#strings.equalsIgnoreCase(type, 'all')}">
                 <th:block th:each="entity : ${category}">
                     <th:block th:each="product : ${entity.products}">
                         <div class="col">
-                            <div class="card">
-                                <img
-                                        src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                                />
-                                <h3 class="name" th:text="${product.name}">Natural honey Bottle</h3>
-                                <p class="price" th:text="${product.price}">$59</p>
+                            <div class="product_card" th:data-id="${product.id}">
+                                <div class="product_image">
+                                    <img th:src="${product.image_path}" alt="">
+                                </div>
+                                <div class="product_content">
+                                    <h3 class="product_name" th:text="${product.name}"></h3>
+                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></p>
+                                </div>
                             </div>
                         </div>
                     </th:block>
@@ -66,77 +64,29 @@
             </th:block>
 
             <th:block th:if="!${#strings.equalsIgnoreCase(type, 'all')}">
-                <th:block th:each="product : ${category.products}">
-                    <div class="col">
-                        <div class="card">
-                            <img
-                                    src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"
-                            />
-                            <h3 class="name" th:text="${product.name}">Natural honey Bottle</h3>
-                            <p class="price" th:text="${product.price}">$59</p>
+                <th:block th:each="entity : ${category}">
+                    <th:block th:each="product : ${entity.products}">
+                        <div class="col">
+                            <div class="product_card" th:data-id="${product.id}">
+                                <div class="product_image">
+                                    <img th:src="${product.image_path}" alt="">
+                                </div>
+                                <div class="product_content">
+                                    <h3 class="product_name" th:text="${product.name}"></h3>
+                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </th:block>
                 </th:block>
             </th:block>
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <div class="card">-->
-<!--                    <img-->
-<!--                            src="https://www.warbyparker.com/learn/wp-content/uploads/2022/12/how-long-goes-it-take-to-adjust-to-new-glasses.jpg"-->
-<!--                    />-->
-<!--                    <h3 class="name">Natural honey Bottle</h3>-->
-<!--                    <p class="price">$59</p>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
-        <div class="row m-5">
-            <div class="col text-center">
-                <button class="btn load-more">Load more</button>
-            </div>
-        </div>
+<!--        <div class="row m-5">-->
+<!--            <div class="col text-center">-->
+<!--                <button class="btn load-more">Load more</button>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
+
+    <input type="hidden" name="type" id="type" th:value="${type}">
 </main>

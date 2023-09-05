@@ -51,7 +51,7 @@ function registerPaginationEvent() {
 
 function ajaxAllProduct(
     page = 0,
-    size =5
+    size = 10
 ) {
     let tbody = $('#productTable tbody');
     let html = "";
@@ -266,16 +266,6 @@ function ajaxEditProduct() {
                 }
             });
 
-            const data = new FormData();
-            let imageFile = $('#editProductModal #image_file2');
-            data.append("name", editProductModal.find('#product_name').val());
-            data.append("brand", editProductModal.find('#product_brand').val());
-            data.append("collection_id", editProductModal.find('#product_collection').find('option:selected').attr('id'));
-            data.append("category_id", editProductModal.find('#product_category').find('option:selected').attr('id'));
-            data.append("description", editProductModal.find('#product_description').val());
-            data.append("price", editProductModal.find('#product_price').val());
-            data.append("quantity", editProductModal.find('#product_quantity').val());
-
             icon2.css('display', 'none');
             imagePreview2.css('display', 'block');
             imagePreview2.attr('src', image);
@@ -294,8 +284,16 @@ function ajaxEditProduct() {
                 }
             });
 
-
             saveBtn.on('click', function () {
+                const data = new FormData();
+                let imageFile = $('#editProductModal #image_file2');
+                data.append("name", editProductModal.find('#product_name').val());
+                data.append("brand", editProductModal.find('#product_brand').val());
+                data.append("collection_id", editProductModal.find('#product_collection').find('option:selected').attr('id'));
+                data.append("category_id", editProductModal.find('#product_category').find('option:selected').attr('id'));
+                data.append("description", editProductModal.find('#product_description').val());
+                data.append("price", editProductModal.find('#product_price').val());
+                data.append("quantity", editProductModal.find('#product_quantity').val());
                 if(imageFile[0].files[0] != null){
                     data.append("image_path", imageFile[0].files[0]);
                 }

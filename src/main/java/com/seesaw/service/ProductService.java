@@ -38,6 +38,7 @@ public class ProductService {
     private CartDetailService cartDetailService;
     @Autowired
     private InvoiceService invoiceService;
+
     public Set<ProductResponse> toResponse(Set<ProductModel> products) {
         return products.stream().map(this::toResponse).collect(Collectors.toSet());
     }
@@ -189,11 +190,17 @@ public class ProductService {
 //    Update
     public ProductResponse updateProduct(ProductRequest request, String id){
         var product = productRepository.findById(id).orElseThrow();
+        var category = categoryRepository.findById(request.getCategory_id()).orElse(null);
+        var collection = collectionRepository.findById(request.getCollection_id()).orElse(null);
+
         product.setName(request.getName());
         product.setBrand(request.getBrand());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setQuantity(request.getQuantity());
+        product.setCategory(category);
+        product.setCollection(collection);
+
         if(request.getImage_path() != null){
             System.out.println("image_path2: "+product.getImage_path());
             try{
