@@ -6,15 +6,18 @@ $(document).ready(function () {
 
     // render cart detail
     $.ajax({
-        url: "/cart-detail/list?cart_id=" + getCartId(),
+        url: "/api/cart-detail/list?cart_id=" + getCartId(),
         type: "GET",
         async: true,
         contentType: "application/json",
         success: function (data) {
             console.log(data);
-            $('.checkout--total-price').text(data.price)
-            data.products.forEach(product => {
-                $('.cart--detail').append(`
+            if (data.products.length === 0) {
+                $('.cart--detail').append(`No product`)
+            } else {
+                $('.checkout--total-price').text(data.price)
+                data.products.forEach(product => {
+                    $('.cart--detail').append(`
                     <div class="row d-flex align-items-center gap-2 m-0">
                             <div class="col-md-2">
                                 <img src="${product.image}" alt="error">
@@ -35,9 +38,11 @@ $(document).ready(function () {
                             </div>
                         </div>
                 `)
-            })
-            updateQuantity()
-            removeItem()
+                })
+                updateQuantity()
+                removeItem()
+            }
+
         },
         error: function (e) {
             console.log(e)
@@ -72,7 +77,7 @@ $(document).ready(function () {
     function removeItem() {
         $('.cart--remove-item').on( "click", function() {
             $.ajax({
-                url: "/cart-detail/delete?product_id=" + $(this).data('id') + "&cart_id=" + getCartId(),
+                url: "/api/cart-detail/delete?product_id=" + $(this).data('id') + "&cart_id=" + getCartId(),
                 type: "POST",
                 async: true,
                 contentType: "application/json",

@@ -4,13 +4,13 @@
 <body>
   <th:block th:insert="~{fragments/util/header :: header}"/>
   <div class="min-vh-100">
-    <form action="" class="search-box ">
+    <div class="search-box ">
       <h2 class="fw-light mb-4 fs-1">Search</h2>
       <input id="search" type="search" placeholder="Enter product name or collection name" class="p-0">
-      <button class="search--button" type="submit">
+      <button class="search--button">
         <i class="bi bi-search search-box-icon"></i>
       </button>
-    </form>
+    </div>
 
     <div class="product-list row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 mt-3 p-0"></div>
   </div>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class ProductController {
     private final CategoryService categoryService;
-    private final CollectionService collectionService;
     private final ProductService productService;
 
     @GetMapping(value = {"", "/"})

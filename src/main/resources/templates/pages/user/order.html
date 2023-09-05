@@ -10,90 +10,21 @@
     <div class="row m-0">
       <div class="col-md-12">
         <div class="order--category d-flex justify-content-between row mx-0 mb-3">
-          <div class="col-md-6 col-10 p-0">PRODUCT</div>
-          <div class="col-md-1 col-10 ps-0">TOTAL</div>
+          <div class="col-md-4 col-10 p-0">NAME</div>
+          <div class="col-md-2 col-10 ps-0">TOTAL</div>
           <div class="col-md-2 col-10">ORDER DATE</div>
           <div class="col-md-2 col-10">STATUS</div>
+          <div class="col-md-2 col-10"></div>
         </div>
         <div class="line mx-0 mt-0" style="background-color: #909090;"></div>
-        <div class="order-item__list row d-flex flex-column">
-          <div class="col d-flex flex-column gap-4">
-            <div class="row d-flex align-items-center justify-content-between gap-2 m-0">
-              <div class="col-md-3 col-12">
-                <img th:src="@{/images/product1.png}" alt="error">
-              </div>
-              <div class="col-md-3 col cart__item--name pe-0">
-                <h4>Natural Honey</h4>
-                <p class="cart__item--color">
-                  Color: Crystal Pink
-                </p>
-              </div>
-              <div class="col-md-1 col p-0">
-                <p class="cart__item--price">
-                  $99
-                </p>
-              </div>
-              <div class="col-md-2 col">
-                <p>1/1/2023</p>
-              </div>
-              <div class="col-md-2 col">
-                <button class="collections__button" role="button">
-                  Comfirm
-                </button>
-              </div>
-            </div>
-            <div class="row d-flex align-items-center justify-content-between gap-2 m-0">
-              <div class="col-md-3 col-12">
-                <img th:src="@{/images/product2.png}" alt="error">
-              </div>
-              <div class="col-md-3 col cart__item--name pe-0">
-                <h4>Natural Honey</h4>
-                <p class="cart__item--color">
-                  Color: Crystal Pink
-                </p>
-              </div>
-              <div class="col-md-1 col p-0">
-                <p class="cart__item--price">
-                  $99
-                </p>
-              </div>
-              <div class="col-md-2 col">
-                <p>1/1/2023</p>
-              </div>
-              <div class="col-md-2 col">
-                <button class="collections__button" role="button">
-                  Confirm
-                </button>
-              </div>
-            </div>
-            <div class="row d-flex align-items-center justify-content-between gap-2 m-0">
-              <div class="col-md-3 col-12">
-                <img th:src="@{/images/product3.png}" alt="error">
-              </div>
-              <div class="col-md-3 col cart__item--name pe-0">
-                <h4>Natural Honey</h4>
-                <p class="cart__item--color">
-                  Color: Crystal Pink
-                </p>
-              </div>
-              <div class="col-md-1 col p-0">
-                <p class="cart__item--price">
-                  $99
-                </p>
-              </div>
-              <div class="col-md-2 col">
-                <p>1/1/2023</p>
-              </div>
-              <div class="col-md-2 col">
-                <button class="collections__button" role="button">
-                  Comfirm
-                </button>
-              </div>
-            </div>
+        <div class="row d-flex flex-column">
+          <div class="order-item__list col d-flex flex-column gap-4">
           </div>
         </div>
       </div>
     </div>
   </div>
+  <th:block th:insert="~{fragments/scripts/scripts :: scripts}"/>
+  <script th:src="@{/js/user/order.js}"></script>
 </body>
 </html>

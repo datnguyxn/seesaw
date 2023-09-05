@@ -80,6 +80,7 @@ public class SecurityConfig {
             "/products/**",
             "/product-detail/**",
             "/uploads/**",
+            "/order-detail/**",
     };
 
     @Bean

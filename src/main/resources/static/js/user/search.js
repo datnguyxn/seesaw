@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // click event to show search
-    $('.search--button').on('click ', (e) => {
+    $('.search--button').on('click', () => {
         search();
     })
 
@@ -23,6 +23,10 @@ $(document).ready(function () {
             },
             success: function (data) {
                 console.log(data);
+                if ($('#search').val() === '') {
+                    $('.product-list').html('Type your search, please!');
+                    return;
+                }
                 if (data.length === 0) {
                     $('.product-list').append(`<p>No result</p>`)
                 } else {

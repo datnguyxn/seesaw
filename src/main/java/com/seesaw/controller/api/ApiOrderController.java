@@ -5,6 +5,7 @@ import com.seesaw.dto.response.OrderResponse;
 import com.seesaw.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ApiOrderController {
         return ResponseEntity.ok().body(orderService.addOrder(request));
     }
     @GetMapping("/list")
-    public ResponseEntity<List<OrderResponse>> getAllOrder(
+    public ResponseEntity<Page<OrderResponse>> getAllOrder(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size
     ){

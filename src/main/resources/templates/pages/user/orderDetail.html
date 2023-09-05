@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+    <th:block th:insert="~{/fragments/heading/heading :: heading(title='Order Detail')}" />
+<body>
+<th:block th:replace="~{fragments/util/header :: header}"/>
+<header class="container" style="height: 54px">
+    <div class="header-action d-flex justify-content-end me-3 mt-3" style="height: 50px">
+        <div class="app-branding" style="justify-content: flex-start">
+            <button class="app-logo" ><a class="order-btn btn btn-success" href="/order"><span class="logo-text">List Order</span></a></button>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="profile">
+        <h1 style="text-align: center;margin-bottom: 80px;">Your Order</h1>
+        <div style="width: 50%;float: left;margin-left: 20px;">
+            <h3>Username: <span th:text="${products.name}"></span></h3>
+            <h3>Address: <span th:text="${products.address}"></span></h3>
+            <h3>Phone: <span th:text="${products.phone}"></span></h3>
+            <h3>Total Price: <span th:text="${products.total_amount} + ' VND'"></span></h3>
+        </div>
+        <div style="float: left;">
+            <h3>Order ID: <span th:text="${products.order_id}"></span></h3>
+            <h3>Order Status: <span th:text="${products.status}"></span></h3>
+        </div>
+    </div>
+    <div>
+        <table class="styled-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product : ${products.products}">
+                <tr>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.brand}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantity}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

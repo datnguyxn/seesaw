@@ -50,7 +50,7 @@ $(document).ready(function () {
             $(".productDetail__content").html(template);
             assignQuantityListener()
             addToCart()
-            getCartId()
+            // getCartId()
         },
         error: function (error) {
             console.log(error);
@@ -64,10 +64,14 @@ $(document).ready(function () {
             console.log(id_product)
             console.log(getCartId())
             console.log($("#quantity").val())
+            const TOKEN = localStorage.getItem("token");
+            if (TOKEN == null) {
+                window.location.href = "/auth/login"
+            }
 
             console.log("click add to cart")
             $.ajax({
-                url: "/cart-detail/add",
+                url: "/api/cart-detail/add",
                 type: "POST",
                 data: JSON.stringify({
                     "product_id": id_product,
@@ -76,9 +80,10 @@ $(document).ready(function () {
                 }),
                 async: false,
                 contentType: "application/json",
-                success: function (data) {
+                success: function () {
                     console.log("success");
                     alert("Add to cart successfully!")
+                    window.location.href = "/cart"
                 },
                 error: function (e) {
                     console.log(e)
