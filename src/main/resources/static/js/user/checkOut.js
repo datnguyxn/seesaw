@@ -28,9 +28,8 @@ $(document).ready(function () {
     $.ajax({
         url: "/api/cart-detail/list?cart_id=" + getCartId(TOKEN),
         type: "GET",
-        async: true,
+        async: false,
         contentType: "application/json",
-        timeout: 1000,
         success: function (data) {
             console.log(data.products)
             // productList = data.products

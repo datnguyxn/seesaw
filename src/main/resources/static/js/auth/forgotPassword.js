@@ -84,7 +84,7 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data)
                     errorText.addClass('d-none')
-                    window.location.href = '/login'
+                    window.location.href = '/auth/login'
                 },
                 error: function (error) {
                     console.log(error)

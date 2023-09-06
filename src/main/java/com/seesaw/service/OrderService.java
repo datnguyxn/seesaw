@@ -38,7 +38,7 @@ public class OrderService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .address(request.getAddress())
-                .status("Đang giao")
+                .status("Đang xét")
                 .build();
     }
     public OrderResponse toResponse(OrderModel order){
@@ -138,5 +138,12 @@ public class OrderService {
             totalPrice += orderDetail.getPrice();
         }
         return totalPrice;
+    }
+
+    public OrderResponse updateStatus(String id, String request) {
+        var order = orderRepository.findById(id).orElseThrow();
+        order.setStatus(request);
+        var orderSaved = orderRepository.save(order);
+        return toResponse(orderSaved);
     }
 }

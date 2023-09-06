@@ -4,7 +4,54 @@ const tbody = $('#orderTable tbody');
 
 $(document).ready(function () {
     ajaxAllOrder();
+    handleOrderSelect();
+    clickOrderDetail();
+    activeNabs();
 });
+
+function handleOrderSelect() {
+    let editOrder = $('.editOrder');
+
+    editOrder.each(function (index, item) {
+        $(item).on('click', function (e) {
+            let editOrderList = $(this).next();
+            if (editOrderList.hasClass('active')) {
+                editOrderList.removeClass('active');
+            } else {
+                let allEditOrderList = $('.editOrderList');
+                allEditOrderList.removeClass('active');
+                editOrderList.addClass('active');
+            }
+        })
+    });
+
+    let editOrderItem = $('.editOrderItem');
+    editOrderItem.each(function (index, item) {
+        $(item).on('click', function (e) {
+            let status = $(this).text();
+            let orderId = $(this).parent().parent().parent().attr('id');
+            ajaxEditOrder(orderId, status);
+        })
+    });
+}
+
+function ajaxEditOrder(orderId, status) {
+    $.ajax({
+        url: `/api/orders/update-status/${orderId}`,
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: status,
+        async: false,
+        success: function (data) {
+            window.location.reload();
+        },
+        error: function (error) {
+            console.log("Error");
+            console.log(error.responseText);
+        }
+    })
+}
 
 function registerPaginationEvent() {
     const pageLinks = $('.page-link');
@@ -14,7 +61,7 @@ function registerPaginationEvent() {
             return;
         }
         const page = $(this).data('page');
-        ajaxAllCollection(page);
+        ajaxAllOrder(page);
     });
 }
 
@@ -67,11 +114,19 @@ function ajaxAllOrder(
                                     <p >${value.created_at}</p>
                                 </td>
                                 <td>
-                                    <button class="detailBtn btn btn-link p-1 m-1">Detail
-                                    </button>
+                                    <a href="#" class="detailBtn link-primary text-decoration-underline p-1 m-1">Detail
+                                    </a>
                                 </td>
                                 <td>
-                                    <button class="deleteBtn btn btn-light p-1 m-1"><i class='bx bx-dots-vertical-rounded'></i></button>
+                                    <div class="editOrder p-1 m-1">
+                                        <i class='bx bx-dots-vertical-rounded'></i>
+                                    </div>
+                                    <ul class="editOrderList">
+                                        <li class="editOrderItem" data="1">Đang xét</li>
+                                        <li class="editOrderItem" data="2">Đang giao</li>
+                                        <li class="editOrderItem" data="3">Đã nhận</li>
+                                        <li class="editOrderItem" data="4">Hủy</li>
+                                    </ul>
                                 </td>
                             </tr>
                     `;
@@ -84,6 +139,27 @@ function ajaxAllOrder(
     })
 }
 
-function activeOrderDetails() {
+function clickOrderDetail() {
+    $('.detailBtn').click(function() {
+        window.location.href = "/admin/order-detail/order/" + $(this).parent().parent().attr('id');
+    })
+}
 
+function activeNabs() {
+    let navTabs = $('.nav-tabs');
+    let navItem = $('.nav-item');
+    navItem.each(function (index, item) {
+        $(item).on('click', function (e) {
+            let navLink = $(this).find('.nav-link');
+            if (navLink.hasClass('active')) {
+                navLink.removeClass('active');
+            } else {
+                let allNavLink = $('.nav-link');
+                allNavLink.each(function (index, item) {
+                    $(item).removeClass('active');
+                });
+                navLink.addClass('active');
+            }
+        })
+    });
 }

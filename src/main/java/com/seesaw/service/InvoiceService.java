@@ -30,7 +30,7 @@ public class InvoiceService {
                 .email(order.getEmail())
                 .phone(order.getPhone())
                 .total_amount(order.getTotal_amount())
-                .status("Success")
+                .status(order.getStatus())
                 .createdAt(order.getCreatedDate())
                 .products(products)
                 .build();
@@ -38,6 +38,7 @@ public class InvoiceService {
     public OrderProductResponse productResponse(String product_id, int quantity){
         var product = productRepository.findById(product_id).orElseThrow();
         return OrderProductResponse.builder()
+                .image_path(product.getImage_path())
                 .name(product.getName())
                 .brand(product.getBrand())
                 .quantity(quantity)

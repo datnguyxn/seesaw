@@ -32,7 +32,7 @@ $(document).ready(function () {
                 } else {
                     const result = data.map((product) => {
                         return `
-                        <div class="product-item col-lg-3 col-md-6 mb-4" data-id="${product.id}">
+                        <div class="product-item col-lg-3 col-md-6 mb-4 p-3" data-id="${product.id}">
                             <div class="product-img">
                                 <a>
                                     <img src="${product.image_path}" alt="error">
@@ -40,9 +40,7 @@ $(document).ready(function () {
                             </div>
                             <div class="product-content">
                                 <h3 class="title">${product.name}</h3>
-                                <div class="price">
-                                    ${product.price}
-                                </div>
+                                <p class="price">${product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND</p>
                             </div>
                         </div>
                         `

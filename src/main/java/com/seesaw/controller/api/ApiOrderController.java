@@ -41,6 +41,14 @@ public class ApiOrderController {
             @RequestBody OrderRequest request){
         return ResponseEntity.ok().body(orderService.updateOrder(id,request));
     }
+
+    @PostMapping("/update-status/{id}")
+    public ResponseEntity<OrderResponse> updateStatus(
+            @PathVariable(name = "id") String id,
+            @RequestBody String status){
+        return ResponseEntity.ok().body(orderService.updateStatus(id,status));
+    }
+
     @GetMapping("/delete/{id}")
     public ResponseEntity<OrderResponse> deleteOrder(@PathVariable(name = "id") String id){
         return ResponseEntity.ok().body(orderService.delete(id));

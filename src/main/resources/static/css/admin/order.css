@@ -1,0 +1,32 @@
+.editOrder:hover {
+    cursor: pointer;
+}
+
+#orderTable .editOrder {
+    position: relative;
+}
+
+#orderTable .editOrderList {
+    display: none;
+    position: absolute;
+    right: 0;
+    transform: translateX(-50px);
+    padding: 4px;
+}
+
+#orderTable .editOrderList.active {
+    display: block;
+}
+
+.editOrderList li {
+    background-color: #000;
+    color: #fff;
+    display: block;
+    margin-right: 10px;
+    padding: 4px 24px 4px 16px;
+}
+
+.editOrderList li:hover {
+    background-color: #333;
+    cursor: pointer;
+}
