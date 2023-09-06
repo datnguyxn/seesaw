@@ -15,7 +15,7 @@ $(document).ready(function () {
             if (data.products.length === 0) {
                 $('.cart--detail').html(``)
             } else {
-                $('.checkout--total-price').text(data.price)
+                $('.checkout--total-price').text(data.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}))
                 data.products.forEach(product => {
                     $('.cart--detail').append(`
                     <div class="cartItem row d-flex align-items-center gap-2 m-0" data-id="${product.id}">
@@ -25,7 +25,7 @@ $(document).ready(function () {
                             <div class="col-md-4 cart__item--name">
                                 <h4>${product.name}</h4>
                                 <p class="cart__item--price">
-                                    ${product.price}
+                                    ${product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}
                                 </p>
                             </div>
                             <div class="col-md-4 quantity p-0">
@@ -115,8 +115,9 @@ $(document).ready(function () {
     }
     // Update item quantity
     function updateQuantity() {
+        let newQuantity = Number($("#quantity").val()) + 1;
         $.ajax({
-            url: "/api/cart-detail/update-quantity?cart_id=" + getCartId() + "&product_id=" + $(".cartItem").data('id') + "&quantity=" + Number($("#quantity").val()),
+            url: "/api/cart-detail/update-quantity?cart_id=" + getCartId() + "&product_id=" + $(".cartItem").data('id') + "&quantity=" + newQuantity,
             type: "POST",
             async: true,
             contentType: "application/json",

@@ -65,8 +65,8 @@ $(document).ready(function () {
                                 alt="Card image cap"
                         />
                         <div class="mt-3">
-                            <h5 class="">${product.name}</h5>
-                            <p class="">${product.price}</p>
+                            <h5 class="fw-light">${product.name}</h5>
+                            <p class="">${product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</p>
                         </div>
                     </div>            
                 `;

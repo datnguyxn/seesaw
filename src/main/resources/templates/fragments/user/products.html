@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="product_content">
                                     <h3 class="product_name" th:text="${product.name}"></h3>
-                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></p>
+                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VND'"></p>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="product_content">
                                     <h3 class="product_name" th:text="${product.name}"></h3>
-                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></p>
+                                    <p class="product_price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VND'"></p>
                                 </div>
                             </div>
                         </div>
