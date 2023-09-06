@@ -74,6 +74,15 @@ public class CartDetailService {
         cart.setTotal_amount(getTotalPrice(cart.getId()));
         cartRepository.save(cart);
     }
+    public void updateQuantity(String cart_id, String product_id, int quantity){
+        var cart = cartRepository.findById(cart_id).orElseThrow();
+        var cartDetail = cartDetailRepository.findByProductIdAndCartId(product_id, cart_id);
+        cartDetail.setQuantity(quantity);
+        cartDetail.setPrice(cartDetail.getProducts().getPrice()*quantity);
+        cartDetailRepository.save(cartDetail);
+        cart.setTotal_amount(getTotalPrice(cart.getId()));
+        cartRepository.save(cart);
+    }
     public Double getTotalPrice(String cart_id) {
         Double totalPrice = 0d;
         List<CartDetailModel> cartDetailModels = cartDetailRepository.findByCartId(cart_id);

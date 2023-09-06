@@ -33,3 +33,13 @@
 .product-item:hover {
     cursor: pointer;
 }
+
+.product-item img {
+    aspect-ratio: 3 / 3.5;
+    object-fit: cover;
+}
+.product-img img {
+    aspect-ratio: 3 / 3.5;
+    object-fit: cover;
+}
+

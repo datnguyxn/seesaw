@@ -13,7 +13,7 @@ $(document).ready(function () {
         success: function (data) {
             console.log(data);
             if (data.products.length === 0) {
-                $('.cart--detail').append(`No product`)
+                $('.cart--detail').html(``)
             } else {
                 $('.checkout--total-price').text(data.price)
                 data.products.forEach(product => {

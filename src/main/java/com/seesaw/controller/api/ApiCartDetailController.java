@@ -31,6 +31,14 @@ public class ApiCartDetailController {
     ){
         cartDetailService.updateCart(cart_id, products);
     }
+    @PostMapping("/update-quantity")
+    public void updateQuantityOfProduct(
+//            @RequestParam String cart_id,
+//            @RequestParam String product_id,
+//            @RequestParam int quantity
+    ){
+        cartDetailService.updateQuantity("e60998a2-f67b-4f1b-bcd5-e47a74d1447d", "abc68b9a-535c-4148-bc07-10122f265c39",2);
+    }
     @PostMapping("/delete")
     public ResponseEntity<CartDetailResponse> deleteProductOfCart(
             @RequestParam String product_id,

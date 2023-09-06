@@ -31,28 +31,28 @@ $(document).ready(function() {
         success: function (data) {
             console.log(data);
             if (data.length === 0) {
-                $('.order-item__list').text('No order')
+                $('.order-item__list').html()
             } else {
                 data.forEach(product => {
                     $('.order-item__list').append(`
-                    <div class="order--item row d-flex justify-content-between m-0 pt-2" style="cursor: pointer;" data-id="${product.id}">
-              <div class="col-md-4 col-12">
+                    <div class="order--item row d-flex justify-content-between m-0 pt-2" data-id="${product.id}">
+              <div class="col-md-4 col-2">
                 <p>${product.name}</p>
               </div>
-              <div class="col-md-2 col p-0">
+              <div class="col-md-2 col-2 p-0">
                 <p class="cart__item--price">
                   ${product.total_amount}
                 </p>
               </div>
-              <div class="col-md-2 col">
+              <div class="col-md-2 col-2">
                 <p>${product.createdAt}</p>
               </div>
-              <div class="col-md-2 col">
+              <div class="col-md-2 col-2">
                 <p>
                   ${product.status}
                 </p>
               </div>
-              <div class="col-md-2 col">
+              <div class="col-md-2 col-2">
                 <a href="/order-detail/order/${product.id}">Detail</a>
               </div>
               
@@ -67,11 +67,5 @@ $(document).ready(function() {
             console.log("error");
         }
     })
-    // click to detail order
-    function clickOrderDetail() {
-        $('.order--item').click(function() {
-            window.location.href = '/order-detail?id=' + $(this).data('id')
-        })
-    }
 
 })

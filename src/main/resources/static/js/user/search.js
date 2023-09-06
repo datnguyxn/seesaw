@@ -28,7 +28,7 @@ $(document).ready(function () {
                     return;
                 }
                 if (data.length === 0) {
-                    $('.product-list').append(`<p>No result</p>`)
+                    $('.product-list').html(``)
                 } else {
                     const result = data.map((product) => {
                         return `

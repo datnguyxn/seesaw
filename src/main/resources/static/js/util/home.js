@@ -84,7 +84,7 @@ $(document).ready(function () {
         $('.category-item').on('click', function (e) {
             const id = $(this).data('id');
             console.log(id);
-            window.location.href = `/products?id=${id}`;
+            window.location.href = `/products?type=${id}`;
         })
     }
 

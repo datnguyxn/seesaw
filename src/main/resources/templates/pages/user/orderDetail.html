@@ -5,8 +5,11 @@
 <th:block th:replace="~{fragments/util/header :: header}"/>
 <header class="container" style="height: 54px">
     <div class="header-action d-flex justify-content-end me-3 mt-3" style="height: 50px">
-        <div class="app-branding" style="justify-content: flex-start">
-            <button class="app-logo" ><a class="order-btn btn btn-success" href="/order"><span class="logo-text">List Order</span></a></button>
+
+        <div class="content__button--add">
+            <button class="addToCart--button collections__button mb-5 mt-2" role="button">
+                <a style="text-decoration: none;color: #000;" href="/order"><span class="logo-text">List Order</span></a>
+            </button>
         </div>
     </div>
 </header>
@@ -20,7 +23,6 @@
             <h3>Total Price: <span th:text="${products.total_amount} + ' VND'"></span></h3>
         </div>
         <div style="float: left;">
-            <h3>Order ID: <span th:text="${products.order_id}"></span></h3>
             <h3>Order Status: <span th:text="${products.status}"></span></h3>
         </div>
     </div>
