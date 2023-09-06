@@ -47,6 +47,11 @@ $(document).ready(function () {
         }
     })
 
+    if (productList.length === 0) {
+        alert("Your cart is empty")
+        window.location.href = "/products"
+    }
+
 
     // addProductToOrder(id, TOKEN, email, firstName, lastName, address, phone, gender, errorText, getProductOfCart(TOKEN))
     formCheckOut.on("submit", function (e) {
