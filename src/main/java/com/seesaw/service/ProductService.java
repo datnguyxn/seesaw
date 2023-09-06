@@ -139,7 +139,7 @@ public class ProductService {
         }
         return null;
     }
-    public List<ProductResponse> filter(int page, int size, String filter, String by, String sorted) {
+    public Page<ProductResponse> filter(int page, int size, String filter, String by, String sorted) {
         PageRequest pageRequest = PageRequest.of(page, size);
         var temp = filter.split(";");
         System.out.println("temp: "+ Arrays.toString(temp));
@@ -189,9 +189,11 @@ public class ProductService {
             spec = spec.and(ProductSpecification.builder().criteria(criteria).build());
         }
         if(sorted.equals("DESC")){
-            return productRepository.findAll(spec, Sort.by(by).descending()).stream().map(this::toResponse).collect(Collectors.toList());
+            pageRequest.withSort(Sort.by(by).descending());
+        }else{
+            pageRequest.withSort(Sort.by(by).ascending());
         }
-        return productRepository.findAll(spec, Sort.by(by).ascending()).stream().map(this::toResponse).collect(Collectors.toList());
+        return productRepository.findAll(spec,pageRequest).map(this::toResponse);
     }
     //    Update
     public ProductResponse updateProduct(ProductRequest request, String id){

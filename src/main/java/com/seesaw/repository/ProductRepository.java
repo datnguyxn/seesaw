@@ -26,6 +26,5 @@ public interface ProductRepository extends JpaRepository<ProductModel, String> {
     List<ProductModel> findAllByCategory_Id(String id);
     List<ProductModel> findAllByCategory_Id(String id, Sort sort);
     List<ProductModel> findAllByCollection_Id(String id);
-//    Page<ProductModel> findAll(Specification<ProductModel> spec, Pageable pageRequest);
-    List<ProductModel> findAll(Specification<ProductModel> spec, Sort sort);
+    Page<ProductModel> findAll(Specification<ProductModel> spec, Pageable pageRequest);
 }

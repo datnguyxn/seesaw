@@ -56,7 +56,7 @@ public class ApiProductController {
         return ResponseEntity.ok().body(productService.search(page, size, value));
     }
     @GetMapping("/filter")
-    public ResponseEntity<List<ProductResponse>> filterProduct(
+    public ResponseEntity<?> filterProduct(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "filter") String filter,
