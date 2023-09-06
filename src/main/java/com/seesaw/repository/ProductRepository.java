@@ -24,6 +24,7 @@ public interface ProductRepository extends JpaRepository<ProductModel, String> {
             ,nativeQuery = true)
     List<ProductModel> search(String keyword);
     List<ProductModel> findAllByCategory_Id(String id);
+    List<ProductModel> findAllByCategory_Id(String id, Sort sort);
     List<ProductModel> findAllByCollection_Id(String id);
 //    Page<ProductModel> findAll(Specification<ProductModel> spec, Pageable pageRequest);
     List<ProductModel> findAll(Specification<ProductModel> spec, Sort sort);

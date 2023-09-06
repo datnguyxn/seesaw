@@ -66,7 +66,7 @@ public class ProductService {
                 .quantity(request.getQuantity())
                 .build();
     }
-//    Create
+    //    Create
     @Transactional
     public ProductResponse addProduct(ProductRequest request){
         var product = productRepository.findById(request.getName()).orElse(null);
@@ -74,6 +74,8 @@ public class ProductService {
         var collection = collectionRepository.findById(request.getCollection_id()).orElse(null);
         if(product == null && category != null && collection != null){
             var productEntity = toEntity(request);
+            productEntity.setCreatedDate(LocalDate.now());
+            productEntity.setUpdatedDate(LocalDate.now());
             var productSaved = productRepository.save(productEntity);
             productSaved.setCategory(category);
             productSaved.setCollection(collection);
@@ -96,7 +98,7 @@ public class ProductService {
         }
         return updateProduct(request,product);
     }
-//    Read
+    //    Read
     public List<ProductResponse> getAllProducts(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size);
         var products = productRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream().map(this::toResponse);
@@ -120,17 +122,21 @@ public class ProductService {
     public List<ProductResponse> getAllProductOfCollection(int page, int size, String value) {
         return productRepository.findAllByCollection_Id(value).stream().map(this::toResponse).collect(Collectors.toList());
     }
-    public List<ProductResponse> sort(int page, int size, String value, String category_id) {
+    public List<ProductResponse> sort(int page, int size, String value, String category_id, String by) {
         PageRequest pageRequest = PageRequest.of(page, size);
         if(category_id == null){
-            if (value.equals("name")) {
-                return productRepository.findAll(Sort.by(Sort.Direction.ASC, "name")).stream().map(this::toResponse).collect(Collectors.toList());
-            } else if (value.equals("price")) {
-                return productRepository.findAll(Sort.by(Sort.Direction.ASC, "price")).stream().map(this::toResponse).collect(Collectors.toList());
+            if (value.equals("ASC")) {
+                return productRepository.findAll(Sort.by(Sort.Direction.ASC, by)).stream().map(this::toResponse).collect(Collectors.toList());
+            } else if (value.equals("DESC")) {
+                return productRepository.findAll(Sort.by(Sort.Direction.DESC, by)).stream().map(this::toResponse).collect(Collectors.toList());
+            }
+        }else{
+            if (value.equals("ASC")) {
+                return productRepository.findAllByCategory_Id(category_id, Sort.by(Sort.Direction.ASC, by)).stream().map(this::toResponse).collect(Collectors.toList());
+            } else if (value.equals("DESC")) {
+                return productRepository.findAllByCategory_Id(category_id, Sort.by(Sort.Direction.DESC, by)).stream().map(this::toResponse).collect(Collectors.toList());
             }
         }
-        var products = productRepository.findAll();
-        products.sort(Comparator.comparing(ProductModel::getName));
         return null;
     }
     public List<ProductResponse> filter(int page, int size, String filter, String by, String sorted) {
@@ -187,7 +193,7 @@ public class ProductService {
         }
         return productRepository.findAll(spec, Sort.by(by).ascending()).stream().map(this::toResponse).collect(Collectors.toList());
     }
-//    Update
+    //    Update
     public ProductResponse updateProduct(ProductRequest request, String id){
         var product = productRepository.findById(id).orElseThrow();
         var category = categoryRepository.findById(request.getCategory_id()).orElse(null);
@@ -200,7 +206,7 @@ public class ProductService {
         product.setQuantity(request.getQuantity());
         product.setCategory(category);
         product.setCollection(collection);
-
+        product.setUpdatedDate(LocalDate.now());
         if(request.getImage_path() != null){
             System.out.println("image_path2: "+product.getImage_path());
             try{
@@ -228,6 +234,7 @@ public class ProductService {
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setQuantity(request.getQuantity() + product.getQuantity());
+        product.setUpdatedDate(LocalDate.now());
         try{
             String filePath = product.getImage_path();
             FileUploadUtil.deleteFile(filePath);
@@ -240,7 +247,7 @@ public class ProductService {
         productRepository.save(product);
         return toResponse(product);
     }
-//    Delete
+    //    Delete
     public List<ProductResponse> deleteProductById(String id, int page, int size){
         ProductModel product = productRepository.findById(id).orElseThrow();
         String filePath = product.getImage_path();

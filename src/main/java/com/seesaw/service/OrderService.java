@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -62,6 +63,7 @@ public class OrderService {
             return productEntity;
         }).toList();
         var order = toEntity(request);
+        order.setCreatedDate(LocalDate.now());
         order.setTotal_amount(0d);
         var orderSaved = orderRepository.save(order);
         System.out.println(order);
