@@ -30,7 +30,7 @@ public class InvoiceService {
                 .email(order.getEmail())
                 .phone(order.getPhone())
                 .total_amount(order.getTotal_amount())
-                .status("Success")
+                .status(order.getStatus())
                 .createdAt(order.getCreatedDate())
                 .products(products)
                 .build();

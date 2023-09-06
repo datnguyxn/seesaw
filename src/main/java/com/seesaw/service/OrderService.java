@@ -38,7 +38,7 @@ public class OrderService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .address(request.getAddress())
-                .status("Đang giao")
+                .status("Đang xét")
                 .build();
     }
     public OrderResponse toResponse(OrderModel order){
