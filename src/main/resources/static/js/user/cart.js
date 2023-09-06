@@ -18,7 +18,7 @@ $(document).ready(function () {
                 $('.checkout--total-price').text(data.price)
                 data.products.forEach(product => {
                     $('.cart--detail').append(`
-                    <div class="row d-flex align-items-center gap-2 m-0">
+                    <div class="cartItem row d-flex align-items-center gap-2 m-0" data-id="${product.id}">
                             <div class="col-md-2">
                                 <img src="${product.image}" alt="error">
                             </div>
@@ -29,9 +29,9 @@ $(document).ready(function () {
                                 </p>
                             </div>
                             <div class="col-md-4 quantity p-0">
-                                <button class="minus-btn btn  disabled" type="button">-</button>
+                                <button class="minus-btn btn" type="button" data-id="${product.id}">-</button>
                                 <input id="quantity" type="text" value="${product.quantity}" readonly>
-                                <button class="btn plus-btn" type="button">+</button>
+                                <button class="btn plus-btn" type="button"  data-id="${product.id}">+</button>
                             </div>
                             <div class="col cart--remove-item" data-id="${product.id}">
                                 <u class="">Remove</u>
@@ -39,7 +39,7 @@ $(document).ready(function () {
                         </div>
                 `)
                 })
-                updateQuantity()
+                assignPlusMinus()
                 removeItem()
             }
 
@@ -92,9 +92,43 @@ $(document).ready(function () {
             })
         })
     }
+    // assign plus/minus button
+    function assignPlusMinus() {
+        var valueCount = $("#quantity").value;
+        if (valueCount <= 1) {
+            $('.minus-btn').addAtribute("disabled", "disabled");
+        }
+        //plus button
+        $(".plus-btn").on("click", function() {
+            valueCount++;
+            //setting increment input value
+            $("#quantity").value = valueCount;
+            updateQuantity()
+        })
+        //minus button
+        $(".minus-btn").on("click", function() {
+            valueCount--;
+            //setting increment input value
+            $("#quantity").value = valueCount;
+            updateQuantity()
+        })
+    }
     // Update item quantity
     function updateQuantity() {
-
+        $.ajax({
+            url: "/api/cart-detail/update-quantity?cart_id=" + getCartId() + "&product_id=" + $(".cartItem").data('id') + "&quantity=" + Number($("#quantity").val()),
+            type: "POST",
+            async: true,
+            contentType: "application/json",
+            success: function () {
+                console.log("success");
+                window.location.href =  "/cart";
+            },
+            error: function (e) {
+                console.log(e)
+                console.log("error");
+            }
+        })
     }
 
 })
