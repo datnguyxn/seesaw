@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/admin/table/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/admin/table/datatables.min.css}">
     <link rel="stylesheet" th:href="@{/css/admin/table/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order.css}">
     <link rel="stylesheet" th:href="@{/css/admin/styles.css}"/>
     <title>Order</title>
     <style>
@@ -44,12 +45,6 @@
         <li>
             <a href="#" class="active"><i class='bx bxs-cart-alt icon'></i> Orders</a>
         </li>
-        <li>
-            <a href="#" class=""><i class='bx bxs-discount icon'></i> Invoices</a>
-        </li>
-        <li>
-            <a href="#" class=""><i class='bx bxs-comment-dots icon'></i> Feedback</a>
-        </li>
     </ul>
 </section>
 <!-- SIDEBAR -->
@@ -62,17 +57,6 @@
 
     <!-- MAIN -->
     <main class="container-fluid">
-        <div class="row m-1">
-            <div class="col m-0 p-0">
-                <h1>Order</h1>
-            </div>
-            <div class="col m-0 p-0">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-primary me-md-2 p-2" type="button">Add order</button>
-                    <!--                    <button class="btn btn-primary p-2" type="button">Delete Account</button>-->
-                </div>
-            </div>
-        </div>
         <div class="row m-1">
             <div class="col-12 p-0 m-0">
                 <ul class="nav nav-tabs">
@@ -108,6 +92,17 @@
                         <tbody>
 
                         </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="align-content-end">
+                                <nav>
+                                    <ul class="pagination">
+
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

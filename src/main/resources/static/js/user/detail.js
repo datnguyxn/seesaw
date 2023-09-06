@@ -20,7 +20,7 @@ $(document).ready(function () {
                 <div class="content__information col-md-4 col-10 mx-2">
                     <div class="content__information--title">
                         <h2>${data.name}</h2>
-                        <p class="content__information--title">${data.price}</p>
+                        <p class="content__information--title fw-light text-end">${data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND</p>
                     </div>
                     <div class="content__body">
                         <p class="content__information--description">

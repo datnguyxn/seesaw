@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderProductResponse {
+    private String image_path;
     private String name;
     private String brand;
     private int quantity;

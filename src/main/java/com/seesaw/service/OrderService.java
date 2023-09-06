@@ -139,4 +139,11 @@ public class OrderService {
         }
         return totalPrice;
     }
+
+    public OrderResponse updateStatus(String id, String request) {
+        var order = orderRepository.findById(id).orElseThrow();
+        order.setStatus(request);
+        var orderSaved = orderRepository.save(order);
+        return toResponse(orderSaved);
+    }
 }

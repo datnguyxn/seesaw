@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link th:href="@{https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css}" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/admin/table/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/table/datatables.min.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/table/style.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/orderDetail.css}">
+  <link rel="stylesheet" th:href="@{/css/admin/styles.css}"/>
+  <title>Order detail</title>
+  <style>
+    main {
+      background-color: var(--grey);
+    }
+    .table > tbody > tr > td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<section id="sidebar">
+  <a th:href="@{/admin/dashboard}" class="brand"><i class="bx bxs-smile icon"></i> AdminSite</a>
+  <ul class="side-menu">
+    <li>
+      <a th:href="@{/admin/dashboard}" class=""><i class='bx bxs-bar-chart-alt-2 icon'></i> Dashboard</a>
+    </li>
+    <li class="divider" data-text="main">Main</li>
+    <li>
+      <a th:href="@{/admin/userAccount}" class=""><i class='bx bxs-user icon'></i> User account</a>
+    </li>
+    <li class="divider" data-text="seesaw product">Seesaw Product</li>
+    <li>
+      <a th:href="@{/admin/product}" class=""><i class="bx bxs-mask icon"></i>Product</a>
+    </li>
+    <li>
+      <a th:href="@{/admin/category}" class=""><i class='bx bxs-box icon'></i> Categories</a>
+    </li>
+    <li>
+      <a th:href="@{/admin/collection}" class=""><i class='bx bxs-widget icon'></i> Collections</a>
+    </li>
+    <li class="divider" data-text="sale manage">Sale manage</li>
+    <li>
+      <a th:href="@{/admin/order}" class="active"><i class='bx bxs-cart-alt icon'></i> Orders</a>
+    </li>
+  </ul>
+</section>
+<!-- SIDEBAR -->
+
+<!-- NAVBAR -->
+<section id="content">
+  <!-- NAVBAR -->
+  <th:block th:insert="~{fragments/admin/util/header :: header}"/>
+  <!-- NAVBAR -->
+
+  <!-- MAIN -->
+  <main class="">
+    <div class="container">
+      <div class="row gutters">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <div class="invoice-container">
+                <div class="invoice-header">
+                  <!-- Row start -->
+                  <div class="row gutters">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                      <a href="index.html" class="invoice-logo">Seesaw
+                      </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <span class="text-right align-content-end">
+                        Address:<br> 19 Đ. Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh
+                      </span>
+                    </div>
+                  </div>
+                  <!-- Row end -->
+                  <!-- Row start -->
+                  <div class="row gutters">
+                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                      <div class="invoice-details">
+                        <p>Customer: <span class="text-secondary" th:text="${products.name}"></span></p>
+                        <p>Phone: <span class="text-secondary" th:text="${products.phone}"></span></p>
+                        <p>Address: <span class="text-secondary" th:text="${products.address}"></span></p>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                      <div class="invoice-details">
+                        <div class="invoice-num">
+                          <div>Invoice: <span th:text="${products.order_id}"></span></div>
+                          <div>Date: <span th:text="${products.createdAt}"></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Row end -->
+                </div>
+                <div class="invoice-body">
+                  <!-- Row start -->
+                  <div class="row gutters">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="table-responsive">
+                        <table class="table custom-table m-0">
+                          <thead>
+                          <tr>
+                            <th>Items</th>
+                            <th>Product ID</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Sub Total</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <th:block th:each="product : ${products.products}">
+                            <tr>
+                              <td>
+                                <img th:src="${product.image_path}"
+                                     alt="Glasses" width="200px" height="120px" style="object-fit: cover;"/>
+                              </td>
+                              <td th:text="${product.name}"></td>
+                              <td th:text="${product.quantity}"></td>
+                              <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                              <td th:text="${#numbers.formatDecimal(product.price * product.quantity, 0, 'COMMA', 0, 'POINT')}"></td>
+                            </tr>
+                          </th:block>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td colspan="2">
+                              <h5 class="text-success"><strong>Grand Total</strong></h5>
+                            </td>
+                            <td>
+                              <h5 class="text-success"><strong th:text="${#numbers.formatDecimal(products.total_amount, 0, 'COMMA', 0, 'POINT')}"></strong> VND</h5>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Row end -->
+                </div>
+                <div class="invoice-footer">
+                  Thank you for your Business.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- MAIN -->
+</section>
+
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.js}"></script>
+<script th:src="@{/webjars/jquery/3.6.4/jquery.js}"></script>
+
+<script th:src="@{/js/admin/header.js}"></script>
+<script th:src="@{/js/admin/script.js}"></script>
+<script th:src="@{/js/util/renderPagnigation.js}"></script>
+<script th:src="@{/js/admin/orderDetail.js}"></script>
+
+<script th:src="@{/js/admin/table/vfs_fonts.js}"></script>
+<script th:src="@{/js/admin/table/datatables.min.js}"></script>
+<script th:src="@{/js/admin/table/pdfmake.min.js}"></script>
+
+
+</body>
+</html>

@@ -3,10 +3,10 @@
 <th:block th:insert="~{/fragments/heading/heading :: heading(title='Search')}" />
 <body>
   <th:block th:insert="~{fragments/util/header :: header}"/>
-  <div class="min-vh-100">
+  <div class="container min-vh-100 px-3">
     <div class="search-box ">
       <h2 class="fw-light mb-4 fs-1">Search</h2>
-      <input id="search" type="search" placeholder="Enter product name or collection name" class="p-0">
+      <input id="search" type="search" placeholder="Enter product name or collection name" class="p-2">
       <button class="search--button">
         <i class="bi bi-search search-box-icon"></i>
       </button>
