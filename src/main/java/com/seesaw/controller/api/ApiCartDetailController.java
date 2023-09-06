@@ -18,6 +18,7 @@ public class ApiCartDetailController {
     private CartDetailService cartDetailService;
     @PostMapping("/add")
     public void add(@RequestBody @Valid AddProductRequest request){
+        System.out.println(request);
         cartDetailService.addToCart(request);
     }
     @GetMapping("/list")
@@ -45,5 +46,12 @@ public class ApiCartDetailController {
             @RequestParam String cart_id
     ){
         return ResponseEntity.ok().body(cartDetailService.deleteProductOfCart(product_id, cart_id));
+    }
+
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<?> deleteAllProductOfCart(@RequestParam String cart_id){
+        System.out.println(cart_id);
+        cartDetailService.deleteCartDetailOfCart(cart_id);
+        return ResponseEntity.ok().build();
     }
 }

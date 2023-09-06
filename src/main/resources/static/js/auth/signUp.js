@@ -26,7 +26,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data)
                 alert("Sign Up Success")
-                window.location.href = "/login";
+                window.location.href = "/auth/login";
             },
             error: function (error) {
                 console.log(error)

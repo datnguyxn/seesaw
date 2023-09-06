@@ -18,6 +18,7 @@ public class ApiOrderController {
     private OrderService orderService;
     @PostMapping("/add")
     public ResponseEntity<OrderResponse> addOrder(@RequestBody @Valid OrderRequest request){
+        System.out.println(request);
         return ResponseEntity.ok().body(orderService.addOrder(request));
     }
     @GetMapping("/list")

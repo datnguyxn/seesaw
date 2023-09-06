@@ -11,20 +11,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/order/")
+@Controller
+@RequestMapping("/checkout")
 @RequiredArgsConstructor
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
-
-    @PostMapping("/payment")
-    public ResponseEntity<MessageResponse> payment(@RequestBody AddPaymentRequest request, HttpServletRequest req, HttpServletResponse res) {
-        return ResponseEntity.ok(paymentService.payment(request, req, res));
+    @GetMapping("")
+    public String checkout() {
+        return "pages/user/checkout";
     }
-
-
 }

@@ -27,4 +27,5 @@ public interface CartDetailRepository extends JpaRepository<CartDetailModel, Str
     @Modifying
     @Query(value = "DELETE FROM cart_detail WHERE product_id = ?1", nativeQuery = true)
     void deleteProductOfCartDetail(String product_id);
+
 }

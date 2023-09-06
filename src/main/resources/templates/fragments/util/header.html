@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li class="nav-item me-3 me-lg-0 dropdown">
-                <a class="nav-link dropdown position-relative check-token" href="#" data-bs-toggle="dropdown" aria-expanded="false" role="button" data-bs-target="#dropdownUser">
+                <a class="nav-link dropdown dropdown-profile position-relative check-token" href="#" data-bs-toggle="dropdown" aria-expanded="false" type="button" data-bs-target="#dropdownUser">
                     <i class="bi bi-person"></i>
                 </a>
                 <ul class="dropdown-menu position-absolute ul-display d-none" style="left: -5rem; min-width: 8rem;" id="dropdownUser">
@@ -40,7 +40,7 @@
                         <a th:href="@{/user/update}" class="dropdown-link text-decoration-none text-dark" id="btn-check">Edit</a>
                     </li>
                     <li class="dropdown-item">
-                        <a th:href="@{/order}" class="dropdown-link text-decoration-none text-dark" id="btn-check">Your order
+                        <a th:href="@{/order}" class="dropdown-link text-decoration-none text-dark" id="check-order">Your order
                         </a>
                     </li>
                     <li class="dropdown-item">

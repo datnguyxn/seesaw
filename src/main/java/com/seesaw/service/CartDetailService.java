@@ -41,9 +41,10 @@ public class CartDetailService {
     public void addToCart(AddProductRequest request) {
         CartModel cart = cartRepository.findById(request.getCart_id()).orElseThrow();
         ProductModel product = productRepository.findById(request.getProduct_id()).orElseThrow();
-        if(!cartDetailRepository.findByCartId(request.getCart_id()).isEmpty() && !cartDetailRepository.findByProductId(request.getProduct_id()).isEmpty()){
+        if (cartDetailRepository.findByProductIdAndCartId(request.getProduct_id(), request.getCart_id()) != null){
             updateCart(cart,cartDetailRepository.findByProductIdAndCartId(request.getProduct_id(), request.getCart_id()),request.getQuantity(),product.getPrice());
         }else{
+            System.out.println("hehweh121312");
             CartDetailModel cartDetail = CartDetailModel.builder()
                     .quantity(request.getQuantity())
                     .price(product.getPrice()*request.getQuantity())
@@ -117,6 +118,11 @@ public class CartDetailService {
     }
     public void deleteCartDetailOfCart(CartModel cart){
         List<CartDetailModel> cartDetail = cartDetailRepository.findByCarts(cart);
+        cartDetailRepository.deleteAll(cartDetail);
+    }
+
+    public void deleteCartDetailOfCart(String cart_id){
+        List<CartDetailModel> cartDetail = cartDetailRepository.findByCartId(cart_id);
         cartDetailRepository.deleteAll(cartDetail);
     }
     public int count() {

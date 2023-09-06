@@ -33,7 +33,7 @@ $(document).ready(function () {
                             <p>Quantity</p>
                             <div class="quantity">
                                 <button class="minus-btn btn  disabled" type="button">-</button>
-                                <input id="quantity" type="text" value="1" readonly>
+                                <input id="number-quantity" type="text" value="1" readonly>
                                 <button class="btn plus-btn" type="button">+</button>
                             </div>
                         </div>
@@ -63,7 +63,7 @@ $(document).ready(function () {
             e.preventDefault();
             console.log(id_product)
             console.log(getCartId())
-            console.log($("#quantity").val())
+            // console.log(typeof Number($("#number-quantity").val()))
             const TOKEN = localStorage.getItem("token");
             if (TOKEN == null) {
                 window.location.href = "/auth/login"
@@ -74,9 +74,9 @@ $(document).ready(function () {
                 url: "/api/cart-detail/add",
                 type: "POST",
                 data: JSON.stringify({
-                    "product_id": id_product,
-                    "cart_id": getCartId(),
-                    "quantity": $("#quantity").val()
+                    product_id: id_product,
+                    cart_id: getCartId(),
+                    quantity: Number($("#number-quantity").val())
                 }),
                 async: false,
                 contentType: "application/json",
@@ -126,11 +126,11 @@ $(document).ready(function () {
         //plus button
         document.querySelector(".plus-btn").addEventListener("click", function() {
             //getting value of input
-            var valueCount = document.getElementById("quantity").value;
+            var valueCount = document.getElementById("number-quantity").value;
             //input value increment by 1
             valueCount++;
             //setting increment input value
-            document.getElementById("quantity").value = valueCount;
+            document.getElementById("number-quantity").value = valueCount;
 
             //input value is > 1 using removeattribute and removeclass method
             if (valueCount > 1) {
@@ -142,10 +142,10 @@ $(document).ready(function () {
 
         // for minus button
         document.querySelector(".minus-btn").addEventListener("click", function() {
-            var valueCount = document.getElementById("quantity").value;
+            var valueCount = document.getElementById("number-quantity").value;
             //input value decrement by 1
             valueCount--;
-            document.getElementById("quantity").value = valueCount;
+            document.getElementById("number-quantity").value = valueCount;
             console.log(valueCount);
             if (valueCount === 1) {
                 document.querySelector(".minus-btn").setAttribute("disabled", "disabled")

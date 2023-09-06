@@ -4,6 +4,7 @@ $(document).ready(function (e) {
     const checkToken = $('.check-token')
     const ulDisplay = $('.ul-display')
     const checkAuth = $('.check-auth')
+    const checkOrder = $('.check-order')
 
     checkAuth.on('click', (e) => {
         e.preventDefault()
